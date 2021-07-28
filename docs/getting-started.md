@@ -48,7 +48,7 @@ once you have cloned the gateway project, go to the **root folder** and run the 
 * **Mysql**
     *  once your mysql database container is running, you can access either from included cloudBeaver client [http://localhost:3300](http://localhost:3300) and setup connection with the mysql container, or a client of your choice.
 * **Keycloak**
-    *  to access keycloak and manage authentication/authorization, use (admin/admin) in [http://localhost:3800](http://localhost:3300).    
+    *  to access keycloak and manage authentication/authorization, use (admin/admin) in [http://localhost:3800](http://localhost:3800).    
 
 Starting gateway server
 -------------------------
