@@ -50,9 +50,9 @@ once you have cloned the gateway project, go to the **root folder** and run the 
 * **Keycloak**
     *  to access keycloak and manage authentication/authorization, use (admin/admin) in [http://localhost:3800](http://localhost:3800).    
 
-Starting gateway server
+Starting API server
 -------------------------
-wait for all containers to start then start gateway server by running in the root folder:
+wait for all containers to start then start the API server by running in the root folder:
 
     mvn clean install:  (to clean existing build folder and install a new version of gateway server)
     mvn spring_boot:run :  (to run the new installed version)
