@@ -1,6 +1,6 @@
 [AGRISUD] AGRISUD-ELEARNING-API 
 =============================
-Gateway service for IBDAA back-end API.
+ELEARNING API for AGRISUD.
 
 Structure
 --------
@@ -27,7 +27,7 @@ graph TB
 ```
 Note: The structure is simplified in development environment:  
 - keycloak is bootstrapped with mocked users,
-- there are no firewall and no HTTTPS between front apps and backends.
+- there are no firewall and no HTTPS between front apps and backends.
 
 Dev environment
 --------
