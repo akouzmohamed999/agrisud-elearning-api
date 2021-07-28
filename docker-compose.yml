@@ -1,0 +1,60 @@
+version: '2.1'
+
+services:
+
+  mysql:
+    image: mysql
+    container_name: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./docker/dev/init.sql:/docker-entrypoint-initdb.d/1-schema.sql
+      - ./docker/dev/keycloak-schema.sql:/docker-entrypoint-initdb.d/2-data.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: mysecretpassword
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=mysecretpassword --execute \"SHOW DATABASES;\""
+      interval: 100s
+      retries: 5
+    networks:
+      - agrisud
+
+  mysql-client:
+    image: dbeaver/cloudbeaver:latest
+    container_name: mysql-client
+    volumes:
+      - mysql-client:/opt/cloudbeaver/workspace
+    ports:
+      - 3300:8978
+    restart: unless-stopped
+    networks:
+      - agrisud
+
+  keycloak:
+    container_name: keycloak
+    image: jboss/keycloak
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_VENDOR: MYSQL
+      DB_USER: root
+      DB_DATABASE: agrisud_keycloak
+      DB_PASSWORD: mysecretpassword
+      DB_ADDR: mysql
+    ports:
+      - "3800:8080"
+    networks:
+      - agrisud
+
+
+networks:
+  agrisud:
+    driver: bridge
+
+volumes:
+  mysql:
+  mysql-client:
