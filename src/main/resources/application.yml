@@ -1,0 +1,33 @@
+server:
+  port: 8090
+
+spring:
+  profiles:
+    active: dev
+  datasource:
+    password: mysecretpassword
+    url: jdbc:mysql://localhost:3306/agrisud_mediatheque
+    username: root
+
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+    locations: classpath:db/migration
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:3800/auth/realms/agrisud
+
+cloud:
+  server:
+    name: http://localhost:3900
+    password: cloudagrisudcrud
+    username: cloudagrisudcrud
+
+keycloak:
+  resource: agrisud-elearning-api
+  allowed-origin: http://localhost:3000
+
+
