@@ -32,4 +32,4 @@ Note: The structure is simplified in development environment:
 Dev environment
 --------
 
-to get started with all the tools you need to start working on ELEARNING, click [here](./docs/getting-started.md)
+to get started with all the tools you need to start working on ELEARNING API, click [here](./docs/getting-started.md)

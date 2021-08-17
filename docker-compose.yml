@@ -3,7 +3,7 @@ version: '2.1'
 services:
 
   mysql:
-    image: mysql
+    image: mysql:8.0.26
     container_name: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -18,7 +18,7 @@ services:
     healthcheck:
       test: "/usr/bin/mysql --user=root --password=mysecretpassword --execute \"SHOW DATABASES;\""
       interval: 100s
-      retries: 5
+      retries: 10
     networks:
       - agrisud
 
@@ -34,10 +34,8 @@ services:
       - agrisud
 
   keycloak:
-    build:
-      context: .
-      dockerfile: ./docker/keycloak/Dockerfile
-    image: jboss/keycloak
+    image: jboss/keycloak:15.0.0
+    container_name: keycloak
     depends_on:
       mysql:
         condition: service_healthy
@@ -47,10 +45,27 @@ services:
       DB_DATABASE: agrisud_keycloak
       DB_PASSWORD: mysecretpassword
       DB_ADDR: mysql
-    volumes:
-      - ./docker/keycloak/themes/agrisud:/opt/jboss/keycloak/themes/agrisud
     ports:
-      - "3800:8080"
+      - 3800:8080
+    networks:
+      - agrisud
+
+  nextcloud:
+    image: nextcloud:22.0.0
+    container_name: nextcloud
+    restart: always
+    ports:
+      - 3900:80
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - nextcloud:/var/www/html/data
+    environment:
+      MYSQL_PASSWORD: mysecretpassword
+      MYSQL_DATABASE: agrisud_mediatheque_cloud
+      MYSQL_USER: root
+      MYSQL_HOST: mysql
     networks:
       - agrisud
 
@@ -62,3 +77,4 @@ networks:
 volumes:
   mysql:
   mysql-client:
+  nextcloud:

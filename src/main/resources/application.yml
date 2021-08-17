@@ -6,7 +6,7 @@ spring:
     active: dev
   datasource:
     password: mysecretpassword
-    url: jdbc:mysql://localhost:3306/agrisud_mediatheque
+    url: jdbc:mysql://localhost:3306/agrisud_elearning
     username: root
 
   flyway:
