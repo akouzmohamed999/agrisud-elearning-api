@@ -14,7 +14,9 @@ public class DaoConfig {
     public PropertiesFactoryBean sqlQueries() {
         PropertiesFactoryBean prop = new PropertiesFactoryBean();
         ClassPathResource[] resources = new ClassPathResource[]{
-                new ClassPathResource("sql/course.properties")
+                new ClassPathResource("sql/course.properties"),
+                new ClassPathResource("sql/module.properties"),
+                new ClassPathResource("sql/training-path.properties")
         };
         prop.setLocations(resources);
         prop.setIgnoreResourceNotFound(true);

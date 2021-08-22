@@ -1,5 +1,32 @@
-delete from course;
+delete
+from training_path;
 
-insert into course (course_id, course_title, course_description) values (1, 'course 1', 'first course');
-insert into course (course_id, course_title, course_description) values (2, 'course 2', 'second course');
-insert into course (course_id, course_title, course_description) values (3, 'course 3', 'third course');
+delete
+from module;
+
+delete
+from course;
+
+insert into training_path (training_path_title, image_url, training_path_description, capacity, training_path_time,
+                           pre_request, training_path_status, training_path_language)
+values ('parcours 1', 'imageUrl 1', 'parcours 1', 'test', 15, 'test', false, 'FR');
+insert into training_path (training_path_title, image_url, training_path_description, capacity, training_path_time,
+                           pre_request, training_path_status, training_path_language)
+values ('parcours 2', 'imageUrl 2', 'parcours 1', 'test', 15, 'test', false, 'FR');
+insert into training_path (training_path_title, image_url, training_path_description, capacity, training_path_time,
+                           pre_request, training_path_status, training_path_language)
+values ('parcours 3', 'imageUrl 3', 'parcours 1', 'test', 15, 'test', false, 'EN');
+
+insert into module (module_title, order_on_path, training_path_id)
+values ('module 1', 1, null);
+insert into module (module_title, order_on_path, training_path_id)
+values ('module 3', 2, null);
+insert into module (module_title, order_on_path, training_path_id)
+values ('module 3', 3, null);
+
+insert into course (course_title, course_type, course_language, module_id)
+values ('course 1', 'PRESENTATION', 'FR', null);
+insert into course (course_title, course_type, course_language, module_id)
+values ('course 2', 'VIDEO', 'EN', null);
+insert into course (course_title, course_type, course_language, module_id)
+values ('course 3', 'POWER_POINT', 'EN', null);
