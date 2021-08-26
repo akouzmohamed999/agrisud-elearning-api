@@ -30,4 +30,11 @@ keycloak:
   resource: agrisud-elearning-api
   allowed-origin: http://localhost:3000
 
+realm-admin:
+  server-url: http://localhost:3800/auth
+  realm: agrisud
+  client-id: admin-cli
+  username: agrisud-admin
+  password: mysecretpassword
+
 
