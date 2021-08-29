@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public static final String ROLE_ADMIN = "ADMIN";
+    public static final String ROLE_ADMIN = "ELEARNING_ADMIN";
     public static final String RESOURCE_ACCESS = "resource_access";
     public static final String ROLES = "roles";
     public static final String REALM_ACCESS = "realm_access";
