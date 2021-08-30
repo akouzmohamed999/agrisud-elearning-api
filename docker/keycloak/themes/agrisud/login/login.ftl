@@ -1,7 +1,10 @@
 <#import "template.ftl" as layout>
+<div class="kc-base-logo-wrapper">
+    <div id="kc-header-wrapper"><img src="${url.resourcesPath}/${properties.logoImg}" class="kc-base-logo" /></div>
+</div>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
     <#if section = "header">
-        WOW
+       ${msg("loginAccountTitle")}
     <#elseif section = "form">
     <div id="kc-form" <#if realm.password && social.providers??>class="${properties.kcContentWrapperClass!}"</#if>>
         <div id="kc-form-wrapper" <#if realm.password && social.providers??>class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}"</#if>>
@@ -65,7 +68,7 @@
     <#elseif section = "info" >
         <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
             <div id="kc-registration">
-                <span>${msg("noAccount")} <a tabindex="6" href="${url.registrationUrl}">${msg("doRegister")}</a></span>
+                <span>${msg("noAccount")} <a tabindex="6" href="${url.registrationUrl}" >${msg("doRegister")}</a></span>
             </div>
         </#if>
     </#if>

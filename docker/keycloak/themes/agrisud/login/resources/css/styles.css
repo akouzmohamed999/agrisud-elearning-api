@@ -1,10 +1,8 @@
 :root {
-  --textColor: #f6f5f7;
+  --textColor: green;
   --textOffColor: #7c858d;
-  --baseColor: #23333f;
-  --baseDarkColor: #1e2b36;
-  --baseLightColor: #283b48;
-  --secColor: #11f7e2;
+  --baseColor: #ffffff;
+  --secondaryColor: #ff5f01
 }
 
 body {
@@ -13,12 +11,23 @@ body {
   font-size: 18px;
 }
 
+
+.login-pf-page-header {
+  display: none;
+}
+
+.kc-base-logo-wrapper {
+  text-align: center;
+}
+
+.kc-base-logo {
+  width: 20%;
+}
+
 /* Login Card */
 
-.login-pf-page .card-pf {
-  border-radius: 20px;
-  background: var(--baseColor);
-  box-shadow: 15px 15px 30px var(--baseDarkColor), -15px -15px 30px var(--baseLightColor);
+.card-pf {
+  border-color: var(--secondaryColor);
 }
 
 /* Card Title */
@@ -28,7 +37,7 @@ body {
 }
 
 #kc-page-title {
-  font-size: 26px;
+  font-size: 22px;
   text-transform: uppercase;
   font-weight: 600;
 }
@@ -48,7 +57,6 @@ body {
 
   border-radius: 32px;
   background: var(--baseColor);
-  box-shadow: inset 15px 15px 30px var(--baseDarkColor), inset -15px -15px 30px var(--baseLightColor);
 }
 
 .login-pf-page .form-control::placeholder {
@@ -56,59 +64,11 @@ body {
   color: var(--textOffColor);
 }
 
-/* Remember Me Toggle */
-
-#kc-form-options .checkbox {
-  font-size: 16px;
-  color: var(--textOffColor);
-  margin-bottom: 0;
-}
-
-#kc-form-options label {
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-  padding-left: 8px;
-}
-
-#kc-form-options .toggle {
-  isolation: isolate;
-  position: relative;
-  height: 30px;
-  width: 60px;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: -8px -4px 8px var(--baseLightColor), 8px 4px 12px var(--baseDarkColor),
-    4px 4px 4px var(--baseDarkColor) inset, -4px -4px 4px var(--baseLightColor) inset;
-}
-
-#rememberMe {
-  display: none;
-}
-
-#kc-form-options .dot {
-  height: 100%;
-  width: 200%;
-  background: var(--baseColor);
-  border-radius: 15px;
-  transform: translate3d(-75%, 0, 0);
-  transition: transform 0.4s cubic-bezier(0.85, 0.05, 0.18, 1.35);
-  box-shadow: -8px -4px 8px var(--baseLightColor), 8px 4px 12px var(--baseDarkColor);
-}
-
-#rememberMe:checked ~ .dot {
-  transform: translate3d(25%, 0, 0);
-}
-
-#kc-form-options .label-text {
-  margin-left: 16px;
-}
-
 /* Reset Password Link */
 
 #kc-form-reset-psw a {
   font-size: 16px;
-  color: var(--secColor);
+  color: var(--textColor);
   padding-right: 8px;
 }
 
@@ -119,18 +79,13 @@ body {
 /* Login Button */
 
 #kc-login {
-  border: none;
-  padding: 22px 30px;
-  font-size: 18px;
-  color: var(--secColor) !important;
-  background: var(--baseColor) !important;
-
-  border-radius: 32px;
-  background: linear-gradient(145deg, #253743, #202e39);
-  box-shadow: 15px 15px 30px var(--baseDarkColor), -15px -15px 30px var(--baseLightColor);
+  background-color: var(--textColor);
 }
 
-#kc-login:active:focus {
-  background: linear-gradient(145deg, #202e39, #253743) !important;
-  outline: none;
+#kc-login:hover {
+  background-color: var(--secondaryColor);
+}
+
+.pf-c-form-control:hover {
+  border-bottom-color: var(--secondaryColor);
 }
