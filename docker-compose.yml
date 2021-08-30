@@ -34,8 +34,10 @@ services:
       - agrisud
 
   keycloak:
-    image: jboss/keycloak:15.0.0
     container_name: keycloak
+    build:
+      context: .
+      dockerfile: ./docker/keycloak/Dockerfile
     depends_on:
       mysql:
         condition: service_healthy
@@ -45,6 +47,8 @@ services:
       DB_DATABASE: agrisud_keycloak
       DB_PASSWORD: mysecretpassword
       DB_ADDR: mysql
+    volumes:
+      - ./docker/keycloak/themes/agrisud:/opt/jboss/keycloak/themes/agrisud
     ports:
       - 3800:8080
     networks:

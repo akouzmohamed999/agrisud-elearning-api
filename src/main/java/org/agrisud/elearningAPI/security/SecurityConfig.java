@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public static final String ROLE_ADMIN = "ADMIN";
+    public static final String ROLE_ADMIN = "ELEARNING_ADMIN";
     public static final String RESOURCE_ACCESS = "resource_access";
     public static final String ROLES = "roles";
     public static final String REALM_ACCESS = "realm_access";
@@ -52,8 +53,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 .authorizeRequests()
+                .antMatchers("/trainingPath/**").hasRole(ROLE_ADMIN)
+                .antMatchers("/module/**").hasRole(ROLE_ADMIN)
                 .antMatchers("/course/**").hasRole(ROLE_ADMIN)
-                .anyRequest().permitAll()
+                .antMatchers(HttpMethod.GET, "/trainingPath/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/module/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/course/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/signup").permitAll()
+                .anyRequest().authenticated()
                 .and().csrf().disable();
     }
 
