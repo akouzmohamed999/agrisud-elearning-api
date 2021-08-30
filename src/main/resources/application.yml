@@ -8,6 +8,11 @@ spring:
     password: mysecretpassword
     url: jdbc:mysql://localhost:3306/agrisud_elearning
     username: root
+  # max file and request size
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 11MB
 
   flyway:
     baseline-on-migrate: true
@@ -30,4 +35,7 @@ keycloak:
   resource: agrisud-elearning-api
   allowed-origin: http://localhost:3000
 
-
+storage:
+  homepage:
+    image:
+      folder: ../storage/image/homepage
