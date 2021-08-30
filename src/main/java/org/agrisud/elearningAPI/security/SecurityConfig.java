@@ -53,8 +53,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/signup").permitAll()
+                .antMatchers("/trainingPath/**").hasRole(ROLE_ADMIN)
+                .antMatchers("/module/**").hasRole(ROLE_ADMIN)
                 .antMatchers("/course/**").hasRole(ROLE_ADMIN)
+                .antMatchers(HttpMethod.GET, "/trainingPath/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/module/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/course/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable();
     }

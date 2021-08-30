@@ -25,7 +25,7 @@ public class CourseDaoTest {
     public void shouldReturnEvents() {
         List<Course> events = courseDao.getCourses();
         assertThat(events).isNotEmpty();
-        assertThat(events).hasSize(1);
+        assertThat(events).hasSize(3);
     }
 
 }
