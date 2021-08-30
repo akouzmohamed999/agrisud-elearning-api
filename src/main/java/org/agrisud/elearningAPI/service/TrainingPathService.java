@@ -22,8 +22,8 @@ public class TrainingPathService {
         return this.trainingPathDao.getTrainingPathById(trainingPathId);
     }
 
-    public void createNewTrainingPath(TrainingPath trainingPath) {
-        this.trainingPathDao.createNewTrainingPath(trainingPath);
+    public long createNewTrainingPath(TrainingPath trainingPath) {
+        return this.trainingPathDao.createNewTrainingPath(trainingPath);
     }
 
     public void updateTrainingPath(TrainingPath trainingPath) {

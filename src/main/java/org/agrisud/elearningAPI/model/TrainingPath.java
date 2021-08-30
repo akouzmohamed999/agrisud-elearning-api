@@ -1,7 +1,6 @@
 package org.agrisud.elearningAPI.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.agrisud.elearningAPI.enums.Language;
 
 import java.sql.ResultSet;
@@ -9,6 +8,9 @@ import java.sql.SQLException;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TrainingPath {
     private Long id;
     private String title;

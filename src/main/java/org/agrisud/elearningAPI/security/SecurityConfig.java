@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -52,9 +53,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/trainingPath/**").permitAll()
-                .antMatchers("/module/**").permitAll()
-                .antMatchers("/course/**").permitAll().anyRequest().authenticated()
+                .antMatchers("/trainingPath/**").hasRole(ROLE_ADMIN)
+                .antMatchers("/module/**").hasRole(ROLE_ADMIN)
+                .antMatchers("/course/**").hasRole(ROLE_ADMIN)
+                .antMatchers(HttpMethod.GET, "/trainingPath/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/module/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/course/**").permitAll()
+                .anyRequest().authenticated()
                 .and().csrf().disable();
     }
 

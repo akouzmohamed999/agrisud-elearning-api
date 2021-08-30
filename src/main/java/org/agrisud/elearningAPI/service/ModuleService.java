@@ -26,8 +26,8 @@ public class ModuleService {
         return this.moduleDao.getModuleById(moduleID);
     }
 
-    public void createNewModule(Module module) {
-        this.moduleDao.createNewModule(module);
+    public long createNewModule(Module module) {
+        return this.moduleDao.createNewModule(module);
     }
 
     public void updateModule(Module module) {

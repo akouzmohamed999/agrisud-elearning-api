@@ -7,9 +7,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -38,11 +41,16 @@ public class TrainingPathDao {
         return Optional.ofNullable(trainingPath);
     }
 
-    public void createNewTrainingPath(TrainingPath trainingPath) {
+    public long createNewTrainingPath(TrainingPath trainingPath) {
+        KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource sqlParameterSource = this.initParams(trainingPath);
-        int insert = jdbcTemplate.update(sqlProperties.getProperty("training-path.create"), sqlParameterSource);
+        int insert = jdbcTemplate.update(sqlProperties.getProperty("training-path.create"), sqlParameterSource, holder);
         if (insert == 1) {
             log.info("New Training Path created : " + trainingPath.getTitle());
+            return Objects.requireNonNull(holder.getKey()).longValue();
+        } else {
+            log.error("Training Path not created : ");
+            return 0;
         }
     }
 

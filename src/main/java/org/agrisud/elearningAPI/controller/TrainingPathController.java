@@ -1,7 +1,7 @@
 package org.agrisud.elearningAPI.controller;
 
-import org.agrisud.elearningAPI.dto.PictureDto;
 import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
+import org.agrisud.elearningAPI.dto.PictureDto;
 import org.agrisud.elearningAPI.model.TrainingPath;
 import org.agrisud.elearningAPI.service.TrainingPathService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +33,8 @@ public class TrainingPathController {
     }
 
     @PostMapping
-    public void createNewTrainingPath(@RequestBody TrainingPath trainingPath) {
-        this.trainingPathService.createNewTrainingPath(trainingPath);
+    public long createNewTrainingPath(@RequestBody TrainingPath trainingPath) {
+        return this.trainingPathService.createNewTrainingPath(trainingPath);
     }
 
     @PutMapping

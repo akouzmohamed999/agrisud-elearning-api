@@ -1,13 +1,15 @@
 package org.agrisud.elearningAPI.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Module {
     private Long id;
     private String title;

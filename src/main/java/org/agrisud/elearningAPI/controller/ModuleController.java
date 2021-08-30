@@ -31,8 +31,8 @@ public class ModuleController {
     }
 
     @PostMapping
-    public void createNewModule(@RequestBody Module module) {
-        this.moduleService.createNewModule(module);
+    public long createNewModule(@RequestBody Module module) {
+        return this.moduleService.createNewModule(module);
     }
 
     @PutMapping
