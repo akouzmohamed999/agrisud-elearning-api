@@ -1,6 +1,6 @@
 package org.agrisud.elearningAPI.controller;
 
-import org.agrisud.elearningAPI.service.HomePageService;
+import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +14,12 @@ import java.util.Map;
 public class HomePageController {
 
     @Autowired
-    HomePageService homePageService;
+    TrainingPathCloudService trainingPathCloudService;
 
     @PostMapping("/image/upload")
     public ResponseEntity<Map<String, String>> upload(@RequestParam("file") MultipartFile file) throws IllegalStateException {
         HashMap<String, String> response = new HashMap<>();
-        String uri = homePageService.downloadImage(homePageService.uploadImage(file));
+        String uri = trainingPathCloudService.uploadHomeTrainingPathPicture(file);
         response.put("uploaded", "true");
         response.put("url", uri);
         response.put("default", uri);

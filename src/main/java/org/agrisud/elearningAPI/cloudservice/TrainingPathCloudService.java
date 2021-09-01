@@ -28,6 +28,17 @@ public class TrainingPathCloudService {
         return url.get();
     }
 
+    public String uploadHomeTrainingPathPicture(MultipartFile file) {
+        Optional<File> fileOptional = Optional.ofNullable(CloudFileHelper.getTempFileFromMultiPartFile(file));
+        AtomicReference<String> url = new AtomicReference<>("");
+        fileOptional.ifPresent(file1 -> {
+            url.set(trainingPathCloudDao.uploadTrainingPathPicture(file1,
+                    getFileName(Objects.requireNonNull(file.getOriginalFilename()))));
+            file1.delete();
+        });
+        return url.get();
+    }
+
     public String getTrainingPathPictureUrl(String path) {
         return this.trainingPathCloudDao.getTrainingPathPicture(path);
     }

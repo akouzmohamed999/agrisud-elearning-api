@@ -60,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/module/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/course/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
+                .antMatchers("/homepage/**").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable();
     }
