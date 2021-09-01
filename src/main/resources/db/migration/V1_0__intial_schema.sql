@@ -3,8 +3,9 @@ CREATE TABLE training_path
     training_path_id          bigint NOT NULL AUTO_INCREMENT,
     training_path_title       varchar(150),
     image_url                 varchar(200),
+    full_image_path           varchar(200),
     training_path_description text,
-    capacity                  varchar(150),
+    capacity                  text,
     training_path_time        int(50),
     pre_request               varchar(150),
     training_path_status      BOOLEAN,
@@ -33,14 +34,15 @@ CREATE TABLE course
     CONSTRAINT fk_course_module FOREIGN KEY (module_id) REFERENCES module (module_id)
 );
 
-CREATE TABLE elearning_user (
-    user_id varchar(150) primary key not null,
-    user_first_name varchar(100),
-    user_last_name varchar(100),
-    user_email varchar(100),
-    user_birth_date date,
-    user_nationality varchar(100),
-    user_occupation varchar(100),
+CREATE TABLE elearning_user
+(
+    user_id           varchar(150) primary key not null,
+    user_first_name   varchar(100),
+    user_last_name    varchar(100),
+    user_email        varchar(100),
+    user_birth_date   date,
+    user_nationality  varchar(100),
+    user_occupation   varchar(100),
     user_organisation varchar(100),
-    user_sex varchar(100)
+    user_sex          varchar(100)
 );

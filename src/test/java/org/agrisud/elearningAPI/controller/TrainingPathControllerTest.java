@@ -47,7 +47,7 @@ public class TrainingPathControllerTest {
 
     @Test
     public void shouldGetTrainingPathListRequestReturn200() throws Exception {
-        mockMvc.perform(get("/trainingPath/list"))
+        mockMvc.perform(get("/trainingPath"))
                 .andExpect(status().isOk());
         verify(trainingPathService, times(1)).getTrainingPathList();
     }
@@ -89,7 +89,7 @@ public class TrainingPathControllerTest {
     void shouldUploadTrainingPathImageRequestReturn200() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "hello.txt",
                 MediaType.MULTIPART_FORM_DATA_VALUE, "Hello, World!".getBytes());
-        when(trainingPathCloudService.uploadTrainingPathPicture(any(MultipartFile.class))).thenReturn(anyString());
+        when(trainingPathCloudService.uploadTrainingPathPicture(any(MultipartFile.class))).thenReturn(any(PictureDto.class));
         mockMvc.perform(multipart("/trainingPath/picture").file(file))
                 .andExpect(status().isOk());
         verify(trainingPathCloudService, times(1))

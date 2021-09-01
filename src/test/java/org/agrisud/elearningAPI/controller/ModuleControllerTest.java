@@ -41,7 +41,7 @@ public class ModuleControllerTest {
     @Test
     public void shouldGetModulesListRequestReturn200() throws Exception {
         when(moduleService.getModuleList()).thenReturn(Collections.singletonList(module));
-        mockMvc.perform(get("/module/list"))
+        mockMvc.perform(get("/module"))
                 .andExpect(status().isOk());
         verify(moduleService, times(1)).getModuleList();
     }

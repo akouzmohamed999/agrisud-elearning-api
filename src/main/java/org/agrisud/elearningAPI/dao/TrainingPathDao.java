@@ -16,7 +16,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 
-@Slf4j
 @Repository
 public class TrainingPathDao {
 
@@ -36,7 +35,7 @@ public class TrainingPathDao {
         try {
             trainingPath = jdbcTemplate.queryForObject(sqlProperties.getProperty("training-path.get.one"), namedParameters, TrainingPath::baseMapper);
         } catch (DataAccessException dataAccessException) {
-            log.info("Training Path does not exist" + trainingPathID);
+//            log.info("Training Path does not exist" + trainingPathID);
         }
         return Optional.ofNullable(trainingPath);
     }
@@ -46,10 +45,10 @@ public class TrainingPathDao {
         SqlParameterSource sqlParameterSource = this.initParams(trainingPath);
         int insert = jdbcTemplate.update(sqlProperties.getProperty("training-path.create"), sqlParameterSource, holder);
         if (insert == 1) {
-            log.info("New Training Path created : " + trainingPath.getTitle());
+//            log.info("New Training Path created : " + trainingPath.getTitle());
             return Objects.requireNonNull(holder.getKey()).longValue();
         } else {
-            log.error("Training Path not created : ");
+//            log.error("Training Path not created : ");
             return 0;
         }
     }
@@ -58,7 +57,7 @@ public class TrainingPathDao {
         SqlParameterSource sqlParameterSource = this.initParams(trainingPath);
         int update = jdbcTemplate.update(sqlProperties.getProperty("training-path.update"), sqlParameterSource);
         if (update == 1) {
-            log.info("Training Path updated : " + trainingPath.getTitle());
+//            log.info("Training Path updated : " + trainingPath.getTitle());
         }
     }
 
@@ -66,7 +65,7 @@ public class TrainingPathDao {
         SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_id", trainingPathID);
         int deleted = jdbcTemplate.update(sqlProperties.getProperty("training-path.delete"), namedParameters);
         if (deleted == 1) {
-            log.info("Training Path deleted : " + trainingPathID);
+//            log.info("Training Path deleted : " + trainingPathID);
         }
     }
 
@@ -75,6 +74,7 @@ public class TrainingPathDao {
                 .addValue("training_path_id", trainingPath.getId())
                 .addValue("training_path_title", trainingPath.getTitle())
                 .addValue("image_url", trainingPath.getImageUrl())
+                .addValue("full_image_path", trainingPath.getFullImagePath())
                 .addValue("training_path_time", trainingPath.getTrainingPathTime())
                 .addValue("capacity", trainingPath.getCapacity())
                 .addValue("training_path_description", trainingPath.getDescription())

@@ -1,6 +1,5 @@
 package org.agrisud.elearningAPI.dao;
 
-import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.model.Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -16,7 +15,6 @@ import java.util.Optional;
 import java.util.Properties;
 
 @Repository
-@Slf4j
 public class ModuleDao {
 
     @Autowired
@@ -40,7 +38,7 @@ public class ModuleDao {
         try {
             module = jdbcTemplate.queryForObject(sqlProperties.getProperty("module.get.one"), namedParameters, Module::baseMapper);
         } catch (DataAccessException dataAccessException) {
-            log.info("Module does not exist" + moduleID);
+//            log.info("Module does not exist" + moduleID);
         }
         return Optional.ofNullable(module);
     }
@@ -50,10 +48,10 @@ public class ModuleDao {
         SqlParameterSource sqlParameterSource = this.initParams(module);
         int insert = jdbcTemplate.update(sqlProperties.getProperty("module.create"), sqlParameterSource, holder);
         if (insert == 1) {
-            log.info("New Module created :" + module.getTitle());
+//            log.info("New Module created :" + module.getTitle());
             return holder.getKey().longValue();
         } else {
-            log.error("Can not create module");
+//            log.error("Can not create module");
             return 0;
         }
     }
@@ -62,7 +60,7 @@ public class ModuleDao {
         SqlParameterSource sqlParameterSource = this.initParams(module);
         int update = jdbcTemplate.update(sqlProperties.getProperty("module.update"), sqlParameterSource);
         if (update == 1) {
-            log.info("Module updated :" + module.getTitle());
+//            log.info("Module updated :" + module.getTitle());
         }
     }
 
@@ -70,7 +68,7 @@ public class ModuleDao {
         SqlParameterSource namedParameters = new MapSqlParameterSource("module_id", moduleID);
         int delete = jdbcTemplate.update(sqlProperties.getProperty("module.delete"), namedParameters);
         if (delete == 1) {
-            log.info("Module deleted :" + moduleID);
+//            log.info("Module deleted :" + moduleID);
         }
     }
 
@@ -80,5 +78,13 @@ public class ModuleDao {
                 .addValue("module_title", module.getTitle())
                 .addValue("order_on_path", module.getOrderOnPath())
                 .addValue("training_path_id", module.getTrainingPathID());
+    }
+
+    public void deleteModulesByTrainingPathID(Long trainingPathID) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_id", trainingPathID);
+        int delete = jdbcTemplate.update(sqlProperties.getProperty("module.delete.training-path-id"), namedParameters);
+        if (delete == 1) {
+//            log.info("Module deleted :" + trainingPathID);
+        }
     }
 }

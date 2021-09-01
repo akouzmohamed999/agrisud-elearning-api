@@ -1,15 +1,19 @@
 package org.agrisud.elearningAPI.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.agrisud.elearningAPI.enums.CourseType;
 import org.agrisud.elearningAPI.enums.Language;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Getter
-@Setter
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Course {
     private Long id;
     private String title;

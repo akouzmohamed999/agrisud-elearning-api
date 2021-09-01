@@ -1,6 +1,7 @@
 package org.agrisud.elearningAPI.cloudservice;
 
 import org.agrisud.elearningAPI.clouddao.TrainingPathCloudDao;
+import org.agrisud.elearningAPI.dto.PictureDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +35,7 @@ public class TrainingPathCloudServiceTest {
 
     @Test
     public void shouldUploadTrainingPathImage() {
-        when(trainingPathCloudDao.uploadTrainingPathPicture(any(File.class), anyString())).thenReturn("");
+        when(trainingPathCloudDao.uploadTrainingPathPicture(any(File.class), anyString())).thenReturn(any(PictureDto.class));
         trainingPathCloudService.uploadTrainingPathPicture(file);
         verify(trainingPathCloudDao, times(1)).uploadTrainingPathPicture(any(File.class), anyString());
     }

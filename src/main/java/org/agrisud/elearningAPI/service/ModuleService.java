@@ -37,4 +37,8 @@ public class ModuleService {
     public void deleteModule(Long moduleID) {
         this.moduleDao.deleteModule(moduleID);
     }
+
+    public void deleteModuleByTrainingPathID(Long trainingPathID) {
+        this.moduleDao.deleteModulesByTrainingPathID(trainingPathID);
+    }
 }

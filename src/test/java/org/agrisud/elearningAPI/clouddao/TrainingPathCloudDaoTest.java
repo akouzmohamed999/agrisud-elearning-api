@@ -4,6 +4,7 @@ import org.aarboard.nextcloud.api.NextcloudConnector;
 import org.aarboard.nextcloud.api.filesharing.Share;
 import org.aarboard.nextcloud.api.filesharing.SharePermissions;
 import org.aarboard.nextcloud.api.filesharing.ShareType;
+import org.agrisud.elearningAPI.dto.PictureDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,9 +45,9 @@ public class TrainingPathCloudDaoTest {
                 any(SharePermissions.class))).thenReturn(new Share());
         File file = File.createTempFile(imageName, "jpg");
 
-        String url = trainingPathCloudDao.uploadTrainingPathPicture(file, imageUrl);
+        PictureDto pictureDto = trainingPathCloudDao.uploadTrainingPathPicture(file, imageUrl);
 
-        assertThat(url).isNotEmpty();
+        assertThat(pictureDto.getUrl()).isNotEmpty();
         verify(connector, times(1)).uploadFile(any(File.class), anyString());
         verify(connector, times(1)).doShare(anyString(), any(ShareType.class), any(), anyBoolean(), any(),
                 any(SharePermissions.class));

@@ -22,7 +22,7 @@ public class TrainingPathController {
     @Autowired
     private TrainingPathCloudService trainingPathCloudService;
 
-    @GetMapping("/list")
+    @GetMapping
     public List<TrainingPath> trainingPathList() {
         return trainingPathService.getTrainingPathList();
     }
@@ -49,8 +49,11 @@ public class TrainingPathController {
 
     @PostMapping(value = "/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public PictureDto uploadTrainingPathPicture(@RequestParam MultipartFile file) {
-        PictureDto pictureDto = new PictureDto();
-        pictureDto.setUrl(trainingPathCloudService.uploadTrainingPathPicture(file));
-        return pictureDto;
+        return trainingPathCloudService.uploadTrainingPathPicture(file);
+    }
+
+    @DeleteMapping("/picture/{fullImagePath}")
+    public void deleteTrainingPathPicture(@PathVariable String fullImagePath) {
+        trainingPathCloudService.deleteTrainingPathPicture(fullImagePath);
     }
 }

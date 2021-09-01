@@ -6,15 +6,15 @@ import org.agrisud.elearningAPI.enums.Language;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TrainingPath {
     private Long id;
     private String title;
     private String imageUrl;
+    private String fullImagePath;
     private String description;
     private String capacity;
     private int trainingPathTime;
@@ -27,6 +27,7 @@ public class TrainingPath {
         event.setId(resultSet.getLong("training_path_id"));
         event.setTitle(resultSet.getString("training_path_title"));
         event.setImageUrl(resultSet.getString("image_url"));
+        event.setFullImagePath(resultSet.getString("full_image_path"));
         event.setDescription(resultSet.getString("training_path_description"));
         event.setCapacity(resultSet.getString("capacity"));
         event.setTrainingPathTime(resultSet.getInt("training_path_time"));

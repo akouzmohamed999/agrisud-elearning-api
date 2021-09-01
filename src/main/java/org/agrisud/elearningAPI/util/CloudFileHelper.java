@@ -1,6 +1,5 @@
 package org.agrisud.elearningAPI.util;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -8,7 +7,6 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Random;
 
-@Slf4j
 public class CloudFileHelper {
 
     private static final Random RANDOM = new SecureRandom();
@@ -23,7 +21,7 @@ public class CloudFileHelper {
             file = File.createTempFile(fileName, extension);
             multipartFile.transferTo(file);
         } catch (IOException e) {
-            log.error("Error while trying to get file from multiPartFile", e);
+//            log.error("Error while trying to get file from multiPartFile", e);
         }
         return file;
     }
