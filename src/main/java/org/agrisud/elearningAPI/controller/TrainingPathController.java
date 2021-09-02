@@ -3,6 +3,7 @@ package org.agrisud.elearningAPI.controller;
 import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
 import org.agrisud.elearningAPI.dto.PictureDto;
 import org.agrisud.elearningAPI.model.TrainingPath;
+import org.agrisud.elearningAPI.service.ModuleService;
 import org.agrisud.elearningAPI.service.TrainingPathService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,6 +22,9 @@ public class TrainingPathController {
 
     @Autowired
     private TrainingPathCloudService trainingPathCloudService;
+
+    @Autowired
+    private ModuleService moduleService;
 
     @GetMapping
     public List<TrainingPath> trainingPathList() {
@@ -44,7 +48,11 @@ public class TrainingPathController {
 
     @DeleteMapping("/{trainingPathID}")
     public void deleteTrainingPath(@PathVariable Long trainingPathID) {
-        this.trainingPathService.deleteTrainingPath(trainingPathID);
+        this.trainingPathService.getTrainingPathByID(trainingPathID).ifPresent(trainingPath -> {
+            this.trainingPathCloudService.deleteTrainingPathPicture(trainingPath.getFullImagePath());
+            this.moduleService.deleteModuleByTrainingPathID(trainingPathID);
+            this.trainingPathService.deleteTrainingPath(trainingPathID);
+        });
     }
 
     @PostMapping(value = "/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -52,8 +60,8 @@ public class TrainingPathController {
         return trainingPathCloudService.uploadTrainingPathPicture(file);
     }
 
-    @DeleteMapping("/picture/{fullImagePath}")
-    public void deleteTrainingPathPicture(@PathVariable String fullImagePath) {
+    @DeleteMapping("/picture")
+    public void deleteTrainingPathPicture(@RequestParam String fullImagePath) {
         trainingPathCloudService.deleteTrainingPathPicture(fullImagePath);
     }
 }
