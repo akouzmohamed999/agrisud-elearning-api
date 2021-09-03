@@ -3,8 +3,8 @@ package org.agrisud.elearningAPI.controller;
 import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
 import org.agrisud.elearningAPI.dto.PictureDto;
 import org.agrisud.elearningAPI.model.TrainingPath;
-import org.agrisud.elearningAPI.service.ModuleService;
 import org.agrisud.elearningAPI.service.TrainingPathService;
+import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class TrainingPathController {
     private TrainingPathCloudService trainingPathCloudService;
 
     @Autowired
-    private ModuleService moduleService;
+    private TrainingPathTranslationService trainingPathTranslationService;
 
     @GetMapping
     public List<TrainingPath> trainingPathList() {
@@ -50,7 +50,7 @@ public class TrainingPathController {
     public void deleteTrainingPath(@PathVariable Long trainingPathID) {
         this.trainingPathService.getTrainingPathByID(trainingPathID).ifPresent(trainingPath -> {
             this.trainingPathCloudService.deleteTrainingPathPicture(trainingPath.getFullImagePath());
-            this.moduleService.deleteModuleByTrainingPathID(trainingPathID);
+            this.trainingPathTranslationService.deleteTrainingPathTranslationByTrainingPathID(trainingPathID);
             this.trainingPathService.deleteTrainingPath(trainingPathID);
         });
     }

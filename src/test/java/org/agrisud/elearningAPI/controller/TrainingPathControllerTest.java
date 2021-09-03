@@ -40,8 +40,8 @@ public class TrainingPathControllerTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        trainingPath = TrainingPath.builder().title("Parcours 1").description("Parcours 1")
-                .language(Language.EN).build();
+        trainingPath = TrainingPath.builder().imageUrl("TrainingPathPictures/image1.jpg")
+                .trainingPathTime(22).status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview").build();
         pictureDto.setUrl("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview");
     }
 

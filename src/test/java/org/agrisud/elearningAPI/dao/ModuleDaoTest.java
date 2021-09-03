@@ -44,7 +44,7 @@ public class ModuleDaoTest {
 
     @Test
     public void shouldReturnModulesByTrainingPathID() {
-        List<Module> moduleList = moduleDao.getModuleListByTrainingPathID(100L);
+        List<Module> moduleList = moduleDao.getModuleListByTrainingPathTranslationID(100L);
         assertThat(moduleList).isNotEmpty();
         assertThat(moduleList).hasSize(2);
         assertThat(moduleList.get(0).getTitle()).isEqualTo(module1);
@@ -78,7 +78,7 @@ public class ModuleDaoTest {
     @Test
     public void shouldUpdateModule() {
         String moduleTitle = "module";
-        Module module2 = Module.builder().id(1L).orderOnPath(1).title(moduleTitle).trainingPathID(100L).build();
+        Module module2 = Module.builder().id(1L).orderOnPath(1).title(moduleTitle).trainingPathTranslationID(100L).build();
         moduleDao.updateModule(module2);
         assertThat(moduleDao.getModuleList()).hasSize(3);
         assertThat(moduleDao.getModuleById(1L).get().getTitle()).isEqualTo(moduleTitle);

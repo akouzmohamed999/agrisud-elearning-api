@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/module")
-public class ModuleController { 
+public class ModuleController {
 
     @Autowired
     private ModuleService moduleService;
@@ -20,9 +20,9 @@ public class ModuleController {
         return moduleService.getModuleList();
     }
 
-    @GetMapping("/trainingPath/{trainingPathID}")
-    public List<Module> getModuleListByTrainingPathID(@PathVariable Long trainingPathID) {
-        return this.moduleService.getModuleListByTrainingPathID(trainingPathID);
+    @GetMapping("/trainingPathTranslation/{trainingPathTranslationID}")
+    public List<Module> getModuleListByTrainingPathTranslationID(@PathVariable Long trainingPathTranslationID) {
+        return this.moduleService.getModuleListByTrainingPathTranslationID(trainingPathTranslationID);
     }
 
     @GetMapping("/{moduleID}")
@@ -45,8 +45,8 @@ public class ModuleController {
         this.moduleService.deleteModule(moduleID);
     }
 
-    @DeleteMapping("/trainingPath/{trainingPathID}")
-    public void deleteModulesByTrainingPathID(@PathVariable Long trainingPathID) {
-        this.moduleService.deleteModuleByTrainingPathID(trainingPathID);
+    @DeleteMapping("/trainingPathTranslation/{trainingPathTranslationID}")
+    public void deleteModuleByTrainingPathTranslationID(@PathVariable Long trainingPathTranslationID) {
+        this.moduleService.deleteModuleByTrainingPathTranslationID(trainingPathTranslationID);
     }
 }

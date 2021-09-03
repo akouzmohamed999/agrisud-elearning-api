@@ -1,26 +1,36 @@
 CREATE TABLE training_path
 (
-    training_path_id          bigint NOT NULL AUTO_INCREMENT,
-    training_path_title       varchar(150),
-    image_url                 varchar(200),
-    full_image_path           varchar(200),
-    training_path_description text,
-    capacity                  text,
-    training_path_time        int(50),
-    pre_request               varchar(150),
-    training_path_status      BOOLEAN,
-    training_path_language    varchar(150),
+    training_path_id        bigint NOT NULL AUTO_INCREMENT,
+    image_url               varchar(200),
+    full_image_path         varchar(200),
+    training_path_time      int(20),
+    training_path_status    BOOLEAN,
     PRIMARY KEY (training_path_id)
+);
+
+CREATE TABLE training_path_translation
+(
+    training_path_translation_id bigint NOT NULL AUTO_INCREMENT,
+    training_path_title          varchar(100),
+    training_path_description    text,
+    capacity                     text,
+    pre_request                  text,
+    language                     varchar(30),
+    training_path_id             bigint,
+    PRIMARY KEY (training_path_translation_id),
+    CONSTRAINT fk_training_path_translation_training_path FOREIGN KEY (training_path_id)
+        REFERENCES training_path (training_path_id)
 );
 
 CREATE TABLE module
 (
-    module_id        bigint NOT NULL AUTO_INCREMENT,
-    module_title     varchar(150),
-    order_on_path    int(50),
-    training_path_id bigint,
+    module_id                    bigint NOT NULL AUTO_INCREMENT,
+    module_title                 varchar(150),
+    order_on_path                int(50),
+    training_path_translation_id bigint,
     PRIMARY KEY (module_id),
-    CONSTRAINT fk_module_training_path FOREIGN KEY (training_path_id) REFERENCES training_path (training_path_id)
+    CONSTRAINT fk_module_training_path_translation FOREIGN KEY (training_path_translation_id)
+        REFERENCES training_path_translation (training_path_translation_id)
 );
 
 CREATE TABLE course

@@ -31,8 +31,9 @@ public class TrainingPathDaoTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        trainingPath = TrainingPath.builder().id(4L).title(trainingPath4).description(trainingPath4)
-                .language(Language.EN).build();
+        trainingPath = TrainingPath.builder().imageUrl("TrainingPathPictures/image1.jpg")
+                .trainingPathTime(22).status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview")
+                .build();
     }
 
 
@@ -41,14 +42,14 @@ public class TrainingPathDaoTest {
         List<TrainingPath> trainingPathList = trainingPathDao.getTrainingPathList();
         assertThat(trainingPathList).isNotEmpty();
         assertThat(trainingPathList).hasSize(3);
-        assertThat(trainingPathList.get(0).getTitle()).isEqualTo(trainingPath1);
+        assertThat(trainingPathList.get(0).getImageUrl()).isEqualTo(trainingPath1);
     }
 
     @Test
     public void shouldGetTrainingPathByID() {
         Optional<TrainingPath> trainingPath = trainingPathDao.getTrainingPathById(1L);
         assertThat(trainingPath).isNotNull();
-        assertThat(trainingPath.get().getTitle()).isEqualTo(trainingPath1);
+        assertThat(trainingPath.get().getImageUrl()).isEqualTo(trainingPath1);
     }
 
     @Test()
@@ -56,7 +57,7 @@ public class TrainingPathDaoTest {
         Assertions.assertThrows(NoSuchElementException.class, () -> {
             Optional<TrainingPath> trainingPath = trainingPathDao.getTrainingPathById(5L);
             assertThat(trainingPath).isNotNull();
-            assertThat(trainingPath.get().getTitle()).isEqualTo(trainingPath1);
+            assertThat(trainingPath.get().getImageUrl()).isEqualTo(trainingPath1);
         });
 
     }
@@ -65,17 +66,16 @@ public class TrainingPathDaoTest {
     public void shouldCreateNewTrainingPath() {
         long id = trainingPathDao.createNewTrainingPath(trainingPath);
         assertThat(trainingPathDao.getTrainingPathList()).hasSize(4);
-        assertThat(trainingPathDao.getTrainingPathById(id).get().getTitle()).isEqualTo(trainingPath4);
+        assertThat(trainingPathDao.getTrainingPathById(id).get().getImageUrl()).isEqualTo(trainingPath4);
     }
 
     @Test
     public void shouldUpdateTrainingPath() {
-        TrainingPath trainingPath2 = TrainingPath.builder().id(1L).title(trainingPath4).imageUrl("imageUrl 1")
-                .description("Parcours 1").trainingPathTime(15).capacity("test").
-                        preRequest("test").language(Language.FR).status(false).build();
+        TrainingPath trainingPath2 = TrainingPath.builder().id(1L).imageUrl("imageUrl 1")
+                .trainingPathTime(15).status(false).build();
         trainingPathDao.updateTrainingPath(trainingPath2);
         assertThat(trainingPathDao.getTrainingPathList()).hasSize(3);
-        assertThat(trainingPathDao.getTrainingPathById(1L).get().getTitle()).isEqualTo(trainingPath4);
+        assertThat(trainingPathDao.getTrainingPathById(1L).get().getImageUrl()).isEqualTo(trainingPath4);
     }
 
     @Test
