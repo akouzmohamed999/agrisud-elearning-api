@@ -41,7 +41,7 @@ public class TrainingPathTranslationDao {
         try {
             trainingPathTranslation = jdbcTemplate.queryForObject(sqlProperties.getProperty("training-path-translation.get.one"), namedParameters, TrainingPathTranslation::baseMapper);
         } catch (DataAccessException dataAccessException) {
-            log.info("Training Path does not exist" + trainingPathTranslationID);
+            log.info("Training Path translation does not exist" + trainingPathTranslationID);
         }
         return Optional.ofNullable(trainingPathTranslation);
     }
@@ -54,7 +54,7 @@ public class TrainingPathTranslationDao {
             log.info("New Training Path created : ");
             return Objects.requireNonNull(holder.getKey()).longValue();
         } else {
-            log.error("Training Path not created : ");
+            log.error("Training Path translation not created : ");
             return 0;
         }
     }
@@ -63,7 +63,7 @@ public class TrainingPathTranslationDao {
         SqlParameterSource sqlParameterSource = this.initParams(trainingPathTranslation);
         int update = jdbcTemplate.update(sqlProperties.getProperty("training-path-translation.update"), sqlParameterSource);
         if (update == 1) {
-            log.info("Training Path updated : " + trainingPathTranslation.getId());
+            log.info("Training Path translation updated : " + trainingPathTranslation.getId());
         }
     }
 
@@ -71,7 +71,7 @@ public class TrainingPathTranslationDao {
         SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_translation_id", trainingPathTranslationID);
         int deleted = jdbcTemplate.update(sqlProperties.getProperty("training-path-translation.delete"), namedParameters);
         if (deleted == 1) {
-            log.info("Training Path deleted : " + trainingPathTranslationID);
+            log.info("Training Path translation deleted : " + trainingPathTranslationID);
         }
     }
 
@@ -79,7 +79,7 @@ public class TrainingPathTranslationDao {
         SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_id", trainingPathID);
         int deleted = jdbcTemplate.update(sqlProperties.getProperty("training-path-translation.delete.training-path-id"), namedParameters);
         if (deleted == 1) {
-            log.info("Training Path deleted : " + trainingPathID);
+            log.info("Training Path translation deleted : " + trainingPathID);
         }
     }
 
