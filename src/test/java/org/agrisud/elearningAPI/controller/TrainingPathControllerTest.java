@@ -3,7 +3,6 @@ package org.agrisud.elearningAPI.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
 import org.agrisud.elearningAPI.dto.PictureDto;
-import org.agrisud.elearningAPI.enums.Language;
 import org.agrisud.elearningAPI.model.TrainingPath;
 import org.agrisud.elearningAPI.service.TrainingPathService;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,6 +41,7 @@ public class TrainingPathControllerTest {
     public void setUp() throws Exception {
         trainingPath = TrainingPath.builder().imageUrl("TrainingPathPictures/image1.jpg")
                 .trainingPathTime(22).status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview").build();
+
         pictureDto.setUrl("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview");
     }
 

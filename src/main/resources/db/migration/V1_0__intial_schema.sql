@@ -1,10 +1,10 @@
 CREATE TABLE training_path
 (
-    training_path_id        bigint NOT NULL AUTO_INCREMENT,
-    image_url               varchar(200),
-    full_image_path         varchar(200),
-    training_path_time      int(20),
-    training_path_status    BOOLEAN,
+    training_path_id     bigint NOT NULL AUTO_INCREMENT,
+    image_url            varchar(200),
+    full_image_path      varchar(200),
+    training_path_time   int(20),
+    training_path_status BOOLEAN,
     PRIMARY KEY (training_path_id)
 );
 

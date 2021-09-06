@@ -1,7 +1,9 @@
 package org.agrisud.elearningAPI.model;
 
-import lombok.*;
-import org.agrisud.elearningAPI.enums.Language;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

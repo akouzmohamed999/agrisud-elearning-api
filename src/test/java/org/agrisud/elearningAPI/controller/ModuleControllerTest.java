@@ -57,7 +57,7 @@ public class ModuleControllerTest {
     @Test
     public void shouldGetModulesByTrainingPathIdRequestReturn200() throws Exception {
         when(moduleService.getModuleListByTrainingPathTranslationID(anyLong())).thenReturn(Collections.singletonList(module));
-        mockMvc.perform(get("/module/trainingPath/{trainingPathID}", 1))
+        mockMvc.perform(get("/module/trainingPathTranslation/{trainingPathID}", 1))
                 .andExpect(status().isOk());
         verify(moduleService, times(1)).getModuleListByTrainingPathTranslationID(anyLong());
     }

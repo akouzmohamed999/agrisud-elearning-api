@@ -22,7 +22,7 @@ public class TrainingPathCloudDao {
                 .fullImagePath(fullFilePath).build();
     }
 
-    public void deleteTrainingPathPicture(String fullFilePath){
+    public void deleteTrainingPathPicture(String fullFilePath) {
         connector.deleteFolder(fullFilePath);
     }
 

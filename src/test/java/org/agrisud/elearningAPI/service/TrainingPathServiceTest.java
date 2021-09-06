@@ -1,7 +1,6 @@
 package org.agrisud.elearningAPI.service;
 
 import org.agrisud.elearningAPI.dao.TrainingPathDao;
-import org.agrisud.elearningAPI.enums.Language;
 import org.agrisud.elearningAPI.model.TrainingPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

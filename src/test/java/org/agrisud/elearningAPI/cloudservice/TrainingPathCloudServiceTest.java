@@ -35,6 +35,7 @@ public class TrainingPathCloudServiceTest {
 
     @Test
     public void shouldUploadTrainingPathImage() {
+        when(trainingPathCloudDao.getTrainingPathPicture(anyString())).thenReturn("");
         when(trainingPathCloudDao.uploadTrainingPathPicture(any(File.class), anyString())).thenReturn(any(PictureDto.class));
         trainingPathCloudService.uploadTrainingPathPicture(file);
         verify(trainingPathCloudDao, times(1)).uploadTrainingPathPicture(any(File.class), anyString());

@@ -5,8 +5,8 @@ import lombok.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Builder
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Module {
