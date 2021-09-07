@@ -5,6 +5,7 @@ import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
 import org.agrisud.elearningAPI.dto.PictureDto;
 import org.agrisud.elearningAPI.model.TrainingPath;
 import org.agrisud.elearningAPI.service.TrainingPathService;
+import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class TrainingPathControllerTest {
     private TrainingPathService trainingPathService;
     @MockBean
     private TrainingPathCloudService trainingPathCloudService;
+    @MockBean
+    private TrainingPathTranslationService trainingPathTranslationService;
 
     TrainingPath trainingPath = new TrainingPath();
     PictureDto pictureDto = new PictureDto();
@@ -80,7 +83,10 @@ public class TrainingPathControllerTest {
 
     @Test
     void shouldDeleteTrainingPathRequestReturn200() throws Exception {
+        when(trainingPathService.getTrainingPathByID(anyLong())).thenReturn(Optional.ofNullable(trainingPath));
         doNothing().when(trainingPathService).deleteTrainingPath(anyLong());
+        doNothing().when(trainingPathTranslationService).deleteTrainingPathTranslationByTrainingPathID(anyLong());
+        doNothing().when(trainingPathCloudService).deleteTrainingPathPicture(anyString());
         mockMvc.perform(delete("/trainingPath/{trainingPathID}", 1)).andExpect(status().isOk());
         verify(this.trainingPathService, times(1)).deleteTrainingPath(anyLong());
     }

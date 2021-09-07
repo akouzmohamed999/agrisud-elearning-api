@@ -25,18 +25,21 @@ public class TrainingPathCloudServiceTest {
     @InjectMocks
     private TrainingPathCloudService trainingPathCloudService;
     MockMultipartFile file = null;
+    PictureDto pictureDto = null;
+    String imageUrl = "http://localhost:3900/s/7xPzzJqrcBfDiWS/preview";
+    String imagePath = "/TrainingPathPictures/image3_d8F6vZC1ef";
 
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
         file = new MockMultipartFile("file", "hello.txt",
                 MediaType.MULTIPART_FORM_DATA_VALUE, "Hello, World!".getBytes());
+        pictureDto = PictureDto.builder().fullImagePath(imagePath).url(imageUrl).build();
     }
 
     @Test
     public void shouldUploadTrainingPathImage() {
-        when(trainingPathCloudDao.getTrainingPathPicture(anyString())).thenReturn("");
-        when(trainingPathCloudDao.uploadTrainingPathPicture(any(File.class), anyString())).thenReturn(any(PictureDto.class));
+        when(trainingPathCloudDao.uploadTrainingPathPicture(any(File.class), anyString())).thenReturn(pictureDto);
         trainingPathCloudService.uploadTrainingPathPicture(file);
         verify(trainingPathCloudDao, times(1)).uploadTrainingPathPicture(any(File.class), anyString());
     }
