@@ -29,9 +29,9 @@ public class ModuleDao {
         return jdbcTemplate.query(sqlProperties.getProperty("module.get.all"), Module::baseMapper);
     }
 
-    public List<Module> getModuleListByTrainingPathID(Long trainingPathID) {
-        SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_id", trainingPathID);
-        return jdbcTemplate.query(sqlProperties.getProperty("module.get.all.training-path-id"), namedParameters, Module::baseMapper);
+    public List<Module> getModuleListByTrainingPathTranslationID(Long trainingPathTranslationID) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_translation_id", trainingPathTranslationID);
+        return jdbcTemplate.query(sqlProperties.getProperty("module.get.all.training-path-translation-id"), namedParameters, Module::baseMapper);
     }
 
     public Optional<Module> getModuleById(Long moduleID) {
@@ -74,11 +74,19 @@ public class ModuleDao {
         }
     }
 
+    public void deleteModulesByTrainingPathTranslationID(Long trainingPathTranslationID) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_translation_id", trainingPathTranslationID);
+        int delete = jdbcTemplate.update(sqlProperties.getProperty("module.delete.training-path-translation-id"), namedParameters);
+        if (delete == 1) {
+            log.info("Module deleted :" + trainingPathTranslationID);
+        }
+    }
+
     private SqlParameterSource initParams(Module module) {
         return new MapSqlParameterSource()
                 .addValue("module_id", module.getId())
                 .addValue("module_title", module.getTitle())
                 .addValue("order_on_path", module.getOrderOnPath())
-                .addValue("training_path_id", module.getTrainingPathID());
+                .addValue("training_path_translation_id", module.getTrainingPathTranslationID());
     }
 }

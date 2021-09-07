@@ -4,6 +4,7 @@ import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
 import org.agrisud.elearningAPI.dto.PictureDto;
 import org.agrisud.elearningAPI.model.TrainingPath;
 import org.agrisud.elearningAPI.service.TrainingPathService;
+import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,10 @@ public class TrainingPathController {
     @Autowired
     private TrainingPathCloudService trainingPathCloudService;
 
-    @GetMapping("/list")
+    @Autowired
+    private TrainingPathTranslationService trainingPathTranslationService;
+
+    @GetMapping
     public List<TrainingPath> trainingPathList() {
         return trainingPathService.getTrainingPathList();
     }
@@ -44,13 +48,20 @@ public class TrainingPathController {
 
     @DeleteMapping("/{trainingPathID}")
     public void deleteTrainingPath(@PathVariable Long trainingPathID) {
-        this.trainingPathService.deleteTrainingPath(trainingPathID);
+        this.trainingPathService.getTrainingPathByID(trainingPathID).ifPresent(trainingPath -> {
+            this.trainingPathCloudService.deleteTrainingPathPicture(trainingPath.getFullImagePath());
+            this.trainingPathTranslationService.deleteTrainingPathTranslationByTrainingPathID(trainingPathID);
+            this.trainingPathService.deleteTrainingPath(trainingPathID);
+        });
     }
 
     @PostMapping(value = "/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public PictureDto uploadTrainingPathPicture(@RequestParam MultipartFile file) {
-        PictureDto pictureDto = new PictureDto();
-        pictureDto.setUrl(trainingPathCloudService.uploadTrainingPathPicture(file));
-        return pictureDto;
+        return trainingPathCloudService.uploadTrainingPathPicture(file);
+    }
+
+    @DeleteMapping("/picture")
+    public void deleteTrainingPathPicture(@RequestParam String fullImagePath) {
+        trainingPathCloudService.deleteTrainingPathPicture(fullImagePath);
     }
 }

@@ -16,8 +16,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 
-@Slf4j
 @Repository
+@Slf4j
 public class TrainingPathDao {
 
     @Autowired
@@ -46,7 +46,7 @@ public class TrainingPathDao {
         SqlParameterSource sqlParameterSource = this.initParams(trainingPath);
         int insert = jdbcTemplate.update(sqlProperties.getProperty("training-path.create"), sqlParameterSource, holder);
         if (insert == 1) {
-            log.info("New Training Path created : " + trainingPath.getTitle());
+            log.info("New Training Path created : ");
             return Objects.requireNonNull(holder.getKey()).longValue();
         } else {
             log.error("Training Path not created : ");
@@ -58,7 +58,7 @@ public class TrainingPathDao {
         SqlParameterSource sqlParameterSource = this.initParams(trainingPath);
         int update = jdbcTemplate.update(sqlProperties.getProperty("training-path.update"), sqlParameterSource);
         if (update == 1) {
-            log.info("Training Path updated : " + trainingPath.getTitle());
+            log.info("Training Path updated : " + trainingPath.getId());
         }
     }
 
@@ -73,13 +73,9 @@ public class TrainingPathDao {
     private SqlParameterSource initParams(TrainingPath trainingPath) {
         return new MapSqlParameterSource()
                 .addValue("training_path_id", trainingPath.getId())
-                .addValue("training_path_title", trainingPath.getTitle())
                 .addValue("image_url", trainingPath.getImageUrl())
+                .addValue("full_image_path", trainingPath.getFullImagePath())
                 .addValue("training_path_time", trainingPath.getTrainingPathTime())
-                .addValue("capacity", trainingPath.getCapacity())
-                .addValue("training_path_description", trainingPath.getDescription())
-                .addValue("pre_request", trainingPath.getPreRequest())
-                .addValue("training_path_status", trainingPath.getStatus())
-                .addValue("training_path_language", trainingPath.getLanguage().toString());
+                .addValue("training_path_status", trainingPath.getStatus());
     }
 }

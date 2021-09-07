@@ -28,7 +28,8 @@ public class ModuleServiceTest {
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
-        module = Module.builder().id(1L).orderOnPath(1).title("Module 1").trainingPathID(1L).build();
+        module = Module.builder().id(1L).orderOnPath(1).title("Module 1").trainingPathTranslationID(1L).build();
+
     }
 
     @Test
@@ -47,9 +48,9 @@ public class ModuleServiceTest {
 
     @Test
     public void shouldGetModulesByTrainingPathId() throws Exception {
-        when(moduleDao.getModuleListByTrainingPathID(anyLong())).thenReturn(Collections.singletonList(module));
-        moduleService.getModuleListByTrainingPathID(1L);
-        verify(moduleDao, times(1)).getModuleListByTrainingPathID(anyLong());
+        when(moduleDao.getModuleListByTrainingPathTranslationID(anyLong())).thenReturn(Collections.singletonList(module));
+        moduleService.getModuleListByTrainingPathTranslationID(1L);
+        verify(moduleDao, times(1)).getModuleListByTrainingPathTranslationID(anyLong());
     }
 
     @Test
