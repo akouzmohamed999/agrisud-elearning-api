@@ -18,8 +18,8 @@ public class ModuleService {
         return moduleDao.getModuleList();
     }
 
-    public List<Module> getModuleListByTrainingPathID(Long trainingPathID) {
-        return this.moduleDao.getModuleListByTrainingPathID(trainingPathID);
+    public List<Module> getModuleListByTrainingPathTranslationID(Long trainingPathTranslationID) {
+        return this.moduleDao.getModuleListByTrainingPathTranslationID(trainingPathTranslationID);
     }
 
     public Optional<Module> getModuleById(Long moduleID) {
@@ -36,5 +36,9 @@ public class ModuleService {
 
     public void deleteModule(Long moduleID) {
         this.moduleDao.deleteModule(moduleID);
+    }
+
+    public void deleteModuleByTrainingPathTranslationID(Long trainingPathTranslationID) {
+        this.moduleDao.deleteModulesByTrainingPathTranslationID(trainingPathTranslationID);
     }
 }

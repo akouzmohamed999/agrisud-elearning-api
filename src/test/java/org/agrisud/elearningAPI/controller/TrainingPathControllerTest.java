@@ -3,9 +3,9 @@ package org.agrisud.elearningAPI.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
 import org.agrisud.elearningAPI.dto.PictureDto;
-import org.agrisud.elearningAPI.enums.Language;
 import org.agrisud.elearningAPI.model.TrainingPath;
 import org.agrisud.elearningAPI.service.TrainingPathService;
+import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,20 +34,23 @@ public class TrainingPathControllerTest {
     private TrainingPathService trainingPathService;
     @MockBean
     private TrainingPathCloudService trainingPathCloudService;
+    @MockBean
+    private TrainingPathTranslationService trainingPathTranslationService;
 
     TrainingPath trainingPath = new TrainingPath();
     PictureDto pictureDto = new PictureDto();
 
     @BeforeEach
     public void setUp() throws Exception {
-        trainingPath = TrainingPath.builder().title("Parcours 1").description("Parcours 1")
-                .language(Language.EN).build();
+        trainingPath = TrainingPath.builder().imageUrl("TrainingPathPictures/image1.jpg")
+                .trainingPathTime(22).status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview").build();
+
         pictureDto.setUrl("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview");
     }
 
     @Test
     public void shouldGetTrainingPathListRequestReturn200() throws Exception {
-        mockMvc.perform(get("/trainingPath/list"))
+        mockMvc.perform(get("/trainingPath"))
                 .andExpect(status().isOk());
         verify(trainingPathService, times(1)).getTrainingPathList();
     }
@@ -80,7 +83,10 @@ public class TrainingPathControllerTest {
 
     @Test
     void shouldDeleteTrainingPathRequestReturn200() throws Exception {
+        when(trainingPathService.getTrainingPathByID(anyLong())).thenReturn(Optional.ofNullable(trainingPath));
         doNothing().when(trainingPathService).deleteTrainingPath(anyLong());
+        doNothing().when(trainingPathTranslationService).deleteTrainingPathTranslationByTrainingPathID(anyLong());
+        doNothing().when(trainingPathCloudService).deleteTrainingPathPicture(anyString());
         mockMvc.perform(delete("/trainingPath/{trainingPathID}", 1)).andExpect(status().isOk());
         verify(this.trainingPathService, times(1)).deleteTrainingPath(anyLong());
     }
@@ -89,7 +95,7 @@ public class TrainingPathControllerTest {
     void shouldUploadTrainingPathImageRequestReturn200() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "hello.txt",
                 MediaType.MULTIPART_FORM_DATA_VALUE, "Hello, World!".getBytes());
-        when(trainingPathCloudService.uploadTrainingPathPicture(any(MultipartFile.class))).thenReturn(anyString());
+        when(trainingPathCloudService.uploadTrainingPathPicture(any(MultipartFile.class))).thenReturn(any(PictureDto.class));
         mockMvc.perform(multipart("/trainingPath/picture").file(file))
                 .andExpect(status().isOk());
         verify(trainingPathCloudService, times(1))

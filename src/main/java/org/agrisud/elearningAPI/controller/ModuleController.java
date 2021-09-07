@@ -15,14 +15,14 @@ public class ModuleController {
     @Autowired
     private ModuleService moduleService;
 
-    @GetMapping("/list")
+    @GetMapping
     public List<Module> getModuleList() {
         return moduleService.getModuleList();
     }
 
-    @GetMapping("/trainingPath/{trainingPathID}")
-    public List<Module> getModuleListByTrainingPathID(@PathVariable Long trainingPathID) {
-        return this.moduleService.getModuleListByTrainingPathID(trainingPathID);
+    @GetMapping("/trainingPathTranslation/{trainingPathTranslationID}")
+    public List<Module> getModuleListByTrainingPathTranslationID(@PathVariable Long trainingPathTranslationID) {
+        return this.moduleService.getModuleListByTrainingPathTranslationID(trainingPathTranslationID);
     }
 
     @GetMapping("/{moduleID}")
@@ -43,5 +43,10 @@ public class ModuleController {
     @DeleteMapping("/{moduleID}")
     public void deleteModule(@PathVariable Long moduleID) {
         this.moduleService.deleteModule(moduleID);
+    }
+
+    @DeleteMapping("/trainingPathTranslation/{trainingPathTranslationID}")
+    public void deleteModuleByTrainingPathTranslationID(@PathVariable Long trainingPathTranslationID) {
+        this.moduleService.deleteModuleByTrainingPathTranslationID(trainingPathTranslationID);
     }
 }
