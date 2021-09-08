@@ -18,6 +18,7 @@ public class DaoConfig {
                 new ClassPathResource("sql/module.properties"),
                 new ClassPathResource("sql/training-path.properties"),
                 new ClassPathResource("sql/user.properties"),
+                new ClassPathResource("sql/training-path-translation.properties"),
                 new ClassPathResource("sql/home-cover.properties"),
                 new ClassPathResource("sql/home-cover-image.properties")
         };

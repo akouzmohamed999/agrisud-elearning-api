@@ -1,6 +1,12 @@
 delete
 from course;
 
+-- delete
+-- from module;
+--
+-- delete
+-- from training_path;
+
 delete from home_cover_image;
 delete from home_cover;
 INSERT INTO home_cover VALUES (1, null, null, 'CAROUSEL');
