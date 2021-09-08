@@ -1,7 +1,6 @@
 package org.agrisud.elearningAPI.controller;
 
 import org.agrisud.elearningAPI.model.TrainingPathTranslation;
-import org.agrisud.elearningAPI.service.ModuleService;
 import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +13,6 @@ import java.util.Optional;
 public class TrainingPathTranslationController {
     @Autowired
     private TrainingPathTranslationService trainingPathTranslationService;
-    @Autowired
-    private ModuleService moduleService;
 
     @GetMapping
     public List<TrainingPathTranslation> getTrainingPathTranslationList() {

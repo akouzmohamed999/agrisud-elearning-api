@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.model.TrainingPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.*;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -21,20 +23,31 @@ import java.util.Properties;
 public class TrainingPathDao {
 
     @Autowired
-    NamedParameterJdbcTemplate jdbcTemplate;
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
     @Autowired
     Properties sqlProperties;
 
+    public Page<TrainingPath> getTrainingPathListPerPage(Pageable pageable) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue("limit", pageable.getPageSize())
+                .addValue("offset", pageable.getOffset());
+        List<TrainingPath> trainingPathPerPage = namedParameterJdbcTemplate.query(sqlProperties.getProperty("training-path.get.all.per.page"), sqlParameterSource, TrainingPath::baseMapper);
+        Optional<Integer> total =Optional.ofNullable(jdbcTemplate.queryForObject(sqlProperties.getProperty("training-path.get.all.count"),Integer.class)) ;
+        return new PageImpl<>(trainingPathPerPage, pageable, total.get());
+    }
+
     public List<TrainingPath> getTrainingPathList() {
-        return jdbcTemplate.query(sqlProperties.getProperty("training-path.get.all"), TrainingPath::baseMapper);
+        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("training-path.get.all"), TrainingPath::baseMapper);
     }
 
     public Optional<TrainingPath> getTrainingPathById(Long trainingPathID) {
         SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_id", trainingPathID);
         TrainingPath trainingPath = null;
         try {
-            trainingPath = jdbcTemplate.queryForObject(sqlProperties.getProperty("training-path.get.one"), namedParameters, TrainingPath::baseMapper);
+            trainingPath = namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty("training-path.get.one"), namedParameters, TrainingPath::baseMapper);
         } catch (DataAccessException dataAccessException) {
             log.info("Training Path does not exist" + trainingPathID);
         }
@@ -44,7 +57,7 @@ public class TrainingPathDao {
     public long createNewTrainingPath(TrainingPath trainingPath) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource sqlParameterSource = this.initParams(trainingPath);
-        int insert = jdbcTemplate.update(sqlProperties.getProperty("training-path.create"), sqlParameterSource, holder);
+        int insert = namedParameterJdbcTemplate.update(sqlProperties.getProperty("training-path.create"), sqlParameterSource, holder);
         if (insert == 1) {
             log.info("New Training Path created : ");
             return Objects.requireNonNull(holder.getKey()).longValue();
@@ -56,7 +69,7 @@ public class TrainingPathDao {
 
     public void updateTrainingPath(TrainingPath trainingPath) {
         SqlParameterSource sqlParameterSource = this.initParams(trainingPath);
-        int update = jdbcTemplate.update(sqlProperties.getProperty("training-path.update"), sqlParameterSource);
+        int update = namedParameterJdbcTemplate.update(sqlProperties.getProperty("training-path.update"), sqlParameterSource);
         if (update == 1) {
             log.info("Training Path updated : " + trainingPath.getId());
         }
@@ -64,7 +77,7 @@ public class TrainingPathDao {
 
     public void deleteTrainingPath(Long trainingPathID) {
         SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_id", trainingPathID);
-        int deleted = jdbcTemplate.update(sqlProperties.getProperty("training-path.delete"), namedParameters);
+        int deleted = namedParameterJdbcTemplate.update(sqlProperties.getProperty("training-path.delete"), namedParameters);
         if (deleted == 1) {
             log.info("Training Path deleted : " + trainingPathID);
         }

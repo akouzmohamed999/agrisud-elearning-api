@@ -3,6 +3,8 @@ package org.agrisud.elearningAPI.service;
 import org.agrisud.elearningAPI.dao.ModuleDao;
 import org.agrisud.elearningAPI.model.Module;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,11 @@ public class ModuleService {
 
     public List<Module> getModuleListByTrainingPathTranslationID(Long trainingPathTranslationID) {
         return this.moduleDao.getModuleListByTrainingPathTranslationID(trainingPathTranslationID);
+    }
+
+    public Page<Module> getModuleListByTrainingPathTranslationIDPerPage(Long trainingPathTranslationID, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return this.moduleDao.getModuleListByTrainingPathTranslationIDPerPage(trainingPathTranslationID, pageRequest);
     }
 
     public Optional<Module> getModuleById(Long moduleID) {
