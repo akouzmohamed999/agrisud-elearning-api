@@ -37,7 +37,6 @@ public class TrainingPathControllerTest {
     @MockBean
     private TrainingPathTranslationService trainingPathTranslationService;
 
-
     TrainingPath trainingPath = new TrainingPath();
     PictureDto pictureDto = new PictureDto();
 
