@@ -23,7 +23,7 @@ public class HomeCoverService {
 
     public Optional<HomeCover> getHomeCover() {
         return homeCoverDao.getHomeCover().map(homeCover -> {
-            homeCoverImageDao.getHomeCoverImages().ifPresent(homeCover::setHomeCoverImages);
+            homeCoverImageDao.getHomeCoverImages(homeCover.getId()).ifPresent(homeCover::setHomeCoverImages);
             return homeCover;
         });
     }

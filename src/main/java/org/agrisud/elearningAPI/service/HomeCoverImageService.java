@@ -22,8 +22,9 @@ public class HomeCoverImageService {
         homeCoverImageDao.insertHomeCoverImage(homeCoverImage);
     }
 
-    public Optional<List<HomeCoverImage>> getHomeCoverImages() {
-        return homeCoverImageDao.getHomeCoverImages().map(homeCoverImages -> {
+    // never used
+    public Optional<List<HomeCoverImage>> getHomeCoverImages(long homeCoverID) {
+        return homeCoverImageDao.getHomeCoverImages(homeCoverID).map(homeCoverImages -> {
             homeCoverImages.forEach(homeCoverImage ->
                 homeCoverDao.getHomeCover().ifPresent(homeCoverImage::setHomeCover)
             );

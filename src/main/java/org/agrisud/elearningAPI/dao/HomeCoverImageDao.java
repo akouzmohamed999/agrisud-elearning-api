@@ -31,7 +31,8 @@ public class HomeCoverImageDao {
         jdbcTemplate.update(sqlProperties.getProperty("insert.home.cover.image.with.data"), sqlParameterSource, keyHolder);
     }
 
-    public Optional<List<HomeCoverImage>> getHomeCoverImages() {
-        return Optional.of(jdbcTemplate.query(sqlProperties.getProperty("get.home.cover.images"), new HashMap<>(), HomeCoverImage::baseMapper));
+    public Optional<List<HomeCoverImage>> getHomeCoverImages(long homeCoverID) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("homeCoverID", homeCoverID);
+        return Optional.of(jdbcTemplate.query(sqlProperties.getProperty("get.home.cover.images"), sqlParameterSource, HomeCoverImage::baseMapper));
     }
 }

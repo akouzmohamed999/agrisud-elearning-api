@@ -3,6 +3,10 @@ from course;
 
 delete from home_cover_image;
 delete from home_cover;
+INSERT INTO home_cover VALUES (1, null, null, 'CAROUSEL');
+INSERT INTO home_cover_image VALUES (1, 'http://localhost:3900/s/L75CkXeFPFMpE2S/preview', 1);
+INSERT INTO home_cover_image VALUES (2, 'http://localhost:3900/s/2FmTNGBmDtTf2qo/preview', 1);
+INSERT INTO home_cover_image VALUES (3, 'http://localhost:3900/s/PQYo8ffT5SE2FG9/preview', 1);
 
 insert into training_path (training_path_title, image_url, training_path_description, capacity, training_path_time,
                            pre_request, training_path_status, training_path_language)
