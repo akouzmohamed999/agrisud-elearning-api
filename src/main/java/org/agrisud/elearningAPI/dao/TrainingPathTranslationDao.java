@@ -4,10 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.model.TrainingPathTranslation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -37,19 +33,6 @@ public class TrainingPathTranslationDao {
     public List<TrainingPathTranslation> getTrainingPathTranslationListByTrainingPathID(Long TrainingPathID) {
         SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_id", TrainingPathID);
         return namedParameterJdbcTemplate.query(sqlProperties.getProperty("training-path-translation.get.all.training-path-id"), namedParameters, TrainingPathTranslation::baseMapper);
-    }
-
-    public Page<TrainingPathTranslation> getTrainingPathTranslationListByTrainingPathIDPerPage(Long trainingPathID, Pageable pageable) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("limit", pageable.getPageSize())
-                .addValue("offset", pageable.getOffset())
-                .addValue("training_path_id", trainingPathID);
-        SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_id", trainingPathID);
-        Optional<Integer> total = Optional.ofNullable(namedParameterJdbcTemplate
-                .queryForObject(sqlProperties.getProperty("training-path-translation.get.all.training-path-id.per.page.count"), namedParameters, Integer.class));
-        List<TrainingPathTranslation> trainingPathTranslationList = namedParameterJdbcTemplate
-                .query(sqlProperties.getProperty("training-path-translation.get.all.training-path-id.per.page"), sqlParameterSource, TrainingPathTranslation::baseMapper);
-        return new PageImpl<>(trainingPathTranslationList, pageable, total.get());
     }
 
     public Optional<TrainingPathTranslation> getTrainingPathTranslationById(Long trainingPathTranslationID) {
