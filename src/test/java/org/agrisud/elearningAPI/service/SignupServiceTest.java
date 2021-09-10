@@ -79,7 +79,7 @@ class SignupServiceTest {
         when(usersResource.create(any(UserRepresentation.class))).thenReturn(response);
         createdResponseUtilMock.when(() -> CreatedResponseUtil.getCreatedId(response)).thenReturn(userId);
 
-        signupService.createCandidateUser(registration);
+        signupService.createCandidateUser(1L, registration);
 
         verify(userDao, times(1)).createElearningUser(userId, registration);
     }
