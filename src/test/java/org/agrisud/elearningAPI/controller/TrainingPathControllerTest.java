@@ -2,8 +2,11 @@ package org.agrisud.elearningAPI.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
-import org.agrisud.elearningAPI.dto.PictureDto;
+import org.agrisud.elearningAPI.dto.*;
+import org.agrisud.elearningAPI.model.Module;
 import org.agrisud.elearningAPI.model.TrainingPath;
+import org.agrisud.elearningAPI.model.TrainingPathTranslation;
+import org.agrisud.elearningAPI.service.ModuleService;
 import org.agrisud.elearningAPI.service.TrainingPathService;
 import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -36,16 +40,27 @@ public class TrainingPathControllerTest {
     private TrainingPathCloudService trainingPathCloudService;
     @MockBean
     private TrainingPathTranslationService trainingPathTranslationService;
+    @MockBean
+    private ModuleService moduleService;
 
     TrainingPath trainingPath = new TrainingPath();
     PictureDto pictureDto = new PictureDto();
+    TrainingPathCreationDto trainingPathCreationDto = new TrainingPathCreationDto();
 
     @BeforeEach
     public void setUp() throws Exception {
         trainingPath = TrainingPath.builder().imageUrl("TrainingPathPictures/image1.jpg")
                 .trainingPathTime(22).status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview").build();
-
         pictureDto.setUrl("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview");
+        trainingPathCreationDto = TrainingPathCreationDto.builder()
+                .trainingPathDto(TrainingPathDto.builder()
+                        .imageUrl("TrainingPathPictures/image1.jpg")
+                        .trainingPathTime(22).status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview")
+                        .build())
+                .trainingPathTranslationDto(Collections.singletonList(TrainingPathTranslationDto.builder()
+                        .title("parcours").description("parcours")
+                        .moduleList(Collections.singletonList(ModuleDto.builder().orderOnPath(1).title("Module 1").build())).build()))
+                .build();
     }
 
     @Test
@@ -65,9 +80,11 @@ public class TrainingPathControllerTest {
 
     @Test
     void shouldCreateTrainingPathRequestReturn200() throws Exception {
+        when(trainingPathTranslationService.createNewTrainingPathTranslation(any(TrainingPathTranslation.class))).thenReturn(1L);
+        when(moduleService.createNewModule(any(Module.class))).thenReturn(1L);
         when(trainingPathService.createNewTrainingPath(any(TrainingPath.class))).thenReturn(1L);
         mockMvc.perform(post("/trainingPath")
-                .content(asJsonString(trainingPath))
+                .content(asJsonString(trainingPathCreationDto))
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
         verify(this.trainingPathService, times(1)).createNewTrainingPath(any(TrainingPath.class));
     }
