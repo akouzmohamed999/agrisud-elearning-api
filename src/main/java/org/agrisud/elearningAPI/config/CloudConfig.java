@@ -26,11 +26,4 @@ public class CloudConfig {
     public NextcloudConnector cloudConnector() {
         return new NextcloudConnector(cloudServerName, cloudServerUsername, cloudServerPassword);
     }
-
-    @Profile("prod")
-    @Bean
-    public NextcloudConnector prodCloudConnector() {
-        log.info("CLOUD PROD is BEING USED");
-        return new NextcloudConnector("agrisud-cloud", false, 80, cloudServerUsername, cloudServerPassword);
-    }
 }
