@@ -4,10 +4,7 @@ import org.agrisud.elearningAPI.model.Registration;
 import org.agrisud.elearningAPI.service.SignupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/signup")
@@ -17,8 +14,8 @@ public class SignupController {
     SignupService signupService;
 
     @PostMapping
-    public ResponseEntity<Void> registerNewUser(@RequestBody Registration registration) {
-        signupService.createCandidateUser(registration);
+    public ResponseEntity<Void> registerNewUser(@RequestParam Long trainingPathId, @RequestBody Registration registration) {
+        signupService.createCandidateUser(trainingPathId, registration);
         return ResponseEntity.ok().build();
     }
 }

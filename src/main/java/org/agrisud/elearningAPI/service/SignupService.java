@@ -36,7 +36,7 @@ public class SignupService {
     @Autowired
     UserDao userDao;
 
-    public void createCandidateUser(Registration registration) {
+    public void createCandidateUser(Long trainingPathId, Registration registration) {
         Keycloak keycloak = getKeyCloakRealmResource();
         RealmResource realmResource = keycloak.realm(realm);
         UserRepresentation userRepresentation = getUserRepresentationFromCandidate(registration);
@@ -44,6 +44,7 @@ public class SignupService {
         Response response = usersResource.create(userRepresentation);
         String userId = CreatedResponseUtil.getCreatedId(response);
         userDao.createElearningUser(userId, registration);
+        userDao.addTrainingPathToUser(trainingPathId, userId);
         keycloak.close();
     }
 
