@@ -46,10 +46,11 @@ class SignupControllerTest {
         registration.setSex("MALE");
 
         mockMvc.perform(post("/signup")
+                .param("trainingPathId", "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsBytes(registration)))
                 .andExpect(status().isOk());
-        verify(signupService, times(1)).createCandidateUser(eq(registration));
+        verify(signupService, times(1)).createCandidateUser(eq(1L), eq(registration));
     }
 
 }
