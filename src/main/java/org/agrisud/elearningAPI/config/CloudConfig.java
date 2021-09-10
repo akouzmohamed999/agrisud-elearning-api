@@ -21,7 +21,6 @@ public class CloudConfig {
     @Value("${cloud.server.password}")
     String cloudServerPassword;
 
-    @Profile("!prod")
     @Bean
     public NextcloudConnector cloudConnector() {
         return new NextcloudConnector(cloudServerName, cloudServerUsername, cloudServerPassword);
