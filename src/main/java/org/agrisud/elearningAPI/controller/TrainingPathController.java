@@ -2,7 +2,11 @@ package org.agrisud.elearningAPI.controller;
 
 import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
 import org.agrisud.elearningAPI.dto.PictureDto;
+import org.agrisud.elearningAPI.dto.TrainingPathCreationDto;
+import org.agrisud.elearningAPI.model.Module;
 import org.agrisud.elearningAPI.model.TrainingPath;
+import org.agrisud.elearningAPI.model.TrainingPathTranslation;
+import org.agrisud.elearningAPI.service.ModuleService;
 import org.agrisud.elearningAPI.service.TrainingPathService;
 import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +17,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @RequestMapping("/trainingPath")
 public class TrainingPathController {
     public static final String PAGE = "0";
     public static final String SIZE = "8";
-
     @Autowired
     private TrainingPathService trainingPathService;
 
@@ -28,6 +32,9 @@ public class TrainingPathController {
 
     @Autowired
     private TrainingPathTranslationService trainingPathTranslationService;
+
+    @Autowired
+    private ModuleService moduleService;
 
     @GetMapping
     public List<TrainingPath> getTrainingPathList() {
@@ -46,8 +53,27 @@ public class TrainingPathController {
     }
 
     @PostMapping
-    public long createNewTrainingPath(@RequestBody TrainingPath trainingPath) {
-        return this.trainingPathService.createNewTrainingPath(trainingPath);
+    public long createNewTrainingPath(@RequestBody TrainingPathCreationDto trainingPathCreationDto) {
+        long trainingPathID = this.trainingPathService.createNewTrainingPath(TrainingPath.builder().imageUrl(trainingPathCreationDto.getTrainingPathDto().getImageUrl())
+                .fullImagePath(trainingPathCreationDto.getTrainingPathDto().getFullImagePath())
+                .status(false).trainingPathTime(trainingPathCreationDto.getTrainingPathDto().getTrainingPathTime())
+                .build());
+
+        trainingPathCreationDto.getTrainingPathTranslationDto().forEach(trainingPathTranslationDto -> {
+            long trainingPathTranslationID = this.trainingPathTranslationService.createNewTrainingPathTranslation(TrainingPathTranslation.builder()
+                    .title(trainingPathTranslationDto.getTitle())
+                    .description(trainingPathTranslationDto.getDescription())
+                    .preRequest(trainingPathTranslationDto.getPreRequest())
+                    .language(trainingPathTranslationDto.getLanguage())
+                    .capacity(trainingPathTranslationDto.getCapacity())
+                    .trainingPathID(trainingPathID).build());
+            AtomicInteger order = new AtomicInteger(1);
+            trainingPathTranslationDto.getModuleList().forEach(moduleDto -> {
+                this.moduleService.createNewModule(Module.builder().title(moduleDto.getTitle()).orderOnPath(order.getAndIncrement())
+                        .trainingPathTranslationID(trainingPathTranslationID).build());
+            });
+        });
+        return trainingPathID;
     }
 
     @PutMapping
