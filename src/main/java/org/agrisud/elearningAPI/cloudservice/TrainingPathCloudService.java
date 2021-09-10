@@ -1,5 +1,6 @@
 package org.agrisud.elearningAPI.cloudservice;
 
+import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.clouddao.TrainingPathCloudDao;
 import org.agrisud.elearningAPI.dto.PictureDto;
 import org.agrisud.elearningAPI.util.CloudFileHelper;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
+@Slf4j
 public class TrainingPathCloudService {
 
     @Autowired

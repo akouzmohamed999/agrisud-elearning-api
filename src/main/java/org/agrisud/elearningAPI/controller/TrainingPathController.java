@@ -1,5 +1,6 @@
 package org.agrisud.elearningAPI.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
 import org.agrisud.elearningAPI.dto.PictureDto;
 import org.agrisud.elearningAPI.dto.TrainingPathCreationDto;
@@ -21,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @RequestMapping("/trainingPath")
+@Slf4j
 public class TrainingPathController {
     public static final String PAGE = "0";
     public static final String SIZE = "8";
@@ -92,6 +94,7 @@ public class TrainingPathController {
 
     @PostMapping(value = "/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public PictureDto uploadTrainingPathPicture(@RequestParam MultipartFile file) {
+        log.info("Starting .....");
         return trainingPathCloudService.uploadTrainingPathPicture(file);
     }
 

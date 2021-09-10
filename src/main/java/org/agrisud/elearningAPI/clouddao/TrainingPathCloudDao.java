@@ -1,5 +1,6 @@
 package org.agrisud.elearningAPI.clouddao;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aarboard.nextcloud.api.NextcloudConnector;
 import org.aarboard.nextcloud.api.filesharing.Share;
 import org.aarboard.nextcloud.api.filesharing.SharePermissions;
@@ -11,12 +12,14 @@ import org.springframework.stereotype.Repository;
 import java.io.File;
 
 @Repository
+@Slf4j
 public class TrainingPathCloudDao {
 
     @Autowired
     private NextcloudConnector connector;
 
     public PictureDto uploadTrainingPathPicture(File file, String fullFilePath) {
+        log.info("Starting UPLOAD.....");
         connector.uploadFile(file, fullFilePath);
         return PictureDto.builder().url(getTrainingPathPicture(fullFilePath))
                 .fullImagePath(fullFilePath).build();
@@ -27,6 +30,7 @@ public class TrainingPathCloudDao {
     }
 
     public String getTrainingPathPicture(String path) {
+        log.info("Starting SHARE LINK.....");
         SharePermissions permissions = new SharePermissions(SharePermissions.SingleRight.READ);
         Share share = connector.doShare(path, ShareType.PUBLIC_LINK, null, false, null, permissions);
         return share.getUrl() + "/preview";
