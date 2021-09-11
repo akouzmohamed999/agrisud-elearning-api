@@ -37,4 +37,7 @@ public class TrainingPathCloudDao {
     }
 
 
+    public void test() {
+        connector.listFolderContent("/");
+    }
 }
