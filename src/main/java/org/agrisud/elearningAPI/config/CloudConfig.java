@@ -23,6 +23,8 @@ public class CloudConfig {
 
     @Bean
     public NextcloudConnector cloudConnector() {
-        return new NextcloudConnector(cloudServerName, cloudServerUsername, cloudServerPassword);
+        NextcloudConnector connector = new NextcloudConnector(cloudServerName, cloudServerUsername, cloudServerPassword);
+        connector.trustAllCertificates(true);
+        return connector;
     }
 }

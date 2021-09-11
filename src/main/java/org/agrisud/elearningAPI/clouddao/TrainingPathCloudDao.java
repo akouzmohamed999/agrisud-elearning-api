@@ -7,6 +7,7 @@ import org.aarboard.nextcloud.api.filesharing.SharePermissions;
 import org.aarboard.nextcloud.api.filesharing.ShareType;
 import org.agrisud.elearningAPI.dto.PictureDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
@@ -17,6 +18,12 @@ public class TrainingPathCloudDao {
 
     @Autowired
     private NextcloudConnector connector;
+
+    @Value("${cloud.server.name")
+    private String serverName;
+
+    @Value("${cloud.server.download-url")
+    private String downloadUrl;
 
     public PictureDto uploadTrainingPathPicture(File file, String fullFilePath) {
         log.info("Starting UPLOAD.....");
@@ -33,7 +40,7 @@ public class TrainingPathCloudDao {
         log.info("Starting SHARE LINK.....");
         SharePermissions permissions = new SharePermissions(SharePermissions.SingleRight.READ);
         Share share = connector.doShare(path, ShareType.PUBLIC_LINK, null, false, null, permissions);
-        return share.getUrl() + "/preview";
+        return share.getUrl().replace(serverName, downloadUrl) + "/preview";
     }
 
 
