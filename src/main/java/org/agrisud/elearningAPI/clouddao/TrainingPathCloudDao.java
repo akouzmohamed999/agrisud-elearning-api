@@ -19,10 +19,10 @@ public class TrainingPathCloudDao {
     @Autowired
     private NextcloudConnector connector;
 
-    @Value("${cloud.server.name")
+    @Value("${cloud.server.name}")
     String serverName;
 
-    @Value("${cloud.server.download-url")
+    @Value("${cloud.server.download-url}")
     String downloadUrl;
 
     public PictureDto uploadTrainingPathPicture(File file, String fullFilePath) {
