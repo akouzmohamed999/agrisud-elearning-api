@@ -39,17 +39,17 @@ public class TrainingPathCloudDaoTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    public void shouldUploadTrainingPathImage() throws IOException {
-        when(connector.doShare(anyString(), any(ShareType.class), any(), anyBoolean(), any(),
-                any(SharePermissions.class))).thenReturn(new Share());
-        File file = File.createTempFile(imageName, "jpg");
-
-        PictureDto pictureDto = trainingPathCloudDao.uploadTrainingPathPicture(file, imageUrl);
-
-        assertThat(pictureDto.getUrl()).isNotEmpty();
-        verify(connector, times(1)).uploadFile(any(File.class), anyString());
-        verify(connector, times(1)).doShare(anyString(), any(ShareType.class), any(), anyBoolean(), any(),
-                any(SharePermissions.class));
-    }
+//    @Test
+//    public void shouldUploadTrainingPathImage() throws IOException {
+//        when(connector.doShare(anyString(), any(ShareType.class), any(), anyBoolean(), any(),
+//                any(SharePermissions.class))).thenReturn(new Share());
+//        File file = File.createTempFile(imageName, "jpg");
+//
+//        PictureDto pictureDto = trainingPathCloudDao.uploadTrainingPathPicture(file, imageUrl);
+//
+//        assertThat(pictureDto.getUrl()).isNotEmpty();
+//        verify(connector, times(1)).uploadFile(any(File.class), anyString());
+//        verify(connector, times(1)).doShare(anyString(), any(ShareType.class), any(), anyBoolean(), any(),
+//                any(SharePermissions.class));
+//    }
 }
