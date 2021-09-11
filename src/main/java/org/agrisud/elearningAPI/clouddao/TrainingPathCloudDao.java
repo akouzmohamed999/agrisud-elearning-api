@@ -20,10 +20,10 @@ public class TrainingPathCloudDao {
     private NextcloudConnector connector;
 
     @Value("${cloud.server.name")
-    private String serverName;
+    String serverName;
 
     @Value("${cloud.server.download-url")
-    private String downloadUrl;
+    String downloadUrl;
 
     public PictureDto uploadTrainingPathPicture(File file, String fullFilePath) {
         log.info("Starting UPLOAD.....");
@@ -40,11 +40,6 @@ public class TrainingPathCloudDao {
         log.info("Starting SHARE LINK.....");
         SharePermissions permissions = new SharePermissions(SharePermissions.SingleRight.READ);
         Share share = connector.doShare(path, ShareType.PUBLIC_LINK, null, false, null, permissions);
-        return share.getUrl().replace(serverName, downloadUrl) + "/preview";
-    }
-
-
-    public void test() {
-        connector.listFolderContent("/");
+        return share.getUrl().replace(serverName.replace("http", "https"), downloadUrl) + "/preview";
     }
 }

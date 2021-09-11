@@ -42,8 +42,4 @@ public class TrainingPathCloudService {
         String fileName = originalFilename.substring(0, originalFilename.indexOf('.')) + CloudFileHelper.generateKey(10);
         return "/TrainingPathPictures/" + fileName + originalFilename.substring(originalFilename.indexOf('.'));
     }
-
-    public void test() {
-        trainingPathCloudDao.test();
-    }
 }

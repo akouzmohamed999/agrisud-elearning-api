@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
@@ -37,19 +38,24 @@ public class TrainingPathCloudDaoTest {
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
+        trainingPathCloudDao.downloadUrl = "http://localhost:3900";
+        trainingPathCloudDao.serverName = "http://localhost:3900";
     }
 
-//    @Test
-//    public void shouldUploadTrainingPathImage() throws IOException {
-//        when(connector.doShare(anyString(), any(ShareType.class), any(), anyBoolean(), any(),
-//                any(SharePermissions.class))).thenReturn(new Share());
-//        File file = File.createTempFile(imageName, "jpg");
-//
-//        PictureDto pictureDto = trainingPathCloudDao.uploadTrainingPathPicture(file, imageUrl);
-//
-//        assertThat(pictureDto.getUrl()).isNotEmpty();
-//        verify(connector, times(1)).uploadFile(any(File.class), anyString());
-//        verify(connector, times(1)).doShare(anyString(), any(ShareType.class), any(), anyBoolean(), any(),
-//                any(SharePermissions.class));
-//    }
+    @Test
+    public void shouldUploadTrainingPathImage() throws IOException {
+
+        Share share = Mockito.mock(Share.class);
+        when(share.getUrl()).thenReturn("http://localhost:3900/image");
+        when(connector.doShare(anyString(), any(ShareType.class), any(), anyBoolean(), any(),
+                any(SharePermissions.class))).thenReturn(share);
+        File file = File.createTempFile(imageName, "jpg");
+
+        PictureDto pictureDto = trainingPathCloudDao.uploadTrainingPathPicture(file, imageUrl);
+
+        assertThat(pictureDto.getUrl()).isNotEmpty();
+        verify(connector, times(1)).uploadFile(any(File.class), anyString());
+        verify(connector, times(1)).doShare(anyString(), any(ShareType.class), any(), anyBoolean(), any(),
+                any(SharePermissions.class));
+    }
 }
