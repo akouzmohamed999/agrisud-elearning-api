@@ -40,6 +40,10 @@ public class TrainingPathCloudDao {
         log.info("Starting SHARE LINK.....");
         SharePermissions permissions = new SharePermissions(SharePermissions.SingleRight.READ);
         Share share = connector.doShare(path, ShareType.PUBLIC_LINK, null, false, null, permissions);
+        log.info("local url", serverName);
+        log.info("download URL", downloadUrl);
+        log.info("url", share.getUrl() + "/preview");
+        log.info("replace", share.getUrl().replace(serverName.replace("http", "https"), downloadUrl) + "/preview");
         return share.getUrl().replace(serverName.replace("http", "https"), downloadUrl) + "/preview";
     }
 }
