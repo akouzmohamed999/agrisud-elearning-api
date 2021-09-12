@@ -30,4 +30,10 @@ public class UserDao {
         jdbcTemplate.update(sqlProperties.getProperty("user.create"), params);
     }
 
+    public void addTrainingPathToUser(Long trainingPathId, String userId){
+        MapSqlParameterSource params = new MapSqlParameterSource("userId", userId)
+                .addValue("trainingPathId", trainingPathId);
+        jdbcTemplate.update(sqlProperties.getProperty("user.add.trainingPath"), params);
+    }
+
 }

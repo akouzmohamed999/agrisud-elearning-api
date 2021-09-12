@@ -3,6 +3,7 @@ package org.agrisud.elearningAPI.controller;
 import org.agrisud.elearningAPI.model.Module;
 import org.agrisud.elearningAPI.service.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,18 +12,26 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/module")
 public class ModuleController {
-
+    public static final String PAGE = "0";
+    public static final String SIZE = "8";
     @Autowired
     private ModuleService moduleService;
 
-    @GetMapping("/list")
+    @GetMapping
     public List<Module> getModuleList() {
         return moduleService.getModuleList();
     }
 
-    @GetMapping("/trainingPath/{trainingPathID}")
-    public List<Module> getModuleListByTrainingPathID(@PathVariable Long trainingPathID) {
-        return this.moduleService.getModuleListByTrainingPathID(trainingPathID);
+    @GetMapping("/trainingPathTranslation/{trainingPathTranslationID}")
+    public List<Module> getModuleListByTrainingPathTranslationID(@PathVariable Long trainingPathTranslationID) {
+        return this.moduleService.getModuleListByTrainingPathTranslationID(trainingPathTranslationID);
+    }
+
+    @GetMapping("/trainingPathTranslation/perPage/{trainingPathTranslationID}")
+    public Page<Module> getModuleListByTrainingPathTranslationIDPerPage(@PathVariable Long trainingPathTranslationID,
+                                                                        @RequestParam(name = "page", defaultValue = PAGE) int page,
+                                                                        @RequestParam(name = "size", defaultValue = SIZE) int size) {
+        return this.moduleService.getModuleListByTrainingPathTranslationIDPerPage(trainingPathTranslationID, page, size);
     }
 
     @GetMapping("/{moduleID}")
@@ -43,5 +52,10 @@ public class ModuleController {
     @DeleteMapping("/{moduleID}")
     public void deleteModule(@PathVariable Long moduleID) {
         this.moduleService.deleteModule(moduleID);
+    }
+
+    @DeleteMapping("/trainingPathTranslation/{trainingPathTranslationID}")
+    public void deleteModuleByTrainingPathTranslationID(@PathVariable Long trainingPathTranslationID) {
+        this.moduleService.deleteModuleByTrainingPathTranslationID(trainingPathTranslationID);
     }
 }

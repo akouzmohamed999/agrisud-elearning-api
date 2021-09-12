@@ -5,8 +5,7 @@ import lombok.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,14 +13,14 @@ public class Module {
     private Long id;
     private String title;
     private int orderOnPath;
-    private Long trainingPathID;
+    private Long trainingPathTranslationID;
 
     public static Module baseMapper(ResultSet resultSet, int rowNumber) throws SQLException {
-        Module event = new Module();
-        event.setId(resultSet.getLong("module_id"));
-        event.setTitle(resultSet.getString("module_title"));
-        event.setOrderOnPath(resultSet.getInt("order_on_path"));
-        event.setTrainingPathID(resultSet.getLong("training_path_id"));
-        return event;
+        Module module = new Module();
+        module.setId(resultSet.getLong("module_id"));
+        module.setTitle(resultSet.getString("module_title"));
+        module.setOrderOnPath(resultSet.getInt("order_on_path"));
+        module.setTrainingPathTranslationID(resultSet.getLong("training_path_translation_id"));
+        return module;
     }
 }

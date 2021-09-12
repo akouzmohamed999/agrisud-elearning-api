@@ -1,5 +1,7 @@
 server:
   port: 8090
+  http2:
+    enabled: true
 
 spring:
   profiles:
@@ -28,6 +30,7 @@ spring:
 cloud:
   server:
     name: http://localhost:3900
+    download-url: http://localhost:3900
     password: cloudagrisudcrud
     username: cloudagrisudcrud
 

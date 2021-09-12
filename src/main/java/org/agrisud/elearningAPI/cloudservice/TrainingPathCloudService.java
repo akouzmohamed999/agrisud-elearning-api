@@ -1,6 +1,8 @@
 package org.agrisud.elearningAPI.cloudservice;
 
+import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.clouddao.TrainingPathCloudDao;
+import org.agrisud.elearningAPI.dto.PictureDto;
 import org.agrisud.elearningAPI.util.CloudFileHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,20 +14,24 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
+@Slf4j
 public class TrainingPathCloudService {
 
     @Autowired
     private TrainingPathCloudDao trainingPathCloudDao;
 
-    public String uploadTrainingPathPicture(MultipartFile file) {
+    public PictureDto uploadTrainingPathPicture(MultipartFile file) {
         Optional<File> fileOptional = Optional.ofNullable(CloudFileHelper.getTempFileFromMultiPartFile(file));
-        AtomicReference<String> url = new AtomicReference<>("");
+        AtomicReference<PictureDto> pictureDto = new AtomicReference<>(new PictureDto());
         fileOptional.ifPresent(file1 -> {
-            url.set(trainingPathCloudDao.uploadTrainingPathPicture(file1,
-                    getFileName(Objects.requireNonNull(file.getOriginalFilename()))));
+            pictureDto.set(trainingPathCloudDao.uploadTrainingPathPicture(file1, getFileName(Objects.requireNonNull(file.getOriginalFilename()))));
             file1.delete();
         });
-        return url.get();
+        return pictureDto.get();
+    }
+
+    public void deleteTrainingPathPicture(String fullImagePath){
+        trainingPathCloudDao.deleteTrainingPathPicture(fullImagePath);
     }
 
     public String uploadHomeTrainingPathPicture(MultipartFile file) {

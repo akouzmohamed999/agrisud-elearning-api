@@ -35,13 +35,13 @@ public class ModuleControllerTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        module = Module.builder().id(1L).orderOnPath(1).title("Module 1").trainingPathID(1L).build();
+        module = Module.builder().id(1L).orderOnPath(1).title("Module 1").trainingPathTranslationID(1L).build();
     }
 
     @Test
     public void shouldGetModulesListRequestReturn200() throws Exception {
         when(moduleService.getModuleList()).thenReturn(Collections.singletonList(module));
-        mockMvc.perform(get("/module/list"))
+        mockMvc.perform(get("/module"))
                 .andExpect(status().isOk());
         verify(moduleService, times(1)).getModuleList();
     }
@@ -56,10 +56,10 @@ public class ModuleControllerTest {
 
     @Test
     public void shouldGetModulesByTrainingPathIdRequestReturn200() throws Exception {
-        when(moduleService.getModuleListByTrainingPathID(anyLong())).thenReturn(Collections.singletonList(module));
-        mockMvc.perform(get("/module/trainingPath/{trainingPathID}", 1))
+        when(moduleService.getModuleListByTrainingPathTranslationID(anyLong())).thenReturn(Collections.singletonList(module));
+        mockMvc.perform(get("/module/trainingPathTranslation/{trainingPathID}", 1))
                 .andExpect(status().isOk());
-        verify(moduleService, times(1)).getModuleListByTrainingPathID(anyLong());
+        verify(moduleService, times(1)).getModuleListByTrainingPathTranslationID(anyLong());
     }
 
     @Test

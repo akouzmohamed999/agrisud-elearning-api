@@ -4,6 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.model.Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -29,9 +32,21 @@ public class ModuleDao {
         return jdbcTemplate.query(sqlProperties.getProperty("module.get.all"), Module::baseMapper);
     }
 
-    public List<Module> getModuleListByTrainingPathID(Long trainingPathID) {
-        SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_id", trainingPathID);
-        return jdbcTemplate.query(sqlProperties.getProperty("module.get.all.training-path-id"), namedParameters, Module::baseMapper);
+    public List<Module> getModuleListByTrainingPathTranslationID(Long trainingPathTranslationID) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_translation_id", trainingPathTranslationID);
+        return jdbcTemplate.query(sqlProperties.getProperty("module.get.all.training-path-translation-id"), namedParameters, Module::baseMapper);
+    }
+
+    public Page<Module> getModuleListByTrainingPathTranslationIDPerPage(Long trainingPathTranslationID, Pageable pageable) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue("limit", pageable.getPageSize())
+                .addValue("offset", pageable.getOffset())
+                .addValue("training_path_translation_id", trainingPathTranslationID);
+        SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_translation_id", trainingPathTranslationID);
+        Optional<Integer> total = Optional.ofNullable(jdbcTemplate
+                .queryForObject(sqlProperties.getProperty("module.get.all.training-path-translation-id.per.page.count"), namedParameters, Integer.class));
+        List<Module> moduleList = jdbcTemplate.query(sqlProperties.getProperty("module.get.all.training-path-translation-id.per.page"), sqlParameterSource, Module::baseMapper);
+        return new PageImpl<>(moduleList, pageable, total.get());
     }
 
     public Optional<Module> getModuleById(Long moduleID) {
@@ -74,11 +89,19 @@ public class ModuleDao {
         }
     }
 
+    public void deleteModulesByTrainingPathTranslationID(Long trainingPathTranslationID) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_translation_id", trainingPathTranslationID);
+        int delete = jdbcTemplate.update(sqlProperties.getProperty("module.delete.training-path-translation-id"), namedParameters);
+        if (delete == 1) {
+            log.info("Module deleted :" + trainingPathTranslationID);
+        }
+    }
+
     private SqlParameterSource initParams(Module module) {
         return new MapSqlParameterSource()
                 .addValue("module_id", module.getId())
                 .addValue("module_title", module.getTitle())
                 .addValue("order_on_path", module.getOrderOnPath())
-                .addValue("training_path_id", module.getTrainingPathID());
+                .addValue("training_path_translation_id", module.getTrainingPathTranslationID());
     }
 }
