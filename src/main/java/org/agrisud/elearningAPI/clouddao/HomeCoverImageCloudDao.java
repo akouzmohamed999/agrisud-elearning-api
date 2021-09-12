@@ -32,6 +32,6 @@ public class HomeCoverImageCloudDao {
     private String getHomeCoverImage(String path) {
         SharePermissions permissions = new SharePermissions(SharePermissions.SingleRight.READ);
         Share share = connector.doShare(path, ShareType.PUBLIC_LINK, null, false, null, permissions);
-        return share.getUrl().replace(serverName.replace("http", "https"), downloadUrl) + "/preview";
+        return share.getUrl().replace(serverName, downloadUrl) + "/preview";
     }
 }
