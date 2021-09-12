@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.model.TrainingPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -35,9 +37,32 @@ public class TrainingPathDao {
                 .addValue("limit", pageable.getPageSize())
                 .addValue("offset", pageable.getOffset());
         List<TrainingPath> trainingPathPerPage = namedParameterJdbcTemplate.query(sqlProperties.getProperty("training-path.get.all.per.page"), sqlParameterSource, TrainingPath::baseMapper);
-        Optional<Integer> total =Optional.ofNullable(jdbcTemplate.queryForObject(sqlProperties.getProperty("training-path.get.all.count"),Integer.class)) ;
+        Optional<Integer> total = Optional.ofNullable(jdbcTemplate.queryForObject(sqlProperties.getProperty("training-path.get.all.count"), Integer.class));
         return new PageImpl<>(trainingPathPerPage, pageable, total.get());
     }
+
+    public Page<TrainingPath> getTrainingPathListByUser(Pageable pageable, String userId) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue("limit", pageable.getPageSize())
+                .addValue("offset", pageable.getOffset())
+                .addValue("userId", userId);
+        SqlParameterSource namedParameters = new MapSqlParameterSource("userId", userId);
+        List<TrainingPath> trainingPathPerPage = namedParameterJdbcTemplate.query(sqlProperties.getProperty("training-path.get.all.by.user"), sqlParameterSource, TrainingPath::baseMapper);
+        Optional<Integer> total = Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty("training-path.get.all.by.user.count"), namedParameters, Integer.class));
+        return new PageImpl<>(trainingPathPerPage, pageable, total.get());
+    }
+
+    public Page<TrainingPath> getTrainingPathListNotUsers(Pageable pageable, String userId) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue("limit", pageable.getPageSize())
+                .addValue("offset", pageable.getOffset())
+                .addValue("userId", userId);
+        SqlParameterSource namedParameters = new MapSqlParameterSource("userId", userId);
+        List<TrainingPath> trainingPathPerPage = namedParameterJdbcTemplate.query(sqlProperties.getProperty("training-path.get.all.not.users"), sqlParameterSource, TrainingPath::baseMapper);
+        Optional<Integer> total = Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty("training-path.get.all.by.not.users.count"), namedParameters, Integer.class));
+        return new PageImpl<>(trainingPathPerPage, pageable, total.get());
+    }
+
 
     public List<TrainingPath> getTrainingPathList() {
         return namedParameterJdbcTemplate.query(sqlProperties.getProperty("training-path.get.all"), TrainingPath::baseMapper);

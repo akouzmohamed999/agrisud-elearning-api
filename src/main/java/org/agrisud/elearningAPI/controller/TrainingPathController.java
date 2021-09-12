@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class TrainingPathController {
     public static final String PAGE = "0";
-    public static final String SIZE = "8";
+    public static final String SIZE = "10";
     @Autowired
     private TrainingPathService trainingPathService;
 
@@ -47,6 +47,18 @@ public class TrainingPathController {
     public Page<TrainingPath> getTrainingPathListPerPage(@RequestParam(name = "page", defaultValue = PAGE) int page,
                                                          @RequestParam(name = "size", defaultValue = SIZE) int size) {
         return trainingPathService.getTrainingPathListPerPage(page, size);
+    }
+
+    @GetMapping("/byUser")
+    public Page<TrainingPath> getTrainingPathListByUser(@RequestParam(name = "page", defaultValue = PAGE) int page,
+                                                        @RequestParam(name = "size", defaultValue = SIZE) int size) {
+        return trainingPathService.getTrainingPathListByUser(page, size);
+    }
+
+    @GetMapping("/notUsersUser")
+    public Page<TrainingPath> getTrainingPathListNotUsers(@RequestParam(name = "page", defaultValue = PAGE) int page,
+                                                          @RequestParam(name = "size", defaultValue = SIZE) int size) {
+        return trainingPathService.getTrainingPathListNotUsers(page, size);
     }
 
     @GetMapping("/{trainingPathID}")
@@ -101,5 +113,10 @@ public class TrainingPathController {
     @DeleteMapping("/picture")
     public void deleteTrainingPathPicture(@RequestParam String fullImagePath) {
         trainingPathCloudService.deleteTrainingPathPicture(fullImagePath);
+    }
+
+    @PostMapping("/addTrainingPathToUser/{trainingPathId}")
+    public void addTrainingPathToUser(@PathVariable Long trainingPathId) {
+        this.trainingPathService.addTrainingPathToUser(trainingPathId);
     }
 }

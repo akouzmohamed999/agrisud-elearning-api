@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String ROLE_ADMIN = "ELEARNING_ADMIN";
+    public static final String ROLE_USER = "ELEARNING_USER";
     public static final String RESOURCE_ACCESS = "resource_access";
     public static final String ROLES = "roles";
     public static final String REALM_ACCESS = "realm_access";
@@ -59,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/module/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/course/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
+                .antMatchers(HttpMethod.POST, "/trainingPath/addTrainingPathToUser/**").hasRole(ROLE_USER)
                 .antMatchers("/trainingPath/**").hasRole(ROLE_ADMIN)
                 .antMatchers("/trainingPathTranslation/**").hasRole(ROLE_ADMIN)
                 .antMatchers("/module/**").hasRole(ROLE_ADMIN)
