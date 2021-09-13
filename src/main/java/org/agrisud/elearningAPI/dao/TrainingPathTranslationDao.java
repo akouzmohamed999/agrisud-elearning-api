@@ -20,26 +20,26 @@ import java.util.Properties;
 @Slf4j
 public class TrainingPathTranslationDao {
     @Autowired
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    NamedParameterJdbcTemplate jdbcTemplate;
 
     @Autowired
     Properties sqlProperties;
 
     public List<TrainingPathTranslation> getTrainingPathTranslationList() {
-        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("training-path-translation.get.all"),
+        return jdbcTemplate.query(sqlProperties.getProperty("training-path-translation.get.all"),
                 TrainingPathTranslation::baseMapper);
     }
 
     public List<TrainingPathTranslation> getTrainingPathTranslationListByTrainingPathID(Long TrainingPathID) {
         SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_id", TrainingPathID);
-        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("training-path-translation.get.all.training-path-id"), namedParameters, TrainingPathTranslation::baseMapper);
+        return jdbcTemplate.query(sqlProperties.getProperty("training-path-translation.get.all.training-path-id"), namedParameters, TrainingPathTranslation::baseMapper);
     }
 
     public Optional<TrainingPathTranslation> getTrainingPathTranslationById(Long trainingPathTranslationID) {
         SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_translation_id", trainingPathTranslationID);
         TrainingPathTranslation trainingPathTranslation = null;
         try {
-            trainingPathTranslation = namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty("training-path-translation.get.one"), namedParameters, TrainingPathTranslation::baseMapper);
+            trainingPathTranslation = jdbcTemplate.queryForObject(sqlProperties.getProperty("training-path-translation.get.one"), namedParameters, TrainingPathTranslation::baseMapper);
         } catch (DataAccessException dataAccessException) {
             log.info("Training Path translation does not exist" + trainingPathTranslationID);
         }
@@ -49,7 +49,7 @@ public class TrainingPathTranslationDao {
     public long createNewTrainingPathTranslation(TrainingPathTranslation trainingPathTranslation) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource sqlParameterSource = this.initParams(trainingPathTranslation);
-        int insert = namedParameterJdbcTemplate.update(sqlProperties.getProperty("training-path-translation.create"), sqlParameterSource, holder);
+        int insert = jdbcTemplate.update(sqlProperties.getProperty("training-path-translation.create"), sqlParameterSource, holder);
         if (insert == 1) {
             log.info("New Training Path created : ");
             return Objects.requireNonNull(holder.getKey()).longValue();
@@ -61,7 +61,7 @@ public class TrainingPathTranslationDao {
 
     public void updateTrainingPathTranslation(TrainingPathTranslation trainingPathTranslation) {
         SqlParameterSource sqlParameterSource = this.initParams(trainingPathTranslation);
-        int update = namedParameterJdbcTemplate.update(sqlProperties.getProperty("training-path-translation.update"), sqlParameterSource);
+        int update = jdbcTemplate.update(sqlProperties.getProperty("training-path-translation.update"), sqlParameterSource);
         if (update == 1) {
             log.info("Training Path translation updated : " + trainingPathTranslation.getId());
         }
@@ -69,7 +69,7 @@ public class TrainingPathTranslationDao {
 
     public void deleteTrainingPathTranslation(Long trainingPathTranslationID) {
         SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_translation_id", trainingPathTranslationID);
-        int deleted = namedParameterJdbcTemplate.update(sqlProperties.getProperty("training-path-translation.delete"), namedParameters);
+        int deleted = jdbcTemplate.update(sqlProperties.getProperty("training-path-translation.delete"), namedParameters);
         if (deleted == 1) {
             log.info("Training Path translation deleted : " + trainingPathTranslationID);
         }
@@ -77,9 +77,21 @@ public class TrainingPathTranslationDao {
 
     public void deleteTrainingPathTranslationByTrainingPathID(Long trainingPathID) {
         SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_id", trainingPathID);
-        int deleted = namedParameterJdbcTemplate.update(sqlProperties.getProperty("training-path-translation.delete.training-path-id"), namedParameters);
+        int deleted = jdbcTemplate.update(sqlProperties.getProperty("training-path-translation.delete.training-path-id"), namedParameters);
         if (deleted == 1) {
             log.info("Training Path translation deleted : " + trainingPathID);
+        }
+    }
+
+    public void updateTrainingPathTranslationTemplate(Long trainingPathTranslationId, String content) {
+        jdbcTemplate.update(sqlProperties.getProperty("training-path-translation.update.template"), new MapSqlParameterSource("content", content).addValue("trainingPathTranslationId", trainingPathTranslationId));
+    }
+
+    public String getTrainingPathTranslationTemplate(Long trainingPathTranslationId) {
+        try {
+            return jdbcTemplate.queryForObject(sqlProperties.getProperty("training-path-translation.get.template"), new MapSqlParameterSource("trainingPathTranslationId", trainingPathTranslationId), String.class);
+        } catch (DataAccessException e) {
+            return "";
         }
     }
 

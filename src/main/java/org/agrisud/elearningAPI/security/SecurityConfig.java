@@ -55,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/trainingPath/**").permitAll()
+                .antMatchers("/trainingPath/editor/upload").permitAll()
+                .antMatchers(HttpMethod.GET, "/trainingPathTranslation/*/template").permitAll()
                 .antMatchers(HttpMethod.GET, "/trainingPathTranslation/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/homeCover").permitAll()
                 .antMatchers(HttpMethod.GET, "/module/**").permitAll()
@@ -65,7 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/trainingPathTranslation/**").hasRole(ROLE_ADMIN)
                 .antMatchers("/module/**").hasRole(ROLE_ADMIN)
                 .antMatchers("/course/**").hasRole(ROLE_ADMIN)
-                .antMatchers("/homepage/**").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable();
     }

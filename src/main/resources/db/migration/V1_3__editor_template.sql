@@ -1,0 +1,1 @@
+ALTER TABLE training_path_translation add column tpt_template TEXT;

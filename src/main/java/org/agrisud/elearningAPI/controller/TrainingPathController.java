@@ -13,10 +13,13 @@ import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -24,6 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequestMapping("/trainingPath")
 @Slf4j
 public class TrainingPathController {
+
     public static final String PAGE = "0";
     public static final String SIZE = "10";
     @Autowired
@@ -118,5 +122,15 @@ public class TrainingPathController {
     @PostMapping("/addTrainingPathToUser/{trainingPathId}")
     public void addTrainingPathToUser(@PathVariable Long trainingPathId) {
         this.trainingPathService.addTrainingPathToUser(trainingPathId);
+    }
+
+    @PostMapping("/editor/upload")
+    public ResponseEntity<Map<String, String>> upload(@RequestParam("file") MultipartFile file) {
+        HashMap<String, String> response = new HashMap<>();
+        String uri = trainingPathCloudService.uploadTrainingPathEditorImage(file);
+        response.put("uploaded", "true");
+        response.put("url", uri);
+        response.put("default", uri);
+        return ResponseEntity.ok().body(response);
     }
 }

@@ -48,4 +48,14 @@ public class TrainingPathTranslationController {
     public void deleteTrainingPathTranslationByTrainingPathID(@PathVariable Long trainingPathID) {
         this.trainingPathTranslationService.deleteTrainingPathTranslationByTrainingPathID(trainingPathID);
     }
+
+    @PutMapping("/{trainingPathTranslationId}/template")
+    public void updateTrainingPathTranslationTemplate(@PathVariable Long trainingPathTranslationId, @RequestBody String content) {
+        this.trainingPathTranslationService.updateTrainingPathTranslationTemplate(trainingPathTranslationId, content);
+    }
+
+    @GetMapping("/{trainingPathTranslationId}/template")
+    public String getTrainingPathTranslationTemplate(@PathVariable Long trainingPathTranslationId) {
+        return trainingPathTranslationService.getTrainingPathTranslationTemplate(trainingPathTranslationId);
+    }
 }

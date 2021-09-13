@@ -65,5 +65,4 @@ public class TrainingPathService {
         userDao.addTrainingPathToUser(trainingPathId, loggedInUser.getUserId());
     }
 
-
 }

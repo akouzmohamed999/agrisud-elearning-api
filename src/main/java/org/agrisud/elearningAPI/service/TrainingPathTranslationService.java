@@ -48,4 +48,12 @@ public class TrainingPathTranslationService {
                     deleteTrainingPathTranslation(trainingPathTranslation.getId());
                 });
     }
+
+    public void updateTrainingPathTranslationTemplate(Long trainingPathTranslationId, String content) {
+        trainingPathTranslationDao.updateTrainingPathTranslationTemplate(trainingPathTranslationId, content);
+    }
+
+    public String getTrainingPathTranslationTemplate(Long trainingPathTranslationId) {
+        return trainingPathTranslationDao.getTrainingPathTranslationTemplate(trainingPathTranslationId);
+    }
 }

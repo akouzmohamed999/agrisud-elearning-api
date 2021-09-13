@@ -30,19 +30,18 @@ public class TrainingPathCloudService {
         return pictureDto.get();
     }
 
-    public void deleteTrainingPathPicture(String fullImagePath){
+    public void deleteTrainingPathPicture(String fullImagePath) {
         trainingPathCloudDao.deleteTrainingPathPicture(fullImagePath);
     }
 
-    public String uploadHomeTrainingPathPicture(MultipartFile file) {
+    public String uploadTrainingPathEditorImage(MultipartFile file) {
         Optional<File> fileOptional = Optional.ofNullable(CloudFileHelper.getTempFileFromMultiPartFile(file));
-        AtomicReference<String> url = new AtomicReference<>("");
-        fileOptional.ifPresent(file1 -> {
-            url.set(trainingPathCloudDao.uploadTrainingPathPicture(file1,
-                    getFileName(Objects.requireNonNull(file.getOriginalFilename()))));
-            file1.delete();
-        });
-        return url.get();
+        return fileOptional.map(storedFile -> {
+            String url = trainingPathCloudDao.uploadTrainingPathPicture(storedFile,
+                    getFileName(Objects.requireNonNull(file.getOriginalFilename()))).getUrl();
+            storedFile.delete();
+            return url;
+        }).orElseThrow(() -> new RuntimeException("Error while storing image/retrieve it's url"));
     }
 
     public String getTrainingPathPictureUrl(String path) {
