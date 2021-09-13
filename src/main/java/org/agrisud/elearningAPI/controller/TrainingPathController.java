@@ -60,7 +60,7 @@ public class TrainingPathController {
         return trainingPathService.getTrainingPathListByUser(page, size);
     }
 
-    @GetMapping("/notUsersUser")
+    @GetMapping("/notUsers")
     public Page<TrainingPath> getTrainingPathListNotUsers(@RequestParam(name = "page", defaultValue = PAGE) int page,
                                                           @RequestParam(name = "size", defaultValue = SIZE) int size) {
         return trainingPathService.getTrainingPathListNotUsers(page, size);
