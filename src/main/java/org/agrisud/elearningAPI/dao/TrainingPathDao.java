@@ -2,6 +2,7 @@ package org.agrisud.elearningAPI.dao;
 
 import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.model.TrainingPath;
+import org.agrisud.elearningAPI.security.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -36,8 +37,17 @@ public class TrainingPathDao {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("limit", pageable.getPageSize())
                 .addValue("offset", pageable.getOffset());
-        List<TrainingPath> trainingPathPerPage = namedParameterJdbcTemplate.query(sqlProperties.getProperty("training-path.get.all.per.page"), sqlParameterSource, TrainingPath::baseMapper);
-        Optional<Integer> total = Optional.ofNullable(jdbcTemplate.queryForObject(sqlProperties.getProperty("training-path.get.all.count"), Integer.class));
+        User loggedInUser = User.getLoggedInUser();
+        List<TrainingPath> trainingPathPerPage = null;
+        Optional<Integer> total = null;
+        if (loggedInUser.getUserId() != null) {
+            trainingPathPerPage = namedParameterJdbcTemplate.query(sqlProperties.getProperty("training-path.get.all.per.page"), sqlParameterSource, TrainingPath::baseMapper);
+            total = Optional.ofNullable(jdbcTemplate.queryForObject(sqlProperties.getProperty("training-path.get.all.count"), Integer.class));
+        } else {
+            trainingPathPerPage = namedParameterJdbcTemplate.query(sqlProperties.getProperty("training-path.get.all.active.per.page"), sqlParameterSource, TrainingPath::baseMapper);
+            total = Optional.ofNullable(jdbcTemplate.queryForObject(sqlProperties.getProperty("training-path.get.all.active.count"), Integer.class));
+        }
+
         return new PageImpl<>(trainingPathPerPage, pageable, total.get());
     }
 
