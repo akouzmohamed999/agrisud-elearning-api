@@ -1,6 +1,7 @@
 package org.agrisud.elearningAPI.dao;
 
 import lombok.extern.slf4j.Slf4j;
+import org.agrisud.elearningAPI.enums.Language;
 import org.agrisud.elearningAPI.model.TrainingPathTranslation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -90,6 +91,15 @@ public class TrainingPathTranslationDao {
     public String getTrainingPathTranslationTemplate(Long trainingPathTranslationId) {
         try {
             return jdbcTemplate.queryForObject(sqlProperties.getProperty("training-path-translation.get.template"), new MapSqlParameterSource("trainingPathTranslationId", trainingPathTranslationId), String.class);
+        } catch (DataAccessException e) {
+            return "";
+        }
+    }
+
+    public String getTrainingPathTranslationTemplate(Long trainingPathId, Language currentLang) {
+        try {
+            return jdbcTemplate.queryForObject(sqlProperties.getProperty("training-path-translation.get.template.by.lang"), new MapSqlParameterSource("trainingPathId", trainingPathId)
+                    .addValue("lang", currentLang.toString()), String.class);
         } catch (DataAccessException e) {
             return "";
         }

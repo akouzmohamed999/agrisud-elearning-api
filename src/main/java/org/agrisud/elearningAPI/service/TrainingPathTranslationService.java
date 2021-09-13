@@ -1,6 +1,7 @@
 package org.agrisud.elearningAPI.service;
 
 import org.agrisud.elearningAPI.dao.TrainingPathTranslationDao;
+import org.agrisud.elearningAPI.enums.Language;
 import org.agrisud.elearningAPI.model.TrainingPathTranslation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,5 +56,9 @@ public class TrainingPathTranslationService {
 
     public String getTrainingPathTranslationTemplate(Long trainingPathTranslationId) {
         return trainingPathTranslationDao.getTrainingPathTranslationTemplate(trainingPathTranslationId);
+    }
+
+    public String getTrainingPathTranslationTemplate(Long trainingPathId, Language currentLang) {
+        return trainingPathTranslationDao.getTrainingPathTranslationTemplate(trainingPathId, currentLang);
     }
 }

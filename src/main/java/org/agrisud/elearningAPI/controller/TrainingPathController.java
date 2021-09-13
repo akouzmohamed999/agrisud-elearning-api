@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
 import org.agrisud.elearningAPI.dto.PictureDto;
 import org.agrisud.elearningAPI.dto.TrainingPathCreationDto;
+import org.agrisud.elearningAPI.enums.Language;
 import org.agrisud.elearningAPI.model.Module;
 import org.agrisud.elearningAPI.model.TrainingPath;
 import org.agrisud.elearningAPI.model.TrainingPathTranslation;
@@ -132,5 +133,10 @@ public class TrainingPathController {
         response.put("url", uri);
         response.put("default", uri);
         return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/{trainingPathId}/template")
+    public String getTrainingPathTranslationTemplate(@PathVariable Long trainingPathId, @RequestParam Language currentLang) {
+        return trainingPathTranslationService.getTrainingPathTranslationTemplate(trainingPathId, currentLang);
     }
 }
