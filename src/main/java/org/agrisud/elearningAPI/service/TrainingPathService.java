@@ -3,6 +3,7 @@ package org.agrisud.elearningAPI.service;
 import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.dao.TrainingPathDao;
 import org.agrisud.elearningAPI.dao.UserDao;
+import org.agrisud.elearningAPI.enums.SortColumn;
 import org.agrisud.elearningAPI.model.TrainingPath;
 import org.agrisud.elearningAPI.security.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,17 @@ public class TrainingPathService {
         return this.trainingPathDao.getTrainingPathList();
     }
 
-    public Page<TrainingPath> getTrainingPathListPerPage(int page, int size) {
+    public Page<TrainingPath> getTrainingPathListPerPageByOrder(int page, int size, String language, SortColumn sortColumn,Boolean asc) {
+        if(asc){
+            return trainingPathDao.getTrainingPathListPerPageByOrderASC(page,size,language,sortColumn);
+        }else {
+            return trainingPathDao.getTrainingPathListPerPageByOrderDESC(page, size, language, sortColumn);
+        }
+    }
+
+    public Page<TrainingPath> getTrainingPathListPerPage(int page, int size,String language) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        return this.trainingPathDao.getTrainingPathListPerPage(pageRequest);
+        return this.trainingPathDao.getTrainingPathListPerPage(pageRequest,language);
     }
 
     public Optional<TrainingPath> getTrainingPathByID(Long trainingPathId) {
@@ -47,16 +56,16 @@ public class TrainingPathService {
         this.trainingPathDao.deleteTrainingPath(trainingPathId);
     }
 
-    public Page<TrainingPath> getTrainingPathListByUser(int page, int size) {
+    public Page<TrainingPath> getTrainingPathListByUser(int page, int size,String language) {
         PageRequest pageRequest = PageRequest.of(page, size);
         User loggedInUser = User.getLoggedInUser();
-        return this.trainingPathDao.getTrainingPathListByUser(pageRequest, loggedInUser.getUserId());
+        return this.trainingPathDao.getTrainingPathListByUser(pageRequest, loggedInUser.getUserId(),language);
     }
 
-    public Page<TrainingPath> getTrainingPathListNotUsers(int page, int size) {
+    public Page<TrainingPath> getTrainingPathListNotUsers(int page, int size,String language) {
         PageRequest pageRequest = PageRequest.of(page, size);
         User loggedInUser = User.getLoggedInUser();
-        return this.trainingPathDao.getTrainingPathListNotUsers(pageRequest, loggedInUser.getUserId());
+        return this.trainingPathDao.getTrainingPathListNotUsers(pageRequest, loggedInUser.getUserId(),language);
     }
 
     public void addTrainingPathToUser(Long trainingPathId) {

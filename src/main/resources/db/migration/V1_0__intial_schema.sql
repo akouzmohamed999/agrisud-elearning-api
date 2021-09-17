@@ -5,6 +5,7 @@ CREATE TABLE training_path
     full_image_path      varchar(200),
     training_path_time   int(20),
     training_path_status BOOLEAN,
+    archived BOOLEAN,
     PRIMARY KEY (training_path_id)
 );
 
