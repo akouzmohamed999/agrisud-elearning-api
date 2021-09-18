@@ -13,4 +13,5 @@ public class TrainingPathDto {
     private String fullImagePath;
     private int trainingPathTime;
     private boolean status;
+    private boolean archived;
 }

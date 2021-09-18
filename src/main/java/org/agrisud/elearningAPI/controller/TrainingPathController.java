@@ -5,6 +5,7 @@ import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
 import org.agrisud.elearningAPI.dto.PictureDto;
 import org.agrisud.elearningAPI.dto.TrainingPathCreationDto;
 import org.agrisud.elearningAPI.enums.Language;
+import org.agrisud.elearningAPI.enums.SortColumn;
 import org.agrisud.elearningAPI.model.Module;
 import org.agrisud.elearningAPI.model.TrainingPath;
 import org.agrisud.elearningAPI.model.TrainingPathTranslation;
@@ -31,6 +32,7 @@ public class TrainingPathController {
 
     public static final String PAGE = "0";
     public static final String SIZE = "10";
+    public static final String SIZE_USER = "10000";
     @Autowired
     private TrainingPathService trainingPathService;
 
@@ -48,22 +50,34 @@ public class TrainingPathController {
         return trainingPathService.getTrainingPathList();
     }
 
+    @GetMapping("/perPage/byOrder")
+    public Page<TrainingPath> getTrainingPathListPerPageByOrder(@RequestParam(name = "page", defaultValue = PAGE)int page,
+                                                                @RequestParam(name = "size", defaultValue = SIZE) int size,
+                                                                @RequestParam(name = "language") String language,
+                                                                @RequestParam(name = "sortColumn") SortColumn sortColumn,
+                                                                @RequestParam(name = "asc") Boolean asc) {
+        return trainingPathService.getTrainingPathListPerPageByOrder(page, size, language, sortColumn, asc);
+    }
+
     @GetMapping("/perPage")
     public Page<TrainingPath> getTrainingPathListPerPage(@RequestParam(name = "page", defaultValue = PAGE) int page,
-                                                         @RequestParam(name = "size", defaultValue = SIZE) int size) {
-        return trainingPathService.getTrainingPathListPerPage(page, size);
+                                                         @RequestParam(name = "size", defaultValue = SIZE) int size,
+                                                         @RequestParam(name = "language") String language) {
+        return trainingPathService.getTrainingPathListPerPage(page, size,language);
     }
 
     @GetMapping("/byUser")
     public Page<TrainingPath> getTrainingPathListByUser(@RequestParam(name = "page", defaultValue = PAGE) int page,
-                                                        @RequestParam(name = "size", defaultValue = SIZE) int size) {
-        return trainingPathService.getTrainingPathListByUser(page, size);
+                                                        @RequestParam(name = "size", defaultValue = SIZE_USER) int size,
+                                                        @RequestParam(name = "language") String language) {
+        return trainingPathService.getTrainingPathListByUser(page, size,language);
     }
 
     @GetMapping("/notUsers")
     public Page<TrainingPath> getTrainingPathListNotUsers(@RequestParam(name = "page", defaultValue = PAGE) int page,
-                                                          @RequestParam(name = "size", defaultValue = SIZE) int size) {
-        return trainingPathService.getTrainingPathListNotUsers(page, size);
+                                                          @RequestParam(name = "size", defaultValue = SIZE) int size,
+                                                          @RequestParam(name = "language") String language) {
+        return trainingPathService.getTrainingPathListNotUsers(page, size,language);
     }
 
     @GetMapping("/{trainingPathID}")
@@ -75,7 +89,7 @@ public class TrainingPathController {
     public long createNewTrainingPath(@RequestBody TrainingPathCreationDto trainingPathCreationDto) {
         long trainingPathID = this.trainingPathService.createNewTrainingPath(TrainingPath.builder().imageUrl(trainingPathCreationDto.getTrainingPathDto().getImageUrl())
                 .fullImagePath(trainingPathCreationDto.getTrainingPathDto().getFullImagePath())
-                .status(false).trainingPathTime(trainingPathCreationDto.getTrainingPathDto().getTrainingPathTime())
+                .status(false).archived(false).trainingPathTime(trainingPathCreationDto.getTrainingPathDto().getTrainingPathTime())
                 .build());
 
         trainingPathCreationDto.getTrainingPathTranslationDto().forEach(trainingPathTranslationDto -> {
