@@ -27,17 +27,17 @@ public class TrainingPathService {
         return this.trainingPathDao.getTrainingPathList();
     }
 
-    public Page<TrainingPath> getTrainingPathListPerPageByOrder(int page, int size, String language, SortColumn sortColumn,Boolean asc) {
-        if(asc){
-            return trainingPathDao.getTrainingPathListPerPageByOrderASC(page,size,language,sortColumn);
-        }else {
-            return trainingPathDao.getTrainingPathListPerPageByOrderDESC(page, size, language, sortColumn);
+    public Page<TrainingPath> getTrainingPathListPerPageByOrder(int page, int size, String language, SortColumn sortColumn, Boolean asc, Boolean archived) {
+        if (asc) {
+            return trainingPathDao.getTrainingPathListPerPageByOrderASC(page, size, language, sortColumn, archived);
+        } else {
+            return trainingPathDao.getTrainingPathListPerPageByOrderDESC(page, size, language, sortColumn, archived);
         }
     }
 
-    public Page<TrainingPath> getTrainingPathListPerPage(int page, int size,String language) {
+    public Page<TrainingPath> getTrainingPathListPerPage(int page, int size, String language, Boolean archived) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        return this.trainingPathDao.getTrainingPathListPerPage(pageRequest,language);
+        return this.trainingPathDao.getTrainingPathListPerPage(pageRequest, language, archived);
     }
 
     public Optional<TrainingPath> getTrainingPathByID(Long trainingPathId) {
@@ -56,16 +56,16 @@ public class TrainingPathService {
         this.trainingPathDao.deleteTrainingPath(trainingPathId);
     }
 
-    public Page<TrainingPath> getTrainingPathListByUser(int page, int size,String language) {
+    public Page<TrainingPath> getTrainingPathListByUser(int page, int size, String language, Boolean archived) {
         PageRequest pageRequest = PageRequest.of(page, size);
         User loggedInUser = User.getLoggedInUser();
-        return this.trainingPathDao.getTrainingPathListByUser(pageRequest, loggedInUser.getUserId(),language);
+        return this.trainingPathDao.getTrainingPathListByUser(pageRequest, loggedInUser.getUserId(), language, archived);
     }
 
-    public Page<TrainingPath> getTrainingPathListNotUsers(int page, int size,String language) {
+    public Page<TrainingPath> getTrainingPathListNotUsers(int page, int size, String language, Boolean archived) {
         PageRequest pageRequest = PageRequest.of(page, size);
         User loggedInUser = User.getLoggedInUser();
-        return this.trainingPathDao.getTrainingPathListNotUsers(pageRequest, loggedInUser.getUserId(),language);
+        return this.trainingPathDao.getTrainingPathListNotUsers(pageRequest, loggedInUser.getUserId(), language, archived);
     }
 
     public void addTrainingPathToUser(Long trainingPathId) {
