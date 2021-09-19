@@ -56,29 +56,33 @@ public class TrainingPathController {
                                                                 @RequestParam(name = "size", defaultValue = SIZE) int size,
                                                                 @RequestParam(name = "language") String language,
                                                                 @RequestParam(name = "sortColumn") SortColumn sortColumn,
-                                                                @RequestParam(name = "asc") Boolean asc) {
-        return trainingPathService.getTrainingPathListPerPageByOrder(page, size, language, sortColumn, asc);
+                                                                @RequestParam(name = "asc") Boolean asc,
+                                                                @RequestParam(name = "archived") Boolean archived) {
+        return trainingPathService.getTrainingPathListPerPageByOrder(page, size, language, sortColumn, asc, archived);
     }
 
     @GetMapping("/perPage")
     public Page<TrainingPath> getTrainingPathListPerPage(@RequestParam(name = "page", defaultValue = PAGE) int page,
                                                          @RequestParam(name = "size", defaultValue = SIZE) int size,
-                                                         @RequestParam(name = "language") String language) {
-        return trainingPathService.getTrainingPathListPerPage(page, size, language);
+                                                         @RequestParam(name = "language") String language,
+                                                         @RequestParam(name = "archived") Boolean archived) {
+        return trainingPathService.getTrainingPathListPerPage(page, size, language, archived);
     }
 
     @GetMapping("/byUser")
     public Page<TrainingPath> getTrainingPathListByUser(@RequestParam(name = "page", defaultValue = PAGE) int page,
                                                         @RequestParam(name = "size", defaultValue = SIZE_USER) int size,
-                                                        @RequestParam(name = "language") String language) {
-        return trainingPathService.getTrainingPathListByUser(page, size, language);
+                                                        @RequestParam(name = "language") String language,
+                                                        @RequestParam(name = "archived") Boolean archived) {
+        return trainingPathService.getTrainingPathListByUser(page, size, language, archived);
     }
 
     @GetMapping("/notUsers")
     public Page<TrainingPath> getTrainingPathListNotUsers(@RequestParam(name = "page", defaultValue = PAGE) int page,
                                                           @RequestParam(name = "size", defaultValue = SIZE) int size,
-                                                          @RequestParam(name = "language") String language) {
-        return trainingPathService.getTrainingPathListNotUsers(page, size, language);
+                                                          @RequestParam(name = "language") String language,
+                                                          @RequestParam(name = "archived") Boolean archived) {
+        return trainingPathService.getTrainingPathListNotUsers(page, size, language, archived);
     }
 
     @GetMapping("/{trainingPathID}")
