@@ -21,6 +21,7 @@ public class TrainingPathTranslation {
     private String preRequest;
     private Language language;
     private Long trainingPathID;
+    private String template;
 
     public static TrainingPathTranslation baseMapper(ResultSet resultSet, int rowNumber) throws SQLException {
         TrainingPathTranslation trainingPathTranslation = new TrainingPathTranslation();

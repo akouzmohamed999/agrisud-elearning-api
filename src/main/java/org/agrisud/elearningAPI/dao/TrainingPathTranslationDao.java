@@ -113,6 +113,7 @@ public class TrainingPathTranslationDao {
                 .addValue("training_path_description", trainingPathTranslation.getDescription())
                 .addValue("pre_request", trainingPathTranslation.getPreRequest())
                 .addValue("language", trainingPathTranslation.getLanguage().toString())
-                .addValue("training_path_id", trainingPathTranslation.getTrainingPathID());
+                .addValue("training_path_id", trainingPathTranslation.getTrainingPathID())
+                .addValue("tpt_template", trainingPathTranslation.getTemplate());
     }
 }

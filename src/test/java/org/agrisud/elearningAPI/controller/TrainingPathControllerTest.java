@@ -9,7 +9,6 @@ import org.agrisud.elearningAPI.model.TrainingPathTranslation;
 import org.agrisud.elearningAPI.service.ModuleService;
 import org.agrisud.elearningAPI.service.TrainingPathService;
 import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +59,7 @@ public class TrainingPathControllerTest {
                         .build())
                 .trainingPathTranslationDto(Collections.singletonList(TrainingPathTranslationDto.builder()
                         .title("parcours").description("parcours")
+                        .preRequest("prerequest parcours")
                         .moduleList(Collections.singletonList(ModuleDto.builder().orderOnPath(1).title("Module 1").build())).build()))
                 .build();
     }

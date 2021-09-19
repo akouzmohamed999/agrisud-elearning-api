@@ -12,6 +12,7 @@ import org.agrisud.elearningAPI.model.TrainingPathTranslation;
 import org.agrisud.elearningAPI.service.ModuleService;
 import org.agrisud.elearningAPI.service.TrainingPathService;
 import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
+import org.agrisud.elearningAPI.util.TemplateGenerationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -51,7 +52,7 @@ public class TrainingPathController {
     }
 
     @GetMapping("/perPage/byOrder")
-    public Page<TrainingPath> getTrainingPathListPerPageByOrder(@RequestParam(name = "page", defaultValue = PAGE)int page,
+    public Page<TrainingPath> getTrainingPathListPerPageByOrder(@RequestParam(name = "page", defaultValue = PAGE) int page,
                                                                 @RequestParam(name = "size", defaultValue = SIZE) int size,
                                                                 @RequestParam(name = "language") String language,
                                                                 @RequestParam(name = "sortColumn") SortColumn sortColumn,
@@ -63,21 +64,21 @@ public class TrainingPathController {
     public Page<TrainingPath> getTrainingPathListPerPage(@RequestParam(name = "page", defaultValue = PAGE) int page,
                                                          @RequestParam(name = "size", defaultValue = SIZE) int size,
                                                          @RequestParam(name = "language") String language) {
-        return trainingPathService.getTrainingPathListPerPage(page, size,language);
+        return trainingPathService.getTrainingPathListPerPage(page, size, language);
     }
 
     @GetMapping("/byUser")
     public Page<TrainingPath> getTrainingPathListByUser(@RequestParam(name = "page", defaultValue = PAGE) int page,
                                                         @RequestParam(name = "size", defaultValue = SIZE_USER) int size,
                                                         @RequestParam(name = "language") String language) {
-        return trainingPathService.getTrainingPathListByUser(page, size,language);
+        return trainingPathService.getTrainingPathListByUser(page, size, language);
     }
 
     @GetMapping("/notUsers")
     public Page<TrainingPath> getTrainingPathListNotUsers(@RequestParam(name = "page", defaultValue = PAGE) int page,
                                                           @RequestParam(name = "size", defaultValue = SIZE) int size,
                                                           @RequestParam(name = "language") String language) {
-        return trainingPathService.getTrainingPathListNotUsers(page, size,language);
+        return trainingPathService.getTrainingPathListNotUsers(page, size, language);
     }
 
     @GetMapping("/{trainingPathID}")
@@ -99,7 +100,8 @@ public class TrainingPathController {
                     .preRequest(trainingPathTranslationDto.getPreRequest())
                     .language(trainingPathTranslationDto.getLanguage())
                     .capacity(trainingPathTranslationDto.getCapacity())
-                    .trainingPathID(trainingPathID).build());
+                    .trainingPathID(trainingPathID)
+                    .template(TemplateGenerationHelper.generateTrainingPathTemplate(trainingPathCreationDto.getTrainingPathDto(), trainingPathTranslationDto)).build());
             AtomicInteger order = new AtomicInteger(1);
             trainingPathTranslationDto.getModuleList().forEach(moduleDto -> {
                 this.moduleService.createNewModule(Module.builder().title(moduleDto.getTitle()).orderOnPath(order.getAndIncrement())
