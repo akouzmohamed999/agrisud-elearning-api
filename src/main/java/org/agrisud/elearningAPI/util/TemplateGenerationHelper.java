@@ -6,9 +6,7 @@ import org.agrisud.elearningAPI.dto.TrainingPathTranslationDto;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 @Slf4j
 public class TemplateGenerationHelper {
@@ -16,11 +14,11 @@ public class TemplateGenerationHelper {
         return fillTemplateTrainingPathPlaceHolders(trainingPathDto, trainingPathTranslationDto, getTemplateHtmlFile());
     }
 
-    private static String getTemplateHtmlFile(){
+    private static String getTemplateHtmlFile() {
         StringBuilder contentBuilder = new StringBuilder();
         try {
-            Resource resource = new ClassPathResource("template/training_path_fr.html");
-            BufferedReader in = new BufferedReader(new FileReader(resource.getFile()));
+            InputStream inputStream = new ClassPathResource("template/training_path_fr.html").getInputStream();
+            BufferedReader in = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
             String str;
             while ((str = in.readLine()) != null) {
                 contentBuilder.append(str);
