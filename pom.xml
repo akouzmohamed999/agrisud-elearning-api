@@ -10,7 +10,7 @@
     </parent>
     <groupId>org.agrisud</groupId>
     <artifactId>elearning-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>elearning-api</name>
     <description>ELearning APP for agrisud</description>
     <properties>
