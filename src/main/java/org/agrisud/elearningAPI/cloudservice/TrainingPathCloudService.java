@@ -50,6 +50,6 @@ public class TrainingPathCloudService {
 
     private String getFileName(String originalFilename) {
         String fileName = originalFilename.substring(0, originalFilename.indexOf('.')) + CloudFileHelper.generateKey(10);
-        return "/TrainingPathPictures/" + fileName + originalFilename.substring(originalFilename.indexOf('.'));
+        return "/Elearning/TrainingPath/Pictures/" + fileName + originalFilename.substring(originalFilename.indexOf('.'));
     }
 }

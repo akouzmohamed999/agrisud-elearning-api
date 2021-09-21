@@ -29,6 +29,6 @@ public class HomeCoverImageCloudService {
 
     private String getFileName(String originalFilename) {
         String fileName = originalFilename.substring(0, originalFilename.indexOf('.')) + CloudFileHelper.generateKey(10);
-        return "/HomeCoverImages/" + fileName + originalFilename.substring(originalFilename.indexOf('.'));
+        return "/Elearning/HomeCover/Pictures/" + fileName + originalFilename.substring(originalFilename.indexOf('.'));
     }
 }
