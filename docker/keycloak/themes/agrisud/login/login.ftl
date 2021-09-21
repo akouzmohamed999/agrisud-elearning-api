@@ -2,6 +2,7 @@
 <div class="kc-base-logo-wrapper">
     <div id="kc-header-wrapper"><img src="${url.resourcesPath}/${properties.logoImg}" class="kc-base-logo" /></div>
 </div>
+<img class="form-img" src="${url.resourcesPath}/${properties.sideformImg}" />
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
     <#if section = "header">
        ${msg("loginAccountTitle")}

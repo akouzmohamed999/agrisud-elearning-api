@@ -5,8 +5,19 @@
   --secondaryColor: #ff5f01
 }
 
+.form-img {
+  position: absolute;
+  margin-left: 35em;
+  height: 45%;
+  margin-top: 1.1em;
+}
+
+.forgot-password-wrapper {
+  margin-left: -5em;;
+}
+
 body {
-  background: var(--baseColor) !important;
+  background-image: url("../img/background.jpg") !important;
   color: var(--textColor);
   font-size: 18px;
 }
@@ -28,6 +39,7 @@ body {
 
 .card-pf {
   border-color: var(--secondaryColor);
+  margin-left: 45em;
 }
 
 /* Card Title */
