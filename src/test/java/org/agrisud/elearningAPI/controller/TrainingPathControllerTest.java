@@ -44,14 +44,14 @@ public class TrainingPathControllerTest {
     private ModuleService moduleService;
 
     TrainingPath trainingPath = new TrainingPath();
-    PictureDto pictureDto = new PictureDto();
+    FileDto fileDto = new FileDto();
     TrainingPathCreationDto trainingPathCreationDto = new TrainingPathCreationDto();
 
     @BeforeEach
     public void setUp() throws Exception {
         trainingPath = TrainingPath.builder().imageUrl("TrainingPathPictures/image1.jpg")
                 .trainingPathTime(22).status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview").build();
-        pictureDto.setUrl("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview");
+        fileDto.setFileUrl("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview");
         trainingPathCreationDto = TrainingPathCreationDto.builder()
                 .trainingPathDto(TrainingPathDto.builder()
                         .imageUrl("TrainingPathPictures/image1.jpg")
@@ -113,7 +113,7 @@ public class TrainingPathControllerTest {
     void shouldUploadTrainingPathImageRequestReturn200() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "hello.txt",
                 MediaType.MULTIPART_FORM_DATA_VALUE, "Hello, World!".getBytes());
-        when(trainingPathCloudService.uploadTrainingPathPicture(any(MultipartFile.class))).thenReturn(any(PictureDto.class));
+        when(trainingPathCloudService.uploadTrainingPathPicture(any(MultipartFile.class))).thenReturn(any(FileDto.class));
         mockMvc.perform(multipart("/trainingPath/picture").file(file))
                 .andExpect(status().isOk());
         verify(trainingPathCloudService, times(1))

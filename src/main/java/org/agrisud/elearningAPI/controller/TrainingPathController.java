@@ -2,13 +2,15 @@ package org.agrisud.elearningAPI.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
-import org.agrisud.elearningAPI.dto.PictureDto;
+import org.agrisud.elearningAPI.dto.FileDto;
 import org.agrisud.elearningAPI.dto.TrainingPathCreationDto;
 import org.agrisud.elearningAPI.enums.Language;
 import org.agrisud.elearningAPI.enums.SortColumn;
+import org.agrisud.elearningAPI.model.Course;
 import org.agrisud.elearningAPI.model.Module;
 import org.agrisud.elearningAPI.model.TrainingPath;
 import org.agrisud.elearningAPI.model.TrainingPathTranslation;
+import org.agrisud.elearningAPI.service.CourseService;
 import org.agrisud.elearningAPI.service.ModuleService;
 import org.agrisud.elearningAPI.service.TrainingPathService;
 import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
@@ -45,6 +47,9 @@ public class TrainingPathController {
 
     @Autowired
     private ModuleService moduleService;
+
+    @Autowired
+    private CourseService courseService;
 
     @GetMapping
     public List<TrainingPath> getTrainingPathList() {
@@ -96,7 +101,6 @@ public class TrainingPathController {
                 .fullImagePath(trainingPathCreationDto.getTrainingPathDto().getFullImagePath())
                 .status(false).archived(false).trainingPathTime(trainingPathCreationDto.getTrainingPathDto().getTrainingPathTime())
                 .build());
-
         trainingPathCreationDto.getTrainingPathTranslationDto().forEach(trainingPathTranslationDto -> {
             long trainingPathTranslationID = this.trainingPathTranslationService.createNewTrainingPathTranslation(TrainingPathTranslation.builder()
                     .title(trainingPathTranslationDto.getTitle())
@@ -104,12 +108,17 @@ public class TrainingPathController {
                     .preRequest(trainingPathTranslationDto.getPreRequest())
                     .language(trainingPathTranslationDto.getLanguage())
                     .capacity(trainingPathTranslationDto.getCapacity())
-                    .trainingPathID(trainingPathID)
-                    .template(TemplateGenerationHelper.generateTrainingPathTemplate(trainingPathCreationDto.getTrainingPathDto(), trainingPathTranslationDto)).build());
+                    .trainingPathID(trainingPathID).build());
+//                    .template(TemplateGenerationHelper.generateTrainingPathTemplate(trainingPathCreationDto.getTrainingPathDto(), trainingPathTranslationDto)).build());
             AtomicInteger order = new AtomicInteger(1);
             trainingPathTranslationDto.getModuleList().forEach(moduleDto -> {
-                this.moduleService.createNewModule(Module.builder().title(moduleDto.getTitle()).orderOnPath(order.getAndIncrement())
+                long moduleID = this.moduleService.createNewModule(Module.builder().title(moduleDto.getTitle()).orderOnPath(order.getAndIncrement())
                         .trainingPathTranslationID(trainingPathTranslationID).build());
+                moduleDto.getCourseDtoList().forEach(courseDto -> {
+                    courseService.createNewCourse(Course.builder().title(courseDto.getTitle()).courseHours(courseDto.getCourseHours())
+                            .courseMinutes(courseDto.getCourseMinutes()).courseType(courseDto.getCourseType())
+                            .supportUrl(courseDto.getSupportUrl()).supportPath(courseDto.getSupportPath()).moduleId(moduleID).build());
+                });
             });
         });
         return trainingPathID;
@@ -122,15 +131,22 @@ public class TrainingPathController {
 
     @DeleteMapping("/{trainingPathID}")
     public void deleteTrainingPath(@PathVariable Long trainingPathID) {
-        this.trainingPathService.getTrainingPathByID(trainingPathID).ifPresent(trainingPath -> {
-            this.trainingPathCloudService.deleteTrainingPathPicture(trainingPath.getFullImagePath());
-            this.trainingPathTranslationService.deleteTrainingPathTranslationByTrainingPathID(trainingPathID);
-            this.trainingPathService.deleteTrainingPath(trainingPathID);
-        });
+        this.trainingPathTranslationService.getTrainingPathTranslationListByTrainingPathID(trainingPathID)
+                .forEach(trainingPathTranslation -> {
+                    this.moduleService.getModuleListByTrainingPathTranslationID(trainingPathTranslation.getId()).forEach(module ->
+                            this.courseService.deleteCourseByModule(module.getId())
+                    );
+                    this.moduleService.deleteModuleByTrainingPathTranslationID(trainingPathTranslation.getId());
+                });
+        this.trainingPathTranslationService.deleteTrainingPathTranslationByTrainingPathID(trainingPathID);
+        this.trainingPathService.getTrainingPathByID(trainingPathID).ifPresent(trainingPath ->
+                this.trainingPathCloudService.deleteTrainingPathPicture(trainingPath.getFullImagePath())
+        );
+        this.trainingPathService.deleteTrainingPath(trainingPathID);
     }
 
     @PostMapping(value = "/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public PictureDto uploadTrainingPathPicture(@RequestParam MultipartFile file) {
+    public FileDto uploadTrainingPathPicture(@RequestParam MultipartFile file) {
         log.info("Starting .....");
         return trainingPathCloudService.uploadTrainingPathPicture(file);
     }

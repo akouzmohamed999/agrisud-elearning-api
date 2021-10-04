@@ -2,7 +2,7 @@ package org.agrisud.elearningAPI.cloudservice;
 
 import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.clouddao.TrainingPathCloudDao;
-import org.agrisud.elearningAPI.dto.PictureDto;
+import org.agrisud.elearningAPI.dto.FileDto;
 import org.agrisud.elearningAPI.util.CloudFileHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +20,9 @@ public class TrainingPathCloudService {
     @Autowired
     private TrainingPathCloudDao trainingPathCloudDao;
 
-    public PictureDto uploadTrainingPathPicture(MultipartFile file) {
+    public FileDto uploadTrainingPathPicture(MultipartFile file) {
         Optional<File> fileOptional = Optional.ofNullable(CloudFileHelper.getTempFileFromMultiPartFile(file));
-        AtomicReference<PictureDto> pictureDto = new AtomicReference<>(new PictureDto());
+        AtomicReference<FileDto> pictureDto = new AtomicReference<>(new FileDto());
         fileOptional.ifPresent(file1 -> {
             pictureDto.set(trainingPathCloudDao.uploadTrainingPathPicture(file1, getFileName(Objects.requireNonNull(file.getOriginalFilename()))));
             file1.delete();
@@ -38,7 +38,7 @@ public class TrainingPathCloudService {
         Optional<File> fileOptional = Optional.ofNullable(CloudFileHelper.getTempFileFromMultiPartFile(file));
         return fileOptional.map(storedFile -> {
             String url = trainingPathCloudDao.uploadTrainingPathPicture(storedFile,
-                    getFileName(Objects.requireNonNull(file.getOriginalFilename()))).getUrl();
+                    getFileName(Objects.requireNonNull(file.getOriginalFilename()))).getFileUrl();
             storedFile.delete();
             return url;
         }).orElseThrow(() -> new RuntimeException("Error while storing image/retrieve it's url"));

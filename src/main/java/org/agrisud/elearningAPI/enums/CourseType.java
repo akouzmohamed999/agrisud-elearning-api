@@ -5,5 +5,4 @@ public enum CourseType {
     VIDEO,
     PDF,
     POWER_POINT,
-    OTHER,
 }

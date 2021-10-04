@@ -1,7 +1,7 @@
 package org.agrisud.elearningAPI.cloudservice;
 
 import org.agrisud.elearningAPI.clouddao.TrainingPathCloudDao;
-import org.agrisud.elearningAPI.dto.PictureDto;
+import org.agrisud.elearningAPI.dto.FileDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +25,7 @@ public class TrainingPathCloudServiceTest {
     @InjectMocks
     private TrainingPathCloudService trainingPathCloudService;
     MockMultipartFile file = null;
-    PictureDto pictureDto = null;
+    FileDto fileDto = null;
     String imageUrl = "http://localhost:3900/s/7xPzzJqrcBfDiWS/preview";
     String imagePath = "/TrainingPathPictures/image3_d8F6vZC1ef";
 
@@ -34,12 +34,12 @@ public class TrainingPathCloudServiceTest {
         MockitoAnnotations.openMocks(this);
         file = new MockMultipartFile("file", "hello.txt",
                 MediaType.MULTIPART_FORM_DATA_VALUE, "Hello, World!".getBytes());
-        pictureDto = PictureDto.builder().fullImagePath(imagePath).url(imageUrl).build();
+        fileDto = FileDto.builder().filePath(imagePath).fileUrl(imageUrl).build();
     }
 
     @Test
     public void shouldUploadTrainingPathImage() {
-        when(trainingPathCloudDao.uploadTrainingPathPicture(any(File.class), anyString())).thenReturn(pictureDto);
+        when(trainingPathCloudDao.uploadTrainingPathPicture(any(File.class), anyString())).thenReturn(fileDto);
         trainingPathCloudService.uploadTrainingPathPicture(file);
         verify(trainingPathCloudDao, times(1)).uploadTrainingPathPicture(any(File.class), anyString());
     }

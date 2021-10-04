@@ -42,7 +42,7 @@ public class TrainingPathTranslationService {
     }
 
     public void updateTrainingPathTranslation(TrainingPathTranslation trainingPathTranslation) {
-        // TODO converting transtation to DTO, instead of having DTO from the get go
+        // TODO converting translation to DTO, instead of having DTO from the get go
         TrainingPathTranslationDto trainingPathTranslationDto = TrainingPathTranslationDto.builder()
                 .description(trainingPathTranslation.getDescription())
                 .preRequest(trainingPathTranslation.getPreRequest())
@@ -54,17 +54,11 @@ public class TrainingPathTranslationService {
     }
 
     public void deleteTrainingPathTranslation(Long trainingPathTranslationID) {
-        this.trainingPathTranslationDao.getTrainingPathTranslationById(trainingPathTranslationID).ifPresent(trainingPathTranslation -> {
-            this.moduleService.deleteModuleByTrainingPathTranslationID(trainingPathTranslationID);
-            this.trainingPathTranslationDao.deleteTrainingPathTranslation(trainingPathTranslationID);
-        });
+        this.trainingPathTranslationDao.deleteTrainingPathTranslation(trainingPathTranslationID);
     }
 
     public void deleteTrainingPathTranslationByTrainingPathID(Long trainingPathID) {
-        this.trainingPathTranslationDao.getTrainingPathTranslationListByTrainingPathID(trainingPathID)
-                .forEach(trainingPathTranslation -> {
-                    deleteTrainingPathTranslation(trainingPathTranslation.getId());
-                });
+        this.trainingPathTranslationDao.deleteTrainingPathTranslationByTrainingPathID(trainingPathID);
     }
 
     public void updateTrainingPathTranslationTemplate(Long trainingPathTranslationId, String content) {
@@ -78,6 +72,4 @@ public class TrainingPathTranslationService {
     public String getTrainingPathTranslationTemplate(Long trainingPathId, Language currentLang) {
         return trainingPathTranslationDao.getTrainingPathTranslationTemplate(trainingPathId, currentLang);
     }
-
-
 }

@@ -5,7 +5,7 @@ import org.aarboard.nextcloud.api.NextcloudConnector;
 import org.aarboard.nextcloud.api.filesharing.Share;
 import org.aarboard.nextcloud.api.filesharing.SharePermissions;
 import org.aarboard.nextcloud.api.filesharing.ShareType;
-import org.agrisud.elearningAPI.dto.PictureDto;
+import org.agrisud.elearningAPI.dto.FileDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -25,11 +25,11 @@ public class TrainingPathCloudDao {
     @Value("${cloud.server.download-url}")
     String downloadUrl;
 
-    public PictureDto uploadTrainingPathPicture(File file, String fullFilePath) {
+    public FileDto uploadTrainingPathPicture(File file, String fullFilePath) {
         log.info("Starting UPLOAD.....");
         connector.uploadFile(file, fullFilePath);
-        return PictureDto.builder().url(getTrainingPathPicture(fullFilePath))
-                .fullImagePath(fullFilePath).build();
+        return FileDto.builder().fileUrl(getTrainingPathPicture(fullFilePath))
+                .filePath(fullFilePath).build();
     }
 
     public void deleteTrainingPathPicture(String fullFilePath) {
