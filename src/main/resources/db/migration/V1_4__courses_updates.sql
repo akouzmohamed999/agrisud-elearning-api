@@ -1,4 +1,5 @@
 ALTER TABLE course DROP COLUMN course_language;
+ALTER TABLE training_path DROP COLUMN training_path_time;
 ALTER TABLE course ADD COLUMN course_hours int;
 ALTER TABLE course ADD COLUMN course_minutes int;
 ALTER TABLE course ADD COLUMN course_support_url varchar(200);

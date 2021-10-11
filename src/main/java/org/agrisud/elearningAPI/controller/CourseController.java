@@ -59,7 +59,11 @@ public class CourseController {
 
     @DeleteMapping("/{courseID}")
     public void deleteCourse(@PathVariable Long courseID) {
-        this.courseService.getCoursesByID(courseID).ifPresent(course ->this.courseCloudService.deleteCourseSupport(course.getSupportPath()));
+        this.courseService.getCoursesByID(courseID).ifPresent(course -> {
+            if (course.getCourseType() != CourseType.VIDEO){
+                this.courseCloudService.deleteCourseSupport(course.getSupportPath());
+            }
+        });
         this.courseService.deleteCourse(courseID);
     }
 

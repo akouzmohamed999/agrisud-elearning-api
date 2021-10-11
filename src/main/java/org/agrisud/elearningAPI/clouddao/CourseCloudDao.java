@@ -33,6 +33,7 @@ public class CourseCloudDao {
     }
 
     public void deleteCourseSupport(String fullFilePath) {
+        log.info("Starting DELETE.....");
         connector.deleteFolder(fullFilePath);
     }
 
@@ -40,6 +41,6 @@ public class CourseCloudDao {
         log.info("Starting SHARE LINK.....");
         SharePermissions permissions = new SharePermissions(SharePermissions.SingleRight.READ);
         Share share = connector.doShare(path, ShareType.PUBLIC_LINK, null, false, null, permissions);
-        return share.getUrl().replace(serverName, downloadUrl) + "/preview";
+        return share.getUrl().replace(serverName, downloadUrl);
     }
 }
