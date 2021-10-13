@@ -2,6 +2,7 @@ package org.agrisud.elearningAPI.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
+import org.agrisud.elearningAPI.dto.CourseDto;
 import org.agrisud.elearningAPI.dto.FileDto;
 import org.agrisud.elearningAPI.dto.TrainingPathCreationDto;
 import org.agrisud.elearningAPI.enums.Language;
@@ -99,21 +100,36 @@ public class TrainingPathController {
     public long createNewTrainingPath(@RequestBody TrainingPathCreationDto trainingPathCreationDto) {
         long trainingPathID = this.trainingPathService.createNewTrainingPath(TrainingPath.builder().imageUrl(trainingPathCreationDto.getTrainingPathDto().getImageUrl())
                 .fullImagePath(trainingPathCreationDto.getTrainingPathDto().getFullImagePath())
-                .status(false).archived(false).trainingPathTime(trainingPathCreationDto.getTrainingPathDto().getTrainingPathTime())
-                .build());
+                .status(false).archived(false).build());
+
         trainingPathCreationDto.getTrainingPathTranslationDto().forEach(trainingPathTranslationDto -> {
+
+            int hours = trainingPathTranslationDto.getModuleList().stream().map(moduleDto ->
+                    moduleDto.getCourseDtoList().stream().map(CourseDto::getCourseHours).reduce(0, Integer::sum)).reduce(0, Integer::sum);
+            int minutes = trainingPathTranslationDto.getModuleList().stream().map(moduleDto ->
+                    moduleDto.getCourseDtoList().stream().map(CourseDto::getCourseMinutes).reduce(0, Integer::sum)).reduce(0, Integer::sum);
+
+            hours += minutes / 60;
+            minutes = minutes % 60;
+
+
             long trainingPathTranslationID = this.trainingPathTranslationService.createNewTrainingPathTranslation(TrainingPathTranslation.builder()
                     .title(trainingPathTranslationDto.getTitle())
                     .description(trainingPathTranslationDto.getDescription())
                     .preRequest(trainingPathTranslationDto.getPreRequest())
                     .language(trainingPathTranslationDto.getLanguage())
                     .capacity(trainingPathTranslationDto.getCapacity())
-                    .trainingPathID(trainingPathID).build());
-//                    .template(TemplateGenerationHelper.generateTrainingPathTemplate(trainingPathCreationDto.getTrainingPathDto(), trainingPathTranslationDto)).build());
+                    .trainingPathDuration(getCourseTimeString(hours,minutes))
+                    .trainingPathID(trainingPathID).template(TemplateGenerationHelper.generateTrainingPathTemplate(trainingPathCreationDto.getTrainingPathDto(), trainingPathTranslationDto)).build());
+
             AtomicInteger order = new AtomicInteger(1);
             trainingPathTranslationDto.getModuleList().forEach(moduleDto -> {
+                int moduleHours = moduleDto.getCourseDtoList().stream().map(CourseDto::getCourseHours).reduce(0, Integer::sum);
+                int moduleMinutes = moduleDto.getCourseDtoList().stream().map(CourseDto::getCourseMinutes).reduce(0, Integer::sum);
+                moduleHours += moduleMinutes / 60;
+                moduleMinutes = moduleMinutes % 60;
                 long moduleID = this.moduleService.createNewModule(Module.builder().title(moduleDto.getTitle()).orderOnPath(order.getAndIncrement())
-                        .trainingPathTranslationID(trainingPathTranslationID).build());
+                        .moduleDuration(getCourseTimeString(moduleHours,moduleMinutes)).trainingPathTranslationID(trainingPathTranslationID).build());
                 moduleDto.getCourseDtoList().forEach(courseDto -> {
                     courseService.createNewCourse(Course.builder().title(courseDto.getTitle()).courseHours(courseDto.getCourseHours())
                             .courseMinutes(courseDto.getCourseMinutes()).courseType(courseDto.getCourseType())
@@ -123,6 +139,16 @@ public class TrainingPathController {
         });
         return trainingPathID;
     }
+
+    String getCourseTimeString(int courseHours,int courseMinutes){
+        if (courseHours == 0) {
+            return courseMinutes + " min ";
+        } else if (courseMinutes == 0) {
+            return courseMinutes + " h ";
+        } else {
+            return courseHours + " h " + courseMinutes + " min ";
+        }
+    };
 
     @PutMapping
     public void updateTrainingPath(@RequestBody TrainingPath trainingPath) {

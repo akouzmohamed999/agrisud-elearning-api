@@ -4,6 +4,8 @@ ALTER TABLE course ADD COLUMN course_hours int;
 ALTER TABLE course ADD COLUMN course_minutes int;
 ALTER TABLE course ADD COLUMN course_support_url varchar(200);
 ALTER TABLE course ADD COLUMN course_support_path varchar(200);
+ALTER TABLE module ADD COLUMN module_duration varchar(200);
+ALTER TABLE training_path_translation ADD COLUMN training_path_duration varchar(200);
 
 CREATE TABLE user_course_status
 (

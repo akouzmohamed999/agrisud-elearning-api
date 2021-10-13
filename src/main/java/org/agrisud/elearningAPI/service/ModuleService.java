@@ -48,4 +48,8 @@ public class ModuleService {
     public void deleteModuleByTrainingPathTranslationID(Long trainingPathTranslationID) {
         this.moduleDao.deleteModulesByTrainingPathTranslationID(trainingPathTranslationID);
     }
+
+    public void updateDuration(Long moduleId, String courseTimeString) {
+        this.moduleDao.updateDuration(moduleId,courseTimeString);
+    }
 }

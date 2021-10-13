@@ -29,7 +29,7 @@ public class TrainingPathDaoTest {
     @BeforeEach
     public void setUp() throws Exception {
         trainingPath = TrainingPath.builder().imageUrl("TrainingPathPictures/image1.jpg")
-                .trainingPathTime(22).status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview")
+                .status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview")
                 .build();
     }
 
@@ -70,7 +70,7 @@ public class TrainingPathDaoTest {
     @Test
     public void shouldUpdateTrainingPath() {
         TrainingPath trainingPath2 = TrainingPath.builder().id(1L).imageUrl("imageUrl 2")
-                .trainingPathTime(15).status(false).build();
+                .status(false).build();
         trainingPathDao.updateTrainingPath(trainingPath2);
         assertThat(trainingPathDao.getTrainingPathList()).hasSize(1);
         assertThat(trainingPathDao.getTrainingPathById(1L).get().getImageUrl()).isEqualTo("imageUrl 2");

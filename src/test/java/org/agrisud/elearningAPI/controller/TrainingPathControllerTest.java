@@ -50,12 +50,12 @@ public class TrainingPathControllerTest {
     @BeforeEach
     public void setUp() throws Exception {
         trainingPath = TrainingPath.builder().imageUrl("TrainingPathPictures/image1.jpg")
-                .trainingPathTime(22).status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview").build();
+                .status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview").build();
         fileDto.setFileUrl("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview");
         trainingPathCreationDto = TrainingPathCreationDto.builder()
                 .trainingPathDto(TrainingPathDto.builder()
                         .imageUrl("TrainingPathPictures/image1.jpg")
-                        .trainingPathTime(22).status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview")
+                        .status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview")
                         .build())
                 .trainingPathTranslationDto(Collections.singletonList(TrainingPathTranslationDto.builder()
                         .title("parcours").description("parcours")

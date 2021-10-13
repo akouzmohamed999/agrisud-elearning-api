@@ -72,4 +72,8 @@ public class TrainingPathTranslationService {
     public String getTrainingPathTranslationTemplate(Long trainingPathId, Language currentLang) {
         return trainingPathTranslationDao.getTrainingPathTranslationTemplate(trainingPathId, currentLang);
     }
+
+    public void updateDuration(long trainingPathTranslationID, String courseTimeString) {
+        this.trainingPathTranslationDao.updateDuration(trainingPathTranslationID,courseTimeString);
+    }
 }

@@ -16,7 +16,6 @@ public class TrainingPath {
     private Long id;
     private String imageUrl;
     private String fullImagePath;
-    private int trainingPathTime;
     private Boolean status;
     private Boolean archived;
 
@@ -25,7 +24,6 @@ public class TrainingPath {
         trainingPath.setId(resultSet.getLong("training_path_id"));
         trainingPath.setImageUrl(resultSet.getString("image_url"));
         trainingPath.setFullImagePath(resultSet.getString("full_image_path"));
-        trainingPath.setTrainingPathTime(resultSet.getInt("training_path_time"));
         trainingPath.setStatus(resultSet.getBoolean("training_path_status"));
         trainingPath.setArchived(resultSet.getBoolean("archived"));
         return trainingPath;

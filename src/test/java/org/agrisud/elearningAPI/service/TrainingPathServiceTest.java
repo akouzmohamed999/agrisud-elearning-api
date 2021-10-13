@@ -28,7 +28,7 @@ public class TrainingPathServiceTest {
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
-        trainingPath = TrainingPath.builder().imageUrl("TrainingPathPictures/image1.jpg").trainingPathTime(22)
+        trainingPath = TrainingPath.builder().imageUrl("TrainingPathPictures/image1.jpg")
                 .status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview")
                 .build();
     }

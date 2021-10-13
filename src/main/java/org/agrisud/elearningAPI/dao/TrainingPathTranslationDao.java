@@ -114,6 +114,17 @@ public class TrainingPathTranslationDao {
                 .addValue("pre_request", trainingPathTranslation.getPreRequest())
                 .addValue("language", trainingPathTranslation.getLanguage().toString())
                 .addValue("training_path_id", trainingPathTranslation.getTrainingPathID())
-                .addValue("tpt_template", trainingPathTranslation.getTemplate());
+                .addValue("tpt_template", trainingPathTranslation.getTemplate())
+                .addValue("training_path_duration", trainingPathTranslation.getTrainingPathDuration());
+    }
+
+    public void updateDuration(long trainingPathTranslationID, String courseTimeString) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue("training_path_translation_id", trainingPathTranslationID)
+                .addValue("training_path_duration", courseTimeString);
+        int update = jdbcTemplate.update(sqlProperties.getProperty("training-path-translation.update.duration"), sqlParameterSource);
+        if (update == 1) {
+            log.info("Training Path translation's duration updated : " + trainingPathTranslationID + " duration " + courseTimeString);
+        }
     }
 }

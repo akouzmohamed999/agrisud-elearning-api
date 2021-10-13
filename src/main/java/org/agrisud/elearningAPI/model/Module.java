@@ -13,6 +13,7 @@ public class Module {
     private Long id;
     private String title;
     private int orderOnPath;
+    private String moduleDuration;
     private Long trainingPathTranslationID;
 
     public static Module baseMapper(ResultSet resultSet, int rowNumber) throws SQLException {
@@ -21,6 +22,7 @@ public class Module {
         module.setTitle(resultSet.getString("module_title"));
         module.setOrderOnPath(resultSet.getInt("order_on_path"));
         module.setTrainingPathTranslationID(resultSet.getLong("training_path_translation_id"));
+        module.setModuleDuration(resultSet.getString("module_duration"));
         return module;
     }
 }
