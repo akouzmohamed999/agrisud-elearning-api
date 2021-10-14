@@ -1,7 +1,6 @@
 package org.agrisud.elearningAPI.controller;
 
 import org.agrisud.elearningAPI.model.Module;
-import org.agrisud.elearningAPI.service.CourseService;
 import org.agrisud.elearningAPI.service.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,8 +16,7 @@ public class ModuleController {
     public static final String SIZE = "100";
     @Autowired
     private ModuleService moduleService;
-    @Autowired
-    private CourseService courseService;
+
 
     @GetMapping
     public List<Module> getModuleList() {
@@ -54,7 +52,6 @@ public class ModuleController {
 
     @DeleteMapping("/{moduleID}")
     public void deleteModule(@PathVariable Long moduleID) {
-        this.courseService.deleteCourseByModule(moduleID);
         this.moduleService.deleteModule(moduleID);
     }
 
@@ -62,4 +59,6 @@ public class ModuleController {
     public void deleteModuleByTrainingPathTranslationID(@PathVariable Long trainingPathTranslationID) {
         this.moduleService.deleteModuleByTrainingPathTranslationID(trainingPathTranslationID);
     }
+
+
 }

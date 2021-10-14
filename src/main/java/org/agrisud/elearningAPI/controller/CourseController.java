@@ -5,10 +5,7 @@ import org.agrisud.elearningAPI.cloudservice.CourseCloudService;
 import org.agrisud.elearningAPI.dto.FileDto;
 import org.agrisud.elearningAPI.enums.CourseType;
 import org.agrisud.elearningAPI.model.Course;
-import org.agrisud.elearningAPI.model.Module;
 import org.agrisud.elearningAPI.service.CourseService;
-import org.agrisud.elearningAPI.service.ModuleService;
-import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -29,12 +26,6 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
-
-    @Autowired
-    private ModuleService moduleService;
-
-    @Autowired
-    private TrainingPathTranslationService trainingPathTranslationService;
 
     @Autowired
     private CourseCloudService courseCloudService;
@@ -58,25 +49,12 @@ public class CourseController {
 
     @PostMapping
     public long createNewCourse(@RequestBody Course course) {
-        long courseID = this.courseService.createNewCourse(course);
-        UpdateDuration(course.getModuleId());
-        return courseID;
-    }
-
-    private String getCourseTimeString(int courseHours, int courseMinutes) {
-        if (courseHours == 0) {
-            return courseMinutes + " min ";
-        } else if (courseMinutes == 0) {
-            return courseMinutes + " h ";
-        } else {
-            return courseHours + " h " + courseMinutes + " min ";
-        }
+        return this.courseService.createNewCourse(course);
     }
 
     @PutMapping
     public void updateCourse(@RequestBody Course course) {
         this.courseService.updateCourse(course);
-        UpdateDuration(course.getModuleId());
     }
 
     @DeleteMapping("/{courseID}")
@@ -86,7 +64,6 @@ public class CourseController {
                 this.courseCloudService.deleteCourseSupport(course.getSupportPath());
             }
             this.courseService.deleteCourse(courseID);
-            UpdateDuration(course.getModuleId());
         });
     }
 
@@ -94,7 +71,6 @@ public class CourseController {
     public void deleteCourseByModule(@PathVariable Long moduleID) {
         this.courseService.getCoursesByModule(moduleID).forEach(course -> this.courseCloudService.deleteCourseSupport(course.getSupportPath()));
         this.courseService.deleteCourseByModule(moduleID);
-        UpdateDuration(moduleID);
     }
 
     @PostMapping("/AddCourse/{courseID}")
@@ -117,29 +93,5 @@ public class CourseController {
     @DeleteMapping("/support")
     public void deleteCourseSupport(@RequestParam String filePath) {
         this.courseCloudService.deleteCourseSupport(filePath);
-    }
-
-    private void UpdateDuration(long moduleID) {
-        moduleService.getModuleById(moduleID).ifPresent(moduleDto -> {
-            long trainingPathTranslationID = moduleDto.getTrainingPathTranslationID();
-            List<Module> modules = moduleService.getModuleListByTrainingPathTranslationID(trainingPathTranslationID);
-            int hours = modules.stream().map(module ->
-                    courseService.getCoursesByModule(module.getId()).stream().map(Course::getCourseHours)
-                            .reduce(0, Integer::sum)).reduce(0, Integer::sum);
-            int minutes = modules.stream().map(module ->
-                    courseService.getCoursesByModule(module.getId()).stream().map(Course::getCourseMinutes)
-                            .reduce(0, Integer::sum)).reduce(0, Integer::sum);
-            hours += minutes / 60;
-            minutes = minutes % 60;
-            trainingPathTranslationService.updateDuration(trainingPathTranslationID, getCourseTimeString(hours, minutes));
-
-            List<Course> courses = courseService.getCoursesByModule(moduleID);
-            int moduleHours = courses.stream().map(Course::getCourseHours).reduce(0, Integer::sum);
-            int moduleMinutes = courses.stream().map(Course::getCourseMinutes).reduce(0, Integer::sum);
-            moduleHours += moduleMinutes / 60;
-            moduleMinutes = moduleMinutes % 60;
-            moduleService.updateDuration(moduleID, getCourseTimeString(moduleHours, moduleMinutes));
-        });
-
     }
 }

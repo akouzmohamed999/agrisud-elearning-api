@@ -39,16 +39,12 @@ public class TrainingPathController {
     public static final String SIZE_USER = "10000";
     @Autowired
     private TrainingPathService trainingPathService;
-
     @Autowired
     private TrainingPathCloudService trainingPathCloudService;
-
     @Autowired
     private TrainingPathTranslationService trainingPathTranslationService;
-
     @Autowired
     private ModuleService moduleService;
-
     @Autowired
     private CourseService courseService;
 
@@ -119,7 +115,7 @@ public class TrainingPathController {
                     .preRequest(trainingPathTranslationDto.getPreRequest())
                     .language(trainingPathTranslationDto.getLanguage())
                     .capacity(trainingPathTranslationDto.getCapacity())
-                    .trainingPathDuration(getCourseTimeString(hours,minutes))
+                    .trainingPathDuration(getCourseTimeString(hours, minutes))
                     .trainingPathID(trainingPathID).template(TemplateGenerationHelper.generateTrainingPathTemplate(trainingPathCreationDto.getTrainingPathDto(), trainingPathTranslationDto)).build());
 
             AtomicInteger order = new AtomicInteger(1);
@@ -129,7 +125,7 @@ public class TrainingPathController {
                 moduleHours += moduleMinutes / 60;
                 moduleMinutes = moduleMinutes % 60;
                 long moduleID = this.moduleService.createNewModule(Module.builder().title(moduleDto.getTitle()).orderOnPath(order.getAndIncrement())
-                        .moduleDuration(getCourseTimeString(moduleHours,moduleMinutes)).trainingPathTranslationID(trainingPathTranslationID).build());
+                        .moduleDuration(getCourseTimeString(moduleHours, moduleMinutes)).trainingPathTranslationID(trainingPathTranslationID).build());
                 moduleDto.getCourseDtoList().forEach(courseDto -> {
                     courseService.createNewCourse(Course.builder().title(courseDto.getTitle()).courseHours(courseDto.getCourseHours())
                             .courseMinutes(courseDto.getCourseMinutes()).courseType(courseDto.getCourseType())
@@ -140,7 +136,7 @@ public class TrainingPathController {
         return trainingPathID;
     }
 
-    String getCourseTimeString(int courseHours,int courseMinutes){
+    private String getCourseTimeString(int courseHours, int courseMinutes) {
         if (courseHours == 0) {
             return courseMinutes + " min ";
         } else if (courseMinutes == 0) {
@@ -148,7 +144,7 @@ public class TrainingPathController {
         } else {
             return courseHours + " h " + courseMinutes + " min ";
         }
-    };
+    }
 
     @PutMapping
     public void updateTrainingPath(@RequestBody TrainingPath trainingPath) {
