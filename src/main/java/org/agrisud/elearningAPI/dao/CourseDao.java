@@ -8,13 +8,19 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,6 +32,8 @@ public class CourseDao {
 
     @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
     @Autowired
     Properties sqlProperties;
@@ -36,10 +44,10 @@ public class CourseDao {
                 .addValue("offset", pageable.getOffset()).addValue("module_id", moduleID);
         SqlParameterSource sqlParameterSourceCount = new MapSqlParameterSource()
                 .addValue("module_id", moduleID);
-        Optional<Integer> total = Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty("course.get.all.by.module.count"),
-                sqlParameterSourceCount, Integer.class));
+        int total = Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty("course.get.all.by.module.count"),
+                sqlParameterSourceCount, Integer.class)).orElseGet(() -> 0);
         List<Course> courseList = namedParameterJdbcTemplate.query(sqlProperties.getProperty("course.get.all.by.module.per_page"), sqlParameterSource, Course::baseMapper);
-        return new PageImpl<>(courseList, pageable, total.get());
+        return new PageImpl<>(courseList, pageable, total);
     }
 
     public List<Course> getCoursesByModule(Long moduleID) {
@@ -69,6 +77,30 @@ public class CourseDao {
         } else {
             log.error("Course not created :/ ");
             return 0;
+        }
+    }
+
+    public void createCoursesList(List<Course> courseList) {
+        int[] updateCounts = jdbcTemplate.batchUpdate(sqlProperties.getProperty("course.create.list"),new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setString(1, courseList.get(i).getTitle());
+                ps.setString(2, courseList.get(i).getCourseType().toString());
+                ps.setLong(3, courseList.get(i).getModuleId());
+                ps.setInt(4, courseList.get(i).getCourseHours());
+                ps.setInt(5, courseList.get(i).getCourseMinutes());
+                ps.setString(6, courseList.get(i).getSupportUrl());
+                ps.setString(7, courseList.get(i).getSupportPath());
+            }
+            @Override
+            public int getBatchSize() {
+                return courseList.size();
+            }
+        });
+        if (updateCounts.length > 0) {
+            log.info(updateCounts.length + " Courses created");
+        } else {
+            log.error(updateCounts.length + " Course created");
         }
     }
 

@@ -17,7 +17,6 @@ public class ModuleController {
     @Autowired
     private ModuleService moduleService;
 
-
     @GetMapping
     public List<Module> getModuleList() {
         return moduleService.getModuleList();
@@ -59,6 +58,4 @@ public class ModuleController {
     public void deleteModuleByTrainingPathTranslationID(@PathVariable Long trainingPathTranslationID) {
         this.moduleService.deleteModuleByTrainingPathTranslationID(trainingPathTranslationID);
     }
-
-
 }

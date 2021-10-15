@@ -25,12 +25,12 @@ import static org.mockito.Mockito.*;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
-public class TrainingPathCloudDaoTest {
+public class FileCloudDaoTest {
 
     @Mock
     NextcloudConnector connector;
     @InjectMocks
-    private TrainingPathCloudDao trainingPathCloudDao;
+    private FileCloudDao fileCloudDao;
 
     String imageUrl = "http://localhost:3900/s/7xPzzJqrcBfDiWS/preview";
     String imageName = "/TrainingPathPictures/image3_d8F6vZC1ef";
@@ -38,8 +38,8 @@ public class TrainingPathCloudDaoTest {
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
-        trainingPathCloudDao.downloadUrl = "http://localhost:3900";
-        trainingPathCloudDao.serverName = "http://localhost:3900";
+        fileCloudDao.downloadUrl = "http://localhost:3900";
+        fileCloudDao.serverName = "http://localhost:3900";
     }
 
     @Test
@@ -51,7 +51,7 @@ public class TrainingPathCloudDaoTest {
                 any(SharePermissions.class))).thenReturn(share);
         File file = File.createTempFile(imageName, "jpg");
 
-        FileDto fileDto = trainingPathCloudDao.uploadTrainingPathPicture(file, imageUrl);
+        FileDto fileDto = fileCloudDao.uploadFile(file, imageUrl,true);
 
         assertThat(fileDto.getFileUrl()).isNotEmpty();
         verify(connector, times(1)).uploadFile(any(File.class), anyString());

@@ -1,7 +1,7 @@
 package org.agrisud.elearningAPI.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.agrisud.elearningAPI.cloudservice.CourseCloudService;
+import org.agrisud.elearningAPI.cloudservice.FileCloudService;
 import org.agrisud.elearningAPI.dto.FileDto;
 import org.agrisud.elearningAPI.enums.CourseType;
 import org.agrisud.elearningAPI.model.Course;
@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 @RestController
@@ -23,12 +22,10 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CourseController {
     public static final String PAGE = "0";
     public static final String SIZE = "10";
-
     @Autowired
     private CourseService courseService;
-
     @Autowired
-    private CourseCloudService courseCloudService;
+    private FileCloudService fileCloudService;
 
     @GetMapping("/ByModule/PerPage/{moduleID}")
     public Page<Course> getCoursesByModulePerPage(@RequestParam(name = "page", defaultValue = PAGE) int page,
@@ -61,7 +58,7 @@ public class CourseController {
     public void deleteCourse(@PathVariable Long courseID) {
         this.courseService.getCoursesByID(courseID).ifPresent(course -> {
             if (course.getCourseType() != CourseType.VIDEO) {
-                this.courseCloudService.deleteCourseSupport(course.getSupportPath());
+                this.fileCloudService.deleteFile(course.getSupportPath());
             }
             this.courseService.deleteCourse(courseID);
         });
@@ -69,7 +66,7 @@ public class CourseController {
 
     @DeleteMapping("/ByModule/{moduleID}")
     public void deleteCourseByModule(@PathVariable Long moduleID) {
-        this.courseService.getCoursesByModule(moduleID).forEach(course -> this.courseCloudService.deleteCourseSupport(course.getSupportPath()));
+        this.courseService.getCoursesByModule(moduleID).forEach(course -> this.fileCloudService.deleteFile(course.getSupportPath()));
         this.courseService.deleteCourseByModule(moduleID);
     }
 
@@ -84,14 +81,14 @@ public class CourseController {
         return ResponseEntity.ok().body(finished);
     }
 
-    @PostMapping(value = "/support/{supportType}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public AtomicReference<FileDto> uploadCourseSupport(@RequestParam MultipartFile support, @PathVariable String supportType) {
+    @PostMapping(value = "/support", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public FileDto uploadCourseSupport(@RequestParam MultipartFile support) {
         log.info("Starting .....");
-        return this.courseCloudService.uploadCourseSupport(support, CourseType.valueOf(supportType));
+        return this.fileCloudService.uploadFile(support, false);
     }
 
     @DeleteMapping("/support")
     public void deleteCourseSupport(@RequestParam String filePath) {
-        this.courseCloudService.deleteCourseSupport(filePath);
+        this.fileCloudService.deleteFile(filePath);
     }
 }

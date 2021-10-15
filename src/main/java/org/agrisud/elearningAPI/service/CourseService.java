@@ -1,8 +1,15 @@
 package org.agrisud.elearningAPI.service;
 
 import org.agrisud.elearningAPI.dao.CourseDao;
+import org.agrisud.elearningAPI.dao.ModuleDao;
+import org.agrisud.elearningAPI.dao.TrainingPathTranslationDao;
+import org.agrisud.elearningAPI.dto.CourseDto;
+import org.agrisud.elearningAPI.dto.ModuleDto;
+import org.agrisud.elearningAPI.dto.TrainingPathTranslationDto;
 import org.agrisud.elearningAPI.model.Course;
 import org.agrisud.elearningAPI.model.Module;
+import org.agrisud.elearningAPI.model.TrainingPathTranslation;
+import org.agrisud.elearningAPI.util.DurationGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,15 +17,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
     @Autowired
     private CourseDao courseDao;
     @Autowired
-    private ModuleService moduleService;
+    private ModuleDao moduleDao;
     @Autowired
-    private TrainingPathTranslationService trainingPathTranslationService;
+    private TrainingPathTranslationDao trainingPathTranslationDao;
 
     public Page<Course> getCoursesByModulePerPage(int page, int size, Long moduleID) {
         PageRequest pageRequest = PageRequest.of(page, size);
@@ -35,19 +43,32 @@ public class CourseService {
 
     public long createNewCourse(Course course) {
         long courseID = this.courseDao.createNewCourse(course);
-        updateDuration(course.getModuleId());
+        Long trainingPathTranslationID = moduleDao.getModuleById(course.getModuleId()).orElseThrow(() -> new RuntimeException("Module not found"))
+                .getTrainingPathTranslationID();
+        updateTrainingPathDuration(trainingPathTranslationID);
+        updateModuleDuration(course);
         return courseID;
+    }
+
+    public void createCourseList(List<Course> courses) {
+        this.courseDao.createCoursesList(courses);
     }
 
     public void updateCourse(Course course) {
         this.courseDao.updateCourse(course);
-        updateDuration(course.getModuleId());
+        Long trainingPathTranslationID = moduleDao.getModuleById(course.getModuleId()).orElseThrow(() -> new RuntimeException("Module not found"))
+                .getTrainingPathTranslationID();
+        updateTrainingPathDuration(trainingPathTranslationID);
+        updateModuleDuration(course);
     }
 
     public void deleteCourse(Long courseID) {
         this.courseDao.getCoursesByID(courseID).ifPresent(course -> {
             this.courseDao.deleteCourse(courseID);
-            updateDuration(course.getModuleId());
+            Long trainingPathTranslationID = moduleDao.getModuleById(course.getModuleId()).orElseThrow(() -> new RuntimeException("Module not found"))
+                    .getTrainingPathTranslationID();
+            updateTrainingPathDuration(trainingPathTranslationID);
+            updateModuleDuration(course);
         });
     }
 
@@ -63,36 +84,44 @@ public class CourseService {
         return this.courseDao.isModuleFinished(moduleID);
     }
 
-    private void updateDuration(Long moduleID) {
-        moduleService.getModuleById(moduleID).ifPresent(moduleDto -> {
-            Long trainingPathTranslationID = moduleDto.getTrainingPathTranslationID();
-            List<Module> modules = moduleService.getModuleListByTrainingPathTranslationID(trainingPathTranslationID);
-            int hours = modules.stream().map(module ->
-                    courseDao.getCoursesByModule(module.getId()).stream().map(Course::getCourseHours)
-                            .reduce(0, Integer::sum)).reduce(0, Integer::sum);
-            int minutes = modules.stream().map(module ->
-                    courseDao.getCoursesByModule(module.getId()).stream().map(Course::getCourseMinutes)
-                            .reduce(0, Integer::sum)).reduce(0, Integer::sum);
-            hours += minutes / 60;
-            minutes = minutes % 60;
-
-            trainingPathTranslationService.updateDuration(trainingPathTranslationID, getCourseTimeString(hours, minutes));
-            List<Course> courses = courseDao.getCoursesByModule(moduleID);
-            int moduleHours = courses.stream().map(Course::getCourseHours).reduce(0, Integer::sum);
-            int moduleMinutes = courses.stream().map(Course::getCourseMinutes).reduce(0, Integer::sum);
-            moduleHours += moduleMinutes / 60;
-            moduleMinutes = moduleMinutes % 60;
-            moduleService.updateDuration(moduleID, getCourseTimeString(moduleHours, moduleMinutes));
+    private void updateModuleDuration(Course course) {
+        moduleDao.getModuleById(course.getModuleId()).ifPresent(module -> {
+            moduleDao.updateDuration(module.getId(), DurationGenerator.getModuleDuration(getModuleDto(module, getCourseDtoList(module.getId()))));
         });
     }
 
-    private String getCourseTimeString(int courseHours, int courseMinutes) {
-        if (courseHours == 0) {
-            return courseMinutes + " min ";
-        } else if (courseMinutes == 0) {
-            return courseHours + " h ";
-        } else {
-            return courseHours + " h " + courseMinutes + " min ";
-        }
+    private void updateTrainingPathDuration(Long trainingPathTranslationID) {
+            TrainingPathTranslation trainingPathTranslation = trainingPathTranslationDao.getTrainingPathTranslationById(trainingPathTranslationID)
+                    .orElseThrow(() -> new RuntimeException("Training Path not found"));
+
+            List<ModuleDto> moduleDtoList = moduleDao.getModuleListByTrainingPathTranslationID(trainingPathTranslationID)
+                    .stream().map(module1 -> getModuleDto(module1, getCourseDtoList(module1.getId()))).collect(Collectors.toList());
+
+            TrainingPathTranslationDto trainingPathTranslationDto = getTrainingPathTranslationDto(trainingPathTranslation, moduleDtoList);
+
+            trainingPathTranslationDao.updateDuration(trainingPathTranslationID, DurationGenerator.getTrainingPathDuration(trainingPathTranslationDto));
+    }
+
+    private List<CourseDto> getCourseDtoList(Long ModuleID) {
+        return courseDao.getCoursesByModule(ModuleID).stream().map(this::getCourseDto).collect(Collectors.toList());
+    }
+
+    private TrainingPathTranslationDto getTrainingPathTranslationDto(TrainingPathTranslation trainingPathTranslation, List<ModuleDto> moduleDtoList) {
+        return TrainingPathTranslationDto.builder().id(trainingPathTranslation.getId()).title(trainingPathTranslation.getTitle())
+                .trainingPathID(trainingPathTranslation.getTrainingPathID()).description(trainingPathTranslation.getDescription())
+                .language(trainingPathTranslation.getLanguage()).capacity(trainingPathTranslation.getCapacity()).preRequest(trainingPathTranslation.getPreRequest())
+                .trainingPathDuration(trainingPathTranslation.getTrainingPathDuration()).moduleList(moduleDtoList).build();
+    }
+
+    private ModuleDto getModuleDto(Module module, List<CourseDto> courseDtoList) {
+        return ModuleDto.builder().id(module.getId()).title(module.getTitle()).moduleDuration(module.getModuleDuration())
+                .courseDtoList(courseDtoList).trainingPathTranslationID(module.getTrainingPathTranslationID())
+                .orderOnPath(module.getOrderOnPath()).build();
+    }
+
+    private CourseDto getCourseDto(Course course) {
+        return CourseDto.builder().courseHours(course.getCourseHours()).courseType(course.getCourseType()).courseMinutes(course.getCourseMinutes())
+                .id(course.getId()).supportPath(course.getSupportPath()).supportUrl(course.getSupportUrl()).title(course.getTitle())
+                .moduleId(course.getModuleId()).build();
     }
 }
