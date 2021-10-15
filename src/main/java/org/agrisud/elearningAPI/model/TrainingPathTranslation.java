@@ -22,6 +22,7 @@ public class TrainingPathTranslation {
     private Language language;
     private Long trainingPathID;
     private String template;
+    private String trainingPathDuration;
 
     public static TrainingPathTranslation baseMapper(ResultSet resultSet, int rowNumber) throws SQLException {
         TrainingPathTranslation trainingPathTranslation = new TrainingPathTranslation();
@@ -32,6 +33,7 @@ public class TrainingPathTranslation {
         trainingPathTranslation.setPreRequest(resultSet.getString("pre_request"));
         trainingPathTranslation.setLanguage(Language.valueOf(resultSet.getString("language")));
         trainingPathTranslation.setTrainingPathID(resultSet.getLong("training_path_id"));
+        trainingPathTranslation.setTrainingPathDuration(resultSet.getString("training_path_duration"));
         return trainingPathTranslation;
     }
 }

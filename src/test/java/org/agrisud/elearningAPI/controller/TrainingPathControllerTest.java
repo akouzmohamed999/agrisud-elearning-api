@@ -1,7 +1,7 @@
 package org.agrisud.elearningAPI.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
+import org.agrisud.elearningAPI.cloudservice.FileCloudService;
 import org.agrisud.elearningAPI.dto.*;
 import org.agrisud.elearningAPI.model.Module;
 import org.agrisud.elearningAPI.model.TrainingPath;
@@ -37,25 +37,25 @@ public class TrainingPathControllerTest {
     @MockBean
     private TrainingPathService trainingPathService;
     @MockBean
-    private TrainingPathCloudService trainingPathCloudService;
+    private FileCloudService fileCloudService;
     @MockBean
     private TrainingPathTranslationService trainingPathTranslationService;
     @MockBean
     private ModuleService moduleService;
 
     TrainingPath trainingPath = new TrainingPath();
-    PictureDto pictureDto = new PictureDto();
+    FileDto fileDto = new FileDto();
     TrainingPathCreationDto trainingPathCreationDto = new TrainingPathCreationDto();
 
     @BeforeEach
     public void setUp() throws Exception {
         trainingPath = TrainingPath.builder().imageUrl("TrainingPathPictures/image1.jpg")
-                .trainingPathTime(22).status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview").build();
-        pictureDto.setUrl("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview");
+                .status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview").build();
+        fileDto.setFileUrl("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview");
         trainingPathCreationDto = TrainingPathCreationDto.builder()
                 .trainingPathDto(TrainingPathDto.builder()
                         .imageUrl("TrainingPathPictures/image1.jpg")
-                        .trainingPathTime(22).status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview")
+                        .status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview")
                         .build())
                 .trainingPathTranslationDto(Collections.singletonList(TrainingPathTranslationDto.builder()
                         .title("parcours").description("parcours")
@@ -83,11 +83,11 @@ public class TrainingPathControllerTest {
     void shouldCreateTrainingPathRequestReturn200() throws Exception {
         when(trainingPathTranslationService.createNewTrainingPathTranslation(any(TrainingPathTranslation.class))).thenReturn(1L);
         when(moduleService.createNewModule(any(Module.class))).thenReturn(1L);
-        when(trainingPathService.createNewTrainingPath(any(TrainingPath.class))).thenReturn(1L);
+        when(trainingPathService.createNewTrainingPath(any(TrainingPathCreationDto.class))).thenReturn(1L);
         mockMvc.perform(post("/trainingPath")
                 .content(asJsonString(trainingPathCreationDto))
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-        verify(this.trainingPathService, times(1)).createNewTrainingPath(any(TrainingPath.class));
+        verify(this.trainingPathService, times(1)).createNewTrainingPath(any(TrainingPathCreationDto.class));
     }
 
     @Test
@@ -104,7 +104,7 @@ public class TrainingPathControllerTest {
         when(trainingPathService.getTrainingPathByID(anyLong())).thenReturn(Optional.ofNullable(trainingPath));
         doNothing().when(trainingPathService).deleteTrainingPath(anyLong());
         doNothing().when(trainingPathTranslationService).deleteTrainingPathTranslationByTrainingPathID(anyLong());
-        doNothing().when(trainingPathCloudService).deleteTrainingPathPicture(anyString());
+        doNothing().when(fileCloudService).deleteFile(anyString());
         mockMvc.perform(delete("/trainingPath/{trainingPathID}", 1)).andExpect(status().isOk());
         verify(this.trainingPathService, times(1)).deleteTrainingPath(anyLong());
     }
@@ -113,11 +113,11 @@ public class TrainingPathControllerTest {
     void shouldUploadTrainingPathImageRequestReturn200() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "hello.txt",
                 MediaType.MULTIPART_FORM_DATA_VALUE, "Hello, World!".getBytes());
-        when(trainingPathCloudService.uploadTrainingPathPicture(any(MultipartFile.class))).thenReturn(any(PictureDto.class));
+        when(fileCloudService.uploadFile(any(MultipartFile.class),true)).thenReturn(any(FileDto.class));
         mockMvc.perform(multipart("/trainingPath/picture").file(file))
                 .andExpect(status().isOk());
-        verify(trainingPathCloudService, times(1))
-                .uploadTrainingPathPicture(any(MultipartFile.class));
+        verify(fileCloudService, times(1))
+                .uploadFile(any(MultipartFile.class),true);
     }
 
     private static String asJsonString(final Object obj) {

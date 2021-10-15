@@ -4,7 +4,7 @@ import org.aarboard.nextcloud.api.NextcloudConnector;
 import org.aarboard.nextcloud.api.filesharing.Share;
 import org.aarboard.nextcloud.api.filesharing.SharePermissions;
 import org.aarboard.nextcloud.api.filesharing.ShareType;
-import org.agrisud.elearningAPI.dto.PictureDto;
+import org.agrisud.elearningAPI.dto.FileDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,12 +25,12 @@ import static org.mockito.Mockito.*;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
-public class TrainingPathCloudDaoTest {
+public class FileCloudDaoTest {
 
     @Mock
     NextcloudConnector connector;
     @InjectMocks
-    private TrainingPathCloudDao trainingPathCloudDao;
+    private FileCloudDao fileCloudDao;
 
     String imageUrl = "http://localhost:3900/s/7xPzzJqrcBfDiWS/preview";
     String imageName = "/TrainingPathPictures/image3_d8F6vZC1ef";
@@ -38,8 +38,8 @@ public class TrainingPathCloudDaoTest {
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
-        trainingPathCloudDao.downloadUrl = "http://localhost:3900";
-        trainingPathCloudDao.serverName = "http://localhost:3900";
+        fileCloudDao.downloadUrl = "http://localhost:3900";
+        fileCloudDao.serverName = "http://localhost:3900";
     }
 
     @Test
@@ -51,9 +51,9 @@ public class TrainingPathCloudDaoTest {
                 any(SharePermissions.class))).thenReturn(share);
         File file = File.createTempFile(imageName, "jpg");
 
-        PictureDto pictureDto = trainingPathCloudDao.uploadTrainingPathPicture(file, imageUrl);
+        FileDto fileDto = fileCloudDao.uploadFile(file, imageUrl,true);
 
-        assertThat(pictureDto.getUrl()).isNotEmpty();
+        assertThat(fileDto.getFileUrl()).isNotEmpty();
         verify(connector, times(1)).uploadFile(any(File.class), anyString());
         verify(connector, times(1)).doShare(anyString(), any(ShareType.class), any(), anyBoolean(), any(),
                 any(SharePermissions.class));

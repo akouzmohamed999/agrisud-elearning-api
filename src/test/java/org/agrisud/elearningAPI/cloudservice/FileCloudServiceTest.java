@@ -1,7 +1,7 @@
 package org.agrisud.elearningAPI.cloudservice;
 
-import org.agrisud.elearningAPI.clouddao.TrainingPathCloudDao;
-import org.agrisud.elearningAPI.dto.PictureDto;
+import org.agrisud.elearningAPI.clouddao.FileCloudDao;
+import org.agrisud.elearningAPI.dto.FileDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,13 +19,13 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TrainingPathCloudServiceTest {
+public class FileCloudServiceTest {
     @Mock
-    private TrainingPathCloudDao trainingPathCloudDao;
+    private FileCloudDao fileCloudDao;
     @InjectMocks
-    private TrainingPathCloudService trainingPathCloudService;
+    private FileCloudService fileCloudService;
     MockMultipartFile file = null;
-    PictureDto pictureDto = null;
+    FileDto fileDto = null;
     String imageUrl = "http://localhost:3900/s/7xPzzJqrcBfDiWS/preview";
     String imagePath = "/TrainingPathPictures/image3_d8F6vZC1ef";
 
@@ -34,20 +34,13 @@ public class TrainingPathCloudServiceTest {
         MockitoAnnotations.openMocks(this);
         file = new MockMultipartFile("file", "hello.txt",
                 MediaType.MULTIPART_FORM_DATA_VALUE, "Hello, World!".getBytes());
-        pictureDto = PictureDto.builder().fullImagePath(imagePath).url(imageUrl).build();
+        fileDto = FileDto.builder().filePath(imagePath).fileUrl(imageUrl).build();
     }
 
     @Test
     public void shouldUploadTrainingPathImage() {
-        when(trainingPathCloudDao.uploadTrainingPathPicture(any(File.class), anyString())).thenReturn(pictureDto);
-        trainingPathCloudService.uploadTrainingPathPicture(file);
-        verify(trainingPathCloudDao, times(1)).uploadTrainingPathPicture(any(File.class), anyString());
-    }
-
-    @Test
-    public void shouldReturnImageUrl() {
-        when(trainingPathCloudDao.getTrainingPathPicture(anyString())).thenReturn("");
-        trainingPathCloudService.getTrainingPathPictureUrl("");
-        verify(trainingPathCloudDao, times(1)).getTrainingPathPicture(anyString());
+        when(fileCloudDao.uploadFile(any(File.class), anyString(),true)).thenReturn(fileDto);
+        fileCloudService.uploadFile(file,true);
+        verify(fileCloudDao, times(1)).uploadFile(any(File.class), anyString(),true);
     }
 }

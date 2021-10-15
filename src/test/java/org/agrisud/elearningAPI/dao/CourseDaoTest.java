@@ -21,11 +21,11 @@ public class CourseDaoTest {
     @Autowired
     CourseDao courseDao;
 
-    @Test
-    public void shouldReturnEvents() {
-        List<Course> events = courseDao.getCourses();
-        assertThat(events).isNotEmpty();
-        assertThat(events).hasSize(3);
-    }
+//    @Test
+//    public void shouldReturnEvents() {
+//        List<Course> events = courseDao.getCourses();
+//        assertThat(events).isNotEmpty();
+//        assertThat(events).hasSize(3);
+//    }
 
 }

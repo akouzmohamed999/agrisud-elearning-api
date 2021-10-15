@@ -13,7 +13,7 @@ import java.util.Optional;
 @RequestMapping("/module")
 public class ModuleController {
     public static final String PAGE = "0";
-    public static final String SIZE = "8";
+    public static final String SIZE = "100";
     @Autowired
     private ModuleService moduleService;
 
