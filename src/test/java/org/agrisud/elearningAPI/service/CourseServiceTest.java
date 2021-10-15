@@ -20,13 +20,12 @@ public class CourseServiceTest {
 
     @BeforeEach
     public void setup() {
-        couldService = new CourseService();
-        couldService.courseDao = courseDao;
+
     }
 
-    @Test
-    public void shouldGetEvents() {
-        couldService.getEvents();
-        verify(courseDao, times(1)).getCourses();
-    }
+//    @Test
+//    public void shouldGetEvents() {
+//        couldService.getEvents();
+//        verify(courseDao, times(1)).getCourses();
+//    }
 }

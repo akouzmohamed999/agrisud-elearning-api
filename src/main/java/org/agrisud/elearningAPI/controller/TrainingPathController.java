@@ -1,18 +1,16 @@
 package org.agrisud.elearningAPI.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.agrisud.elearningAPI.cloudservice.TrainingPathCloudService;
-import org.agrisud.elearningAPI.dto.PictureDto;
+import org.agrisud.elearningAPI.cloudservice.FileCloudService;
+import org.agrisud.elearningAPI.dto.FileDto;
 import org.agrisud.elearningAPI.dto.TrainingPathCreationDto;
 import org.agrisud.elearningAPI.enums.Language;
 import org.agrisud.elearningAPI.enums.SortColumn;
-import org.agrisud.elearningAPI.model.Module;
 import org.agrisud.elearningAPI.model.TrainingPath;
-import org.agrisud.elearningAPI.model.TrainingPathTranslation;
+import org.agrisud.elearningAPI.service.CourseService;
 import org.agrisud.elearningAPI.service.ModuleService;
 import org.agrisud.elearningAPI.service.TrainingPathService;
 import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
-import org.agrisud.elearningAPI.util.TemplateGenerationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -24,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @RequestMapping("/trainingPath")
@@ -36,15 +33,14 @@ public class TrainingPathController {
     public static final String SIZE_USER = "10000";
     @Autowired
     private TrainingPathService trainingPathService;
-
     @Autowired
-    private TrainingPathCloudService trainingPathCloudService;
-
+    private FileCloudService fileCloudService;
     @Autowired
     private TrainingPathTranslationService trainingPathTranslationService;
-
     @Autowired
     private ModuleService moduleService;
+    @Autowired
+    private CourseService courseService;
 
     @GetMapping
     public List<TrainingPath> getTrainingPathList() {
@@ -92,27 +88,7 @@ public class TrainingPathController {
 
     @PostMapping
     public long createNewTrainingPath(@RequestBody TrainingPathCreationDto trainingPathCreationDto) {
-        long trainingPathID = this.trainingPathService.createNewTrainingPath(TrainingPath.builder().imageUrl(trainingPathCreationDto.getTrainingPathDto().getImageUrl())
-                .fullImagePath(trainingPathCreationDto.getTrainingPathDto().getFullImagePath())
-                .status(false).archived(false).trainingPathTime(trainingPathCreationDto.getTrainingPathDto().getTrainingPathTime())
-                .build());
-
-        trainingPathCreationDto.getTrainingPathTranslationDto().forEach(trainingPathTranslationDto -> {
-            long trainingPathTranslationID = this.trainingPathTranslationService.createNewTrainingPathTranslation(TrainingPathTranslation.builder()
-                    .title(trainingPathTranslationDto.getTitle())
-                    .description(trainingPathTranslationDto.getDescription())
-                    .preRequest(trainingPathTranslationDto.getPreRequest())
-                    .language(trainingPathTranslationDto.getLanguage())
-                    .capacity(trainingPathTranslationDto.getCapacity())
-                    .trainingPathID(trainingPathID)
-                    .template(TemplateGenerationHelper.generateTrainingPathTemplate(trainingPathCreationDto.getTrainingPathDto(), trainingPathTranslationDto)).build());
-            AtomicInteger order = new AtomicInteger(1);
-            trainingPathTranslationDto.getModuleList().forEach(moduleDto -> {
-                this.moduleService.createNewModule(Module.builder().title(moduleDto.getTitle()).orderOnPath(order.getAndIncrement())
-                        .trainingPathTranslationID(trainingPathTranslationID).build());
-            });
-        });
-        return trainingPathID;
+        return this.trainingPathService.createNewTrainingPath(trainingPathCreationDto);
     }
 
     @PutMapping
@@ -122,22 +98,29 @@ public class TrainingPathController {
 
     @DeleteMapping("/{trainingPathID}")
     public void deleteTrainingPath(@PathVariable Long trainingPathID) {
-        this.trainingPathService.getTrainingPathByID(trainingPathID).ifPresent(trainingPath -> {
-            this.trainingPathCloudService.deleteTrainingPathPicture(trainingPath.getFullImagePath());
-            this.trainingPathTranslationService.deleteTrainingPathTranslationByTrainingPathID(trainingPathID);
-            this.trainingPathService.deleteTrainingPath(trainingPathID);
-        });
+        this.trainingPathTranslationService.getTrainingPathTranslationListByTrainingPathID(trainingPathID)
+                .forEach(trainingPathTranslation -> {
+                    this.moduleService.getModuleListByTrainingPathTranslationID(trainingPathTranslation.getId()).forEach(module ->
+                            this.courseService.deleteCourseByModule(module.getId())
+                    );
+                    this.moduleService.deleteModuleByTrainingPathTranslationID(trainingPathTranslation.getId());
+                });
+        this.trainingPathTranslationService.deleteTrainingPathTranslationByTrainingPathID(trainingPathID);
+        this.trainingPathService.getTrainingPathByID(trainingPathID).ifPresent(trainingPath ->
+                this.fileCloudService.deleteFile(trainingPath.getFullImagePath())
+        );
+        this.trainingPathService.deleteTrainingPath(trainingPathID);
     }
 
     @PostMapping(value = "/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public PictureDto uploadTrainingPathPicture(@RequestParam MultipartFile file) {
+    public FileDto uploadTrainingPathPicture(@RequestParam MultipartFile file) {
         log.info("Starting .....");
-        return trainingPathCloudService.uploadTrainingPathPicture(file);
+        return fileCloudService.uploadFile(file, true);
     }
 
     @DeleteMapping("/picture")
     public void deleteTrainingPathPicture(@RequestParam String fullImagePath) {
-        trainingPathCloudService.deleteTrainingPathPicture(fullImagePath);
+        fileCloudService.deleteFile(fullImagePath);
     }
 
     @PostMapping("/addTrainingPathToUser/{trainingPathId}")
@@ -148,7 +131,7 @@ public class TrainingPathController {
     @PostMapping("/editor/upload")
     public ResponseEntity<Map<String, String>> upload(@RequestParam("file") MultipartFile file) {
         HashMap<String, String> response = new HashMap<>();
-        String uri = trainingPathCloudService.uploadTrainingPathEditorImage(file);
+        String uri = fileCloudService.uploadTrainingPathEditorImage(file);
         response.put("uploaded", "true");
         response.put("url", uri);
         response.put("default", uri);

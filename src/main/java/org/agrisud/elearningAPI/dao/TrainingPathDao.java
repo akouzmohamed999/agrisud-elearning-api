@@ -140,7 +140,6 @@ public class TrainingPathDao {
                 .addValue("training_path_id", trainingPath.getId())
                 .addValue("image_url", trainingPath.getImageUrl())
                 .addValue("full_image_path", trainingPath.getFullImagePath())
-                .addValue("training_path_time", trainingPath.getTrainingPathTime())
                 .addValue("training_path_status", trainingPath.getStatus())
                 .addValue("archived", trainingPath.getArchived());
     }

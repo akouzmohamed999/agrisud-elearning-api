@@ -5,7 +5,7 @@ import org.aarboard.nextcloud.api.NextcloudConnector;
 import org.aarboard.nextcloud.api.filesharing.Share;
 import org.aarboard.nextcloud.api.filesharing.SharePermissions;
 import org.aarboard.nextcloud.api.filesharing.ShareType;
-import org.agrisud.elearningAPI.dto.PictureDto;
+import org.agrisud.elearningAPI.dto.FileDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -14,7 +14,7 @@ import java.io.File;
 
 @Repository
 @Slf4j
-public class TrainingPathCloudDao {
+public class FileCloudDao {
 
     @Autowired
     private NextcloudConnector connector;
@@ -25,21 +25,25 @@ public class TrainingPathCloudDao {
     @Value("${cloud.server.download-url}")
     String downloadUrl;
 
-    public PictureDto uploadTrainingPathPicture(File file, String fullFilePath) {
+    public FileDto uploadFile(File file, String fullFilePath, Boolean isImage) {
         log.info("Starting UPLOAD.....");
         connector.uploadFile(file, fullFilePath);
-        return PictureDto.builder().url(getTrainingPathPicture(fullFilePath))
-                .fullImagePath(fullFilePath).build();
+        return FileDto.builder().fileUrl(getFileUrl(fullFilePath,isImage))
+                .filePath(fullFilePath).build();
     }
 
-    public void deleteTrainingPathPicture(String fullFilePath) {
+    public void deleteFile(String fullFilePath) {
         connector.deleteFolder(fullFilePath);
     }
 
-    public String getTrainingPathPicture(String path) {
+    public String getFileUrl(String path,Boolean isImage) {
         log.info("Starting SHARE LINK.....");
         SharePermissions permissions = new SharePermissions(SharePermissions.SingleRight.READ);
         Share share = connector.doShare(path, ShareType.PUBLIC_LINK, null, false, null, permissions);
-        return share.getUrl().replace(serverName, downloadUrl) + "/preview";
+        if(isImage) {
+            return share.getUrl().replace(serverName, downloadUrl) + "/preview";
+        }else{
+            return share.getUrl().replace(serverName, downloadUrl);
+        }
     }
 }

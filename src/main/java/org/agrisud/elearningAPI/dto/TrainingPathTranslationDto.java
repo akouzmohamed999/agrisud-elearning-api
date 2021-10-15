@@ -19,4 +19,5 @@ public class TrainingPathTranslationDto {
     private Language language;
     private Long trainingPathID;
     private List<ModuleDto> moduleList;
+    private String trainingPathDuration;
 }
