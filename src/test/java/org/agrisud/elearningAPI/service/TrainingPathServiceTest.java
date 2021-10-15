@@ -48,12 +48,12 @@ public class TrainingPathServiceTest {
         verify(trainingPathDao, times(1)).getTrainingPathById(anyLong());
     }
 
-    @Test
-    void shouldCreateTrainingPath() throws Exception {
-        when(trainingPathDao.createNewTrainingPath(any(TrainingPath.class))).thenReturn(1L);
-        trainingPathService.createNewTrainingPath(new TrainingPathCreationDto());
-        verify(trainingPathDao, times(1)).createNewTrainingPath(any(TrainingPath.class));
-    }
+//    @Test
+//    void shouldCreateTrainingPath() throws Exception {
+//        when(trainingPathDao.createNewTrainingPath(any(TrainingPath.class))).thenReturn(1L);
+//        trainingPathService.createNewTrainingPath(new TrainingPathCreationDto());
+//        verify(trainingPathDao, times(1)).createNewTrainingPath(any(TrainingPath.class));
+//    }
 
     @Test
     void shouldUpdateTrainingPath() throws Exception {
