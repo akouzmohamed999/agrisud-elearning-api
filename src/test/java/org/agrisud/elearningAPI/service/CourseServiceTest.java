@@ -10,5 +10,4 @@ public class CourseServiceTest {
     @BeforeEach
     public void setup() {
     }
-
 }

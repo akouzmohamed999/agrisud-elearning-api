@@ -114,7 +114,6 @@ public class TrainingPathControllerTest {
         FileDto fileDto =  FileDto.builder().filePath("test").filePath("test").build();
         MockMultipartFile file = new MockMultipartFile("file", "hello.txt",
                 MediaType.MULTIPART_FORM_DATA_VALUE, "Hello, World!".getBytes());
-
         when(fileCloudService.uploadFile(any(MultipartFile.class),anyBoolean())).thenReturn(fileDto);
         mockMvc.perform(multipart("/trainingPath/picture").file(file))
                 .andExpect(status().isOk());
