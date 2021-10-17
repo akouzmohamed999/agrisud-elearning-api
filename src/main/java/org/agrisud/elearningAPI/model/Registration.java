@@ -15,6 +15,7 @@ public class Registration {
     String nationality;
     String occupation;
     String organisation;
+    String establishment;
     String sex;
     String password;
 }
