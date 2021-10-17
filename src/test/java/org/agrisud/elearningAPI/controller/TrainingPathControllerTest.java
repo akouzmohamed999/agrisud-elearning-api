@@ -111,13 +111,14 @@ public class TrainingPathControllerTest {
 
     @Test
     void shouldUploadTrainingPathImageRequestReturn200() throws Exception {
+        FileDto fileDto =  FileDto.builder().filePath("test").filePath("test").build();
         MockMultipartFile file = new MockMultipartFile("file", "hello.txt",
                 MediaType.MULTIPART_FORM_DATA_VALUE, "Hello, World!".getBytes());
-        when(fileCloudService.uploadFile(any(MultipartFile.class),true)).thenReturn(any(FileDto.class));
+        when(fileCloudService.uploadFile(any(MultipartFile.class),anyBoolean())).thenReturn(fileDto);
         mockMvc.perform(multipart("/trainingPath/picture").file(file))
                 .andExpect(status().isOk());
         verify(fileCloudService, times(1))
-                .uploadFile(any(MultipartFile.class),true);
+                .uploadFile(any(MultipartFile.class),anyBoolean());
     }
 
     private static String asJsonString(final Object obj) {

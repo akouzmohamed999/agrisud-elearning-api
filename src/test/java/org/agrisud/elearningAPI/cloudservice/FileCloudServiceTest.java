@@ -39,8 +39,8 @@ public class FileCloudServiceTest {
 
     @Test
     public void shouldUploadTrainingPathImage() {
-        when(fileCloudDao.uploadFile(any(File.class), anyString(),true)).thenReturn(fileDto);
+        when(fileCloudDao.uploadFile(any(File.class), anyString(),anyBoolean())).thenReturn(fileDto);
         fileCloudService.uploadFile(file,true);
-        verify(fileCloudDao, times(1)).uploadFile(any(File.class), anyString(),true);
+        verify(fileCloudDao, times(1)).uploadFile(any(File.class), anyString(),anyBoolean());
     }
 }
