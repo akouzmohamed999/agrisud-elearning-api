@@ -1,0 +1,1 @@
+ALTER TABLE elearning_user ADD user_establishment varchar(100);
