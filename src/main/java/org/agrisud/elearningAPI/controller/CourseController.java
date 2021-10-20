@@ -75,9 +75,15 @@ public class CourseController {
         this.courseService.addCourseToUser(courseID);
     }
 
-    @PostMapping("/AddCourse/{moduleID}")
+    @GetMapping("/isModuleFinished/{moduleID}")
     public ResponseEntity<Boolean> isModuleFinished(@PathVariable Long moduleID) {
         Boolean finished = this.courseService.isModuleFinished(moduleID);
+        return ResponseEntity.ok().body(finished);
+    }
+
+    @GetMapping("/isCourseFinished/{courseId}")
+    public ResponseEntity<Boolean> isCourseFinished(@PathVariable Long courseId) {
+        Boolean finished = this.courseService.isCourseFinished(courseId);
         return ResponseEntity.ok().body(finished);
     }
 
