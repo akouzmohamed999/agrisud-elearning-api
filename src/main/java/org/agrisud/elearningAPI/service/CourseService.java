@@ -80,7 +80,7 @@ public class CourseService {
         this.courseDao.addCourseToUser(courseID);
     }
 
-    public boolean isModuleFinished(Long moduleID) {
+    public Boolean isModuleFinished(Long moduleID) {
         return this.courseDao.isModuleFinished(moduleID);
     }
 
@@ -123,5 +123,9 @@ public class CourseService {
         return CourseDto.builder().courseHours(course.getCourseHours()).courseType(course.getCourseType()).courseMinutes(course.getCourseMinutes())
                 .id(course.getId()).supportPath(course.getSupportPath()).supportUrl(course.getSupportUrl()).title(course.getTitle())
                 .moduleId(course.getModuleId()).build();
+    }
+
+    public Boolean isCourseFinished(Long courseId) {
+        return this.courseDao.isCourseFinished(courseId);
     }
 }

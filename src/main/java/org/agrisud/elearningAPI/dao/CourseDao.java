@@ -141,16 +141,16 @@ public class CourseDao {
         }
     }
 
-    public boolean isModuleFinished(Long moduleID) {
+    public Boolean isModuleFinished(Long moduleID) {
         User loggedInUser = User.getLoggedInUser();
         SqlParameterSource modulesCoursesNumberSqlParameter = new MapSqlParameterSource()
                 .addValue("module_id", moduleID);
         SqlParameterSource finishedCoursesNumberSqlParameter = new MapSqlParameterSource()
                 .addValue("userId", loggedInUser.getUserId()).addValue("module_id", moduleID);
-        Optional<Integer> modulesCoursesNumber = Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty("course.get.all.by.module.count"),
-                modulesCoursesNumberSqlParameter, Integer.class));
-        Optional<Integer> finishedCoursesNumber = Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty("user.finished.courses"),
-                finishedCoursesNumberSqlParameter, Integer.class));
+        int modulesCoursesNumber = Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty("course.get.all.by.module.count"),
+                modulesCoursesNumberSqlParameter, Integer.class)).orElse(0);
+        int finishedCoursesNumber = Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty("user.finished.courses"),
+                finishedCoursesNumberSqlParameter, Integer.class)).orElse(0);;
         return modulesCoursesNumber == finishedCoursesNumber;
     }
 
@@ -164,5 +164,14 @@ public class CourseDao {
                 .addValue("course_support_path", course.getSupportPath())
                 .addValue("course_type", course.getCourseType().toString())
                 .addValue("module_id", course.getModuleId());
+    }
+
+    public Boolean isCourseFinished(Long courseId) {
+        User loggedInUser = User.getLoggedInUser();
+        SqlParameterSource finishedCourseSqlParameter = new MapSqlParameterSource()
+                .addValue("userId", loggedInUser.getUserId()).addValue("courseId", courseId);
+        int courseFinished = Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty("user.finished.course"),
+                finishedCourseSqlParameter, Integer.class)).orElse(0);
+        return courseFinished == 1;
     }
 }
