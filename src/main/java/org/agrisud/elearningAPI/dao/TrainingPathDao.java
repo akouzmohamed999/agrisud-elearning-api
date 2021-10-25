@@ -129,8 +129,9 @@ public class TrainingPathDao {
 
     public void deleteTrainingPath(Long trainingPathID) {
         SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_id", trainingPathID);
+        int associationTableDeleted = namedParameterJdbcTemplate.update(sqlProperties.getProperty("training-path.user.delete"), namedParameters);
         int deleted = namedParameterJdbcTemplate.update(sqlProperties.getProperty("training-path.delete"), namedParameters);
-        if (deleted == 1) {
+        if (deleted == 1 && associationTableDeleted == 1) {
             log.info("Training Path deleted : " + trainingPathID);
         }
     }

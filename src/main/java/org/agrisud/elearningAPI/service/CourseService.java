@@ -64,6 +64,7 @@ public class CourseService {
 
     public void deleteCourse(Long courseID) {
         this.courseDao.getCoursesByID(courseID).ifPresent(course -> {
+            this.courseDao.deleteCourseUserStatus(courseID);
             this.courseDao.deleteCourse(courseID);
             Long trainingPathTranslationID = moduleDao.getModuleById(course.getModuleId()).orElseThrow(() -> new RuntimeException("Module not found"))
                     .getTrainingPathTranslationID();
@@ -73,6 +74,9 @@ public class CourseService {
     }
 
     public void deleteCourseByModule(Long moduleID) {
+        this.courseDao.getCoursesByModule(moduleID).forEach(course -> {
+            courseDao.deleteCourseUserStatus(course.getId());
+        });
         this.courseDao.deleteCourseByModule(moduleID);
     }
 
@@ -91,15 +95,15 @@ public class CourseService {
     }
 
     private void updateTrainingPathDuration(Long trainingPathTranslationID) {
-            TrainingPathTranslation trainingPathTranslation = trainingPathTranslationDao.getTrainingPathTranslationById(trainingPathTranslationID)
-                    .orElseThrow(() -> new RuntimeException("Training Path not found"));
+        TrainingPathTranslation trainingPathTranslation = trainingPathTranslationDao.getTrainingPathTranslationById(trainingPathTranslationID)
+                .orElseThrow(() -> new RuntimeException("Training Path not found"));
 
-            List<ModuleDto> moduleDtoList = moduleDao.getModuleListByTrainingPathTranslationID(trainingPathTranslationID)
-                    .stream().map(module1 -> getModuleDto(module1, getCourseDtoList(module1.getId()))).collect(Collectors.toList());
+        List<ModuleDto> moduleDtoList = moduleDao.getModuleListByTrainingPathTranslationID(trainingPathTranslationID)
+                .stream().map(module1 -> getModuleDto(module1, getCourseDtoList(module1.getId()))).collect(Collectors.toList());
 
-            TrainingPathTranslationDto trainingPathTranslationDto = getTrainingPathTranslationDto(trainingPathTranslation, moduleDtoList);
+        TrainingPathTranslationDto trainingPathTranslationDto = getTrainingPathTranslationDto(trainingPathTranslation, moduleDtoList);
 
-            trainingPathTranslationDao.updateDuration(trainingPathTranslationID, DurationGenerator.getTrainingPathDuration(trainingPathTranslationDto));
+        trainingPathTranslationDao.updateDuration(trainingPathTranslationID, DurationGenerator.getTrainingPathDuration(trainingPathTranslationDto));
     }
 
     private List<CourseDto> getCourseDtoList(Long ModuleID) {
