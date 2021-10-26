@@ -128,6 +128,14 @@ public class CourseDao {
         }
     }
 
+    public void deleteCourseUserStatus(Long courseID) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("course_id", courseID);
+        int deleted = namedParameterJdbcTemplate.update(sqlProperties.getProperty("course-user.delete.by.course"), namedParameters);
+        if (deleted == 1) {
+            log.info("user-course-status deleted :) " + courseID);
+        }
+    }
+
     public void addCourseToUser(Long courseID) {
         User loggedInUser = User.getLoggedInUser();
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
