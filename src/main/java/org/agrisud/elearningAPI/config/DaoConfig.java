@@ -20,7 +20,8 @@ public class DaoConfig {
                 new ClassPathResource("sql/user.properties"),
                 new ClassPathResource("sql/training-path-translation.properties"),
                 new ClassPathResource("sql/home-cover.properties"),
-                new ClassPathResource("sql/home-cover-image.properties")
+                new ClassPathResource("sql/home-cover-image.properties"),
+                new ClassPathResource("sql/statistics.properties")
         };
         prop.setLocations(resources);
         prop.setIgnoreResourceNotFound(true);
