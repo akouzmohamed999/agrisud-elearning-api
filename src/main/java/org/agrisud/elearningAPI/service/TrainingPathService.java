@@ -133,4 +133,23 @@ public class TrainingPathService {
                 .courseMinutes(courseDto.getCourseMinutes()).courseType(courseDto.getCourseType())
                 .supportUrl(courseDto.getSupportUrl()).supportPath(courseDto.getSupportPath()).moduleId(courseDto.getModuleId()).build();
     }
+
+    public void duplicateTrainingPath(Long trainingPathId) {
+        getTrainingPathByID(trainingPathId).ifPresent(trainingPath -> {
+
+            TrainingPathDto trainingPathDto = TrainingPathDto.builder().imageUrl(trainingPath.getImageUrl())
+                    .fullImagePath(trainingPath.getFullImagePath())
+                    .archived(trainingPath.getArchived())
+                    .build();x²
+            trainingPathTranslationDao.getTrainingPathTranslationListByTrainingPathID(trainingPathId)
+                    .stream().map(tpt -> )
+
+            TrainingPathCreationDto trainingPathCreationDto = TrainingPathCreationDto.builder().trainingPathDto(trainingPathDto)
+                    .build();
+            trainingPathCreationDto.getTrainingPathTranslationDto().forEach(tpc ->
+                    tpc.setTitle(tpc.getTitle().concat(" ").concat("(bis)"))
+            );
+            createNewTrainingPath(trainingPathCreationDto);
+        });
+    }
 }

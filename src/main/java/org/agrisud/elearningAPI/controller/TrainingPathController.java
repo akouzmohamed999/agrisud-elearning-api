@@ -91,6 +91,11 @@ public class TrainingPathController {
         return this.trainingPathService.createNewTrainingPath(trainingPathCreationDto);
     }
 
+    @PostMapping("/duplicate")
+    public void duplicateTrainingPath(@RequestParam Long trainingPathId) {
+        this.trainingPathService.duplicateTrainingPath(trainingPathId);
+    }
+
     @PutMapping
     public void updateTrainingPath(@RequestBody TrainingPath trainingPath) {
         this.trainingPathService.updateTrainingPath(trainingPath);

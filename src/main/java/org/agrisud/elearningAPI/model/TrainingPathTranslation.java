@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.agrisud.elearningAPI.dto.TrainingPathTranslationDto;
 import org.agrisud.elearningAPI.enums.Language;
 
 import java.sql.ResultSet;
