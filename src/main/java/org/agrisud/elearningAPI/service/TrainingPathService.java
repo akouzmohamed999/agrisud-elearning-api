@@ -135,16 +135,24 @@ public class TrainingPathService {
     }
 
     public void duplicateTrainingPath(Long trainingPathId) {
-        getTrainingPathByID(trainingPathId).ifPresent(trainingPath -> {
-
+        trainingPathDao.getTrainingPathById(trainingPathId).ifPresent(trainingPath -> {
             TrainingPathDto trainingPathDto = TrainingPathDto.builder().imageUrl(trainingPath.getImageUrl())
                     .fullImagePath(trainingPath.getFullImagePath())
                     .archived(trainingPath.getArchived())
-                    .build();x²
-            trainingPathTranslationDao.getTrainingPathTranslationListByTrainingPathID(trainingPathId)
-                    .stream().map(tpt -> )
+                    .build();
+            List<TrainingPathTranslationDto> trainingPathTranslationDtos = trainingPathTranslationDao.getTrainingPathTranslationListByTrainingPathID(trainingPathId)
+                    .stream().map(tpt -> {
+                        List<Module> modules = moduleDao.getModuleListByTrainingPathTranslationID(tpt.getId());
+                        List<ModuleDto> moduleDtos = modules.stream().map(module -> {
+                            List<Course> courses = courseDao.getCoursesByModule(module.getId());
+                            List<CourseDto> courseDtos = courses.stream().map(CourseDto::new).collect(Collectors.toList());
+                            return new ModuleDto(module, courseDtos);
+                        }).collect(Collectors.toList());
+                        return new TrainingPathTranslationDto(tpt, moduleDtos);
+                    }).collect(Collectors.toList());
 
             TrainingPathCreationDto trainingPathCreationDto = TrainingPathCreationDto.builder().trainingPathDto(trainingPathDto)
+                    .trainingPathTranslationDto(trainingPathTranslationDtos)
                     .build();
             trainingPathCreationDto.getTrainingPathTranslationDto().forEach(tpc ->
                     tpc.setTitle(tpc.getTitle().concat(" ").concat("(bis)"))

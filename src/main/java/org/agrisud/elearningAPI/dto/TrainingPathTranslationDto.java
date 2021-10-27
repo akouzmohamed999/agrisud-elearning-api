@@ -24,13 +24,13 @@ public class TrainingPathTranslationDto {
     private List<ModuleDto> moduleList;
     private String trainingPathDuration;
 
-    public TrainingPathTranslationDto(TrainingPathTranslation trainingPathTranslation, List<Module> modules) {
+    public TrainingPathTranslationDto(TrainingPathTranslation trainingPathTranslation, List<ModuleDto> modules) {
         this.title = trainingPathTranslation.getTitle();
         this.description = trainingPathTranslation.getDescription();
         this.capacity = trainingPathTranslation.getCapacity();
         this.preRequest = trainingPathTranslation.getPreRequest();
         this.language = trainingPathTranslation.getLanguage();
         this.trainingPathID = trainingPathTranslation.getTrainingPathID();
-        this.moduleList = modules.stream().map(ModuleDto::new).collect(Collectors.toList());
+        this.moduleList = modules;
     }
 }

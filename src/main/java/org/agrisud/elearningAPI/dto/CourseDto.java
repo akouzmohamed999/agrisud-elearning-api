@@ -1,14 +1,14 @@
 package org.agrisud.elearningAPI.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.agrisud.elearningAPI.enums.CourseType;
 import org.agrisud.elearningAPI.model.Course;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CourseDto {
     private Long id;
     private String title;
