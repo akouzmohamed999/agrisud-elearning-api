@@ -41,9 +41,12 @@
                                 </div>
                             </#if>
                         </div>
+                        <div id="kc-form-register" class="${properties.kcFormOptionsWrapperClass!}">
+                                <span><a tabindex="5" href="${properties.signupUrl}">${msg("doSignUp")}</a></span>
+                        </div>
                         <div id="kc-form-reset-psw" class="${properties.kcFormOptionsWrapperClass!}">
                             <#if realm.resetPasswordAllowed>
-                                <span><a tabindex="5" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
+                                <span><a tabindex="6" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
                             </#if>
                         </div>
 
