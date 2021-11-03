@@ -110,6 +110,136 @@ body {
   color: var(--textColor) !important;
 }
 
+.agrisud-navbar {
+  height: 15vh;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffffff;
+  padding: 0 2vw;
+}
+
+.agrisud-navbar .agrisud-navbar-items {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between !important;
+}
+
+.agrisud-navbar-links {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.agrisud-navbar-links h5,
+.agrisud-navbar-links h6 {
+  margin: 10px 42px;
+}
+
+.agrisud-navbar-links h5 {
+  font-size: 1.15rem;
+}
+
+.agrisud-admin-navbar-links-slugan {
+  margin-left: 1.5vw;
+  padding: unset !important;
+  color: darkgray;
+  margin-right: unset !important;
+}
+
+.agrisud-navbar-slugan {
+  margin: 16px 0;
+}
+
+.agrisud-navbar-slugan h5 {
+  font-size: 1.15rem;
+}
+
+.agrisud-navbar-links-slugan {
+  margin-left: 1.5vw;
+  padding: unset !important;
+  color: darkgray;
+  margin-right: unset !important;
+  border-left: 1px solid lightgray;
+}
+
+.agrisud-navbar-links-items {
+  display: flex;
+  align-items: flex-end;
+  margin-left: 30em;
+}
+
+.agrisud-navbar-links-items h6 {
+  font-size: 0.9rem;
+  margin-bottom: 1.8em;
+}
+
+.agrisud-navbar-links-items a {
+  color: #2b2b2b;
+  font-family: Rubik, sans-serif;
+  font-size: .9rem;
+}
+
+.agrisud-navbar-links-items a:hover {
+  color: var(--theme-deafult);
+}
+
+.agrisud-navbar-links-item {
+  border-right: 1px solid lightgray;
+}
+
+
+.agrisud-navbar-aide {
+  cursor: pointer;
+}
+
+.agrisud-nav-menus {
+  margin-top: 8px;
+}
+
+.agrisud-nav-menus-logo {
+  padding: unset !important;
+  max-width: 20vw;
+}
+
+.agrisud-nav-menus .agrisud-navbar-login {
+  margin-left: 20px;
+}
+
+.agrisud-nav-menus .custom-media {
+  min-width: 152px;
+}
+
+.nav-image {
+  height: 100%;
+  cursor: pointer;
+}
+
+.form-container{
+  margin-top: 6em;
+}
+
+/* @media only screen and (max-width: 767px) {
+  .agrisud-nav-menus {
+    margin-right: unset !important;
+  }
+
+  .agrisud-nav-menus .agrisud-nav-menus-slugan {
+    margin-left: 4vw !important;
+  }
+
+  .agrisud-nav-menus .agrisud-nav-menus-slugan h6 {
+    margin-bottom: unset;
+  }
+
+  .nav-image {
+    height: 55px;
+  }
+} */
+
+
+
 @media(min-width: 1496px) and (max-width: 1496px) {
 
   #kc-page-title {
