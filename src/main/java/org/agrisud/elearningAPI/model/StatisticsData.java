@@ -14,11 +14,27 @@ import java.sql.SQLException;
 @Builder
 public class StatisticsData {
     private String label;
+    private int key;
     private int value;
 
-    public static StatisticsData baseMapper(ResultSet resultSet, int rowNumber) throws SQLException {
+    public static StatisticsData fullMapper(ResultSet resultSet, int rowNumber) throws SQLException {
         StatisticsData statisticsData = new StatisticsData();
         statisticsData.setLabel(resultSet.getString("label"));
+        statisticsData.setKey(resultSet.getInt("dataKey"));
+        statisticsData.setValue(resultSet.getInt("value"));
+        return statisticsData;
+    }
+
+    public static StatisticsData labelValueMapper(ResultSet resultSet, int rowNumber) throws SQLException {
+        StatisticsData statisticsData = new StatisticsData();
+        statisticsData.setLabel(resultSet.getString("label"));
+        statisticsData.setValue(resultSet.getInt("value"));
+        return statisticsData;
+    }
+
+    public static StatisticsData keyValueMapper(ResultSet resultSet, int rowNumber) throws SQLException {
+        StatisticsData statisticsData = new StatisticsData();
+        statisticsData.setKey(resultSet.getInt("dataKey"));
         statisticsData.setValue(resultSet.getInt("value"));
         return statisticsData;
     }
