@@ -1,0 +1,1 @@
+ALTER TABLE training_path add column tp_deprecated BOOLEAN default false;

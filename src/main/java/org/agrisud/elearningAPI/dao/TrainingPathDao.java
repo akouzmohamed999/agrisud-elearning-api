@@ -136,6 +136,11 @@ public class TrainingPathDao {
         }
     }
 
+    public void deprecateTrainingPath(Long trainingPathId){
+        SqlParameterSource namedParameters = new MapSqlParameterSource("trainingPathId", trainingPathId);
+        namedParameterJdbcTemplate.update(sqlProperties.getProperty("training-path.deprecate"), namedParameters);
+    }
+
     private SqlParameterSource initParams(TrainingPath trainingPath) {
         return new MapSqlParameterSource()
                 .addValue("training_path_id", trainingPath.getId())

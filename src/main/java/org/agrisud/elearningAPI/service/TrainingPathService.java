@@ -159,5 +159,6 @@ public class TrainingPathService {
             );
             createNewTrainingPath(trainingPathCreationDto);
         });
+        trainingPathDao.deprecateTrainingPath(trainingPathId);
     }
 }
