@@ -2,7 +2,6 @@ package org.agrisud.elearningAPI.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.model.StatisticsData;
-import org.agrisud.elearningAPI.model.TrainingPathsUsers;
 import org.agrisud.elearningAPI.service.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +23,13 @@ public class StatisticsController {
     }
 
     @GetMapping("/nbrUsersByNbrTrainingPaths")
-    public List<TrainingPathsUsers> getNbrUsersByNbrTrainingPaths() {
+    public List<StatisticsData> getNbrUsersByNbrTrainingPaths() {
         return statisticsService.getNbrUsersByNbrTrainingPaths();
+    }
+
+    @GetMapping("/nbrUsersByCompletedTrainingPaths")
+    public List<StatisticsData> getNbrUsersByCompletedTrainingPaths(@RequestParam String language) {
+        return statisticsService.getNbrUsersByCompletedTrainingPaths(language);
     }
 
     @GetMapping("/usersIndicators")
@@ -36,5 +40,10 @@ public class StatisticsController {
     @GetMapping("/trainingPathsIndicators")
     public Map<String, List<StatisticsData>> getTrainingPathsIndicators(@RequestParam String language) {
         return statisticsService.getTrainingPathsIndicators(language);
+    }
+
+    @GetMapping("/registeredUsersByMonth")
+    public Map<String, List<StatisticsData>> getNbrRegisteredUsersByMonth() {
+        return statisticsService.getNbrRegisteredUsersByMonth();
     }
 }

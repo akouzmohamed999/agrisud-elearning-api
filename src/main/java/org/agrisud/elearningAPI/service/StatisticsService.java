@@ -2,7 +2,6 @@ package org.agrisud.elearningAPI.service;
 
 import org.agrisud.elearningAPI.dao.StatisticsDao;
 import org.agrisud.elearningAPI.model.StatisticsData;
-import org.agrisud.elearningAPI.model.TrainingPathsUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,23 +19,35 @@ public class StatisticsService {
         return statisticsDao.getNumberOfRegisteredUsers();
     }
 
-    public List<TrainingPathsUsers> getNbrUsersByNbrTrainingPaths() {
+    public List<StatisticsData> getNbrUsersByNbrTrainingPaths() {
         return statisticsDao.getNbrUsersByNbrTrainingPaths();
+    }
+
+    public List<StatisticsData> getNbrUsersByCompletedTrainingPaths(String language) {
+        return statisticsDao.getNbrUsersByCompletedTrainingPaths(language);
     }
 
     public Map<String, List<StatisticsData>> getUsersIndicators() {
         return new HashMap<>() {{
-            put("nationality", statisticsDao.getNbrUsersByNationality());
-            put("genre", statisticsDao.getNbrUsersByGenre());
-            put("occupation", statisticsDao.getNbrUsersByOccupation());
+            put("signup_nationality", statisticsDao.getNbrUsersByNationality());
+            put("age", statisticsDao.getNbrUsersByAge());
+            put("signup_genre", statisticsDao.getNbrUsersByGenre());
+            put("signup_occupation", statisticsDao.getNbrUsersByOccupation());
             put("establishment", statisticsDao.getNbrUsersByEstablishment());
         }};
     }
 
     public Map<String, List<StatisticsData>> getTrainingPathsIndicators(String language) {
         return new HashMap<>() {{
-            put("trainingPath", statisticsDao.getNbrUsersByTrainingPath(language));
-            put("registredUsersByNationality", statisticsDao.getNbrRegistredUsersByNationality());
+            put("training_path", statisticsDao.getNbrUsersByTrainingPath(language));
+            put("registered_users_by_nationality", statisticsDao.getNbrRegisteredUsersByNationality());
+        }};
+    }
+
+    public Map<String, List<StatisticsData>> getNbrRegisteredUsersByMonth() {
+        return new HashMap<>() {{
+            put("all", statisticsDao.getNbrRegisteredUsersByMonth());
+            put("by_nationality", statisticsDao.getNbrRegisteredUsersByMonthByNationality());
         }};
     }
 }
