@@ -14,7 +14,7 @@ public class SignupController {
     SignupService signupService;
 
     @PostMapping
-    public ResponseEntity<Void> registerNewUser(@RequestParam Long trainingPathId, @RequestBody Registration registration) {
+    public ResponseEntity<Void> registerNewUser(@RequestParam(required = false) Long trainingPathId, @RequestBody Registration registration) {
         signupService.createCandidateUser(trainingPathId, registration);
         return ResponseEntity.ok().build();
     }
