@@ -81,7 +81,7 @@ public class TrainingPathControllerTest {
 
     @Test
     void shouldCreateTrainingPathRequestReturn200() throws Exception {
-        when(trainingPathTranslationService.createNewTrainingPathTranslation(any(TrainingPathTranslation.class))).thenReturn(1L);
+        when(trainingPathTranslationService.createNewTrainingPathTranslation(any(TrainingPathCreationDto.class))).thenReturn(1L);
         when(moduleService.createNewModule(any(Module.class))).thenReturn(1L);
         when(trainingPathService.createNewTrainingPath(any(TrainingPathCreationDto.class))).thenReturn(1L);
         mockMvc.perform(post("/trainingPath")

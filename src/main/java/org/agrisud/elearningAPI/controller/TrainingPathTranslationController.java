@@ -1,5 +1,6 @@
 package org.agrisud.elearningAPI.controller;
 
+import org.agrisud.elearningAPI.dto.TrainingPathCreationDto;
 import org.agrisud.elearningAPI.dto.TrainingPathTranslationDto;
 import org.agrisud.elearningAPI.model.TrainingPathTranslation;
 import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
@@ -31,8 +32,8 @@ public class TrainingPathTranslationController {
     }
 
     @PostMapping
-    public long createNewTrainingPathTranslation(@RequestBody TrainingPathTranslation trainingPathTranslation) {
-        return this.trainingPathTranslationService.createNewTrainingPathTranslation(trainingPathTranslation);
+    public long createNewTrainingPathTranslation(@RequestBody TrainingPathCreationDto trainingPathTranslationDto) {
+        return this.trainingPathTranslationService.createNewTrainingPathTranslation(trainingPathTranslationDto);
     }
 
     @PutMapping

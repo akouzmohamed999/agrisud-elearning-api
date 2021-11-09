@@ -25,4 +25,10 @@ public class ModuleDto {
         this.trainingPathTranslationID = module.getTrainingPathTranslationID();
         this.courseDtoList = courses;
     }
+    public ModuleDto(Module module) {
+        this.title = module.getTitle();
+        this.orderOnPath = module.getOrderOnPath();
+        this.moduleDuration = module.getModuleDuration();
+        this.trainingPathTranslationID = module.getTrainingPathTranslationID();
+    }
 }
