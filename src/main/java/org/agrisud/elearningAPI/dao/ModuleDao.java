@@ -101,7 +101,17 @@ public class ModuleDao {
         return new MapSqlParameterSource()
                 .addValue("module_id", module.getId())
                 .addValue("module_title", module.getTitle())
+                .addValue("module_duration", module.getModuleDuration())
                 .addValue("order_on_path", module.getOrderOnPath())
                 .addValue("training_path_translation_id", module.getTrainingPathTranslationID());
+    }
+
+    public void updateDuration(Long moduleId, String courseTimeString) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("module_id", moduleId)
+                .addValue("module_duration", courseTimeString);
+        int updated = jdbcTemplate.update(sqlProperties.getProperty("module.update.duration"), namedParameters);
+        if (updated == 1) {
+            log.info("Module's duration updated : " + moduleId + " duration " + courseTimeString);
+        }
     }
 }

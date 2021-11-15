@@ -44,7 +44,9 @@ public class SignupService {
         Response response = usersResource.create(userRepresentation);
         String userId = CreatedResponseUtil.getCreatedId(response);
         userDao.createElearningUser(userId, registration);
-        userDao.addTrainingPathToUser(trainingPathId, userId);
+        if (trainingPathId != null) {
+            userDao.addTrainingPathToUser(trainingPathId, userId);
+        }
         keycloak.close();
     }
 

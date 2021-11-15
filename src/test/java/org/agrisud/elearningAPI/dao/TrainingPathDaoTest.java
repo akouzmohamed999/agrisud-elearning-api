@@ -11,8 +11,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,7 +27,7 @@ public class TrainingPathDaoTest {
     @BeforeEach
     public void setUp() throws Exception {
         trainingPath = TrainingPath.builder().imageUrl("TrainingPathPictures/image1.jpg")
-                .trainingPathTime(22).status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview")
+                .status(false).fullImagePath("http://localhost:3900/s/fi2qNAYsmk7E5EY/preview")
                 .build();
     }
 
@@ -39,41 +37,42 @@ public class TrainingPathDaoTest {
         List<TrainingPath> trainingPathList = trainingPathDao.getTrainingPathList();
         assertThat(trainingPathList).isNotEmpty();
         assertThat(trainingPathList).hasSize(1);
-        assertThat(trainingPathList.get(0).getImageUrl()).isEqualTo("imageUrl 1");
+        assertThat(trainingPathList.get(0).getImageUrl()).isEqualTo("imageUrl");
     }
 
     @Test
     public void shouldGetTrainingPathByID() {
-        Optional<TrainingPath> trainingPath = trainingPathDao.getTrainingPathById(1L);
+        TrainingPath trainingPath = trainingPathDao.getTrainingPathById(1L).orElseThrow(() -> new RuntimeException(""));
         assertThat(trainingPath).isNotNull();
-        assertThat(trainingPath.get().getImageUrl()).isEqualTo("imageUrl 1");
+        assertThat(trainingPath.getImageUrl()).isEqualTo("imageUrl");
     }
 
     @Test()
     public void shouldGetTrainingPathByIdThrowException() {
-        Assertions.assertThrows(NoSuchElementException.class, () -> {
-            Optional<TrainingPath> trainingPath = trainingPathDao.getTrainingPathById(5L);
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            TrainingPath trainingPath = trainingPathDao.getTrainingPathById(5L).orElseThrow(() -> new RuntimeException(""));
             assertThat(trainingPath).isNotNull();
-            assertThat(trainingPath.get().getImageUrl()).isEqualTo("imageUrl 1");
+            assertThat(trainingPath.getImageUrl()).isEqualTo("imageUrl");
 
         });
-
     }
 
     @Test
     public void shouldCreateNewTrainingPath() {
         long id = trainingPathDao.createNewTrainingPath(trainingPath);
         assertThat(trainingPathDao.getTrainingPathList()).hasSize(2);
-        assertThat(trainingPathDao.getTrainingPathById(id).get().getImageUrl()).isEqualTo("TrainingPathPictures/image1.jpg");
+        TrainingPath trainingPath = trainingPathDao.getTrainingPathById(id).orElseThrow(() -> new RuntimeException(""));
+        assertThat(trainingPath.getImageUrl()).isEqualTo("TrainingPathPictures/image1.jpg");
     }
 
     @Test
     public void shouldUpdateTrainingPath() {
         TrainingPath trainingPath2 = TrainingPath.builder().id(1L).imageUrl("imageUrl 2")
-                .trainingPathTime(15).status(false).build();
+                .status(false).build();
         trainingPathDao.updateTrainingPath(trainingPath2);
+        TrainingPath trainingPath = trainingPathDao.getTrainingPathById(1L).orElseThrow(() -> new RuntimeException(""));
         assertThat(trainingPathDao.getTrainingPathList()).hasSize(1);
-        assertThat(trainingPathDao.getTrainingPathById(1L).get().getImageUrl()).isEqualTo("imageUrl 2");
+        assertThat(trainingPath.getImageUrl()).isEqualTo("imageUrl 2");
     }
 
     @Test

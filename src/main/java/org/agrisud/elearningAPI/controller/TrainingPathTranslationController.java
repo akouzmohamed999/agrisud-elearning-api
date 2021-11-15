@@ -1,5 +1,7 @@
 package org.agrisud.elearningAPI.controller;
 
+import org.agrisud.elearningAPI.dto.TrainingPathCreationDto;
+import org.agrisud.elearningAPI.dto.TrainingPathTranslationDto;
 import org.agrisud.elearningAPI.model.TrainingPathTranslation;
 import org.agrisud.elearningAPI.service.TrainingPathTranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ public class TrainingPathTranslationController {
     }
 
     @GetMapping("/trainingPath/{trainingPathID}")
-    public List<TrainingPathTranslation> getTrainingPathTranslationListByTrainingPathID(@PathVariable Long trainingPathID) {
+    public List<TrainingPathTranslationDto> getTrainingPathTranslationListByTrainingPathID(@PathVariable Long trainingPathID) {
         return this.trainingPathTranslationService.getTrainingPathTranslationListByTrainingPathID(trainingPathID);
     }
 
@@ -30,8 +32,8 @@ public class TrainingPathTranslationController {
     }
 
     @PostMapping
-    public long createNewTrainingPathTranslation(@RequestBody TrainingPathTranslation trainingPathTranslation) {
-        return this.trainingPathTranslationService.createNewTrainingPathTranslation(trainingPathTranslation);
+    public long createNewTrainingPathTranslation(@RequestBody TrainingPathCreationDto trainingPathTranslationDto) {
+        return this.trainingPathTranslationService.createNewTrainingPathTranslation(trainingPathTranslationDto);
     }
 
     @PutMapping

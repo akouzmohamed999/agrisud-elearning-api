@@ -26,6 +26,7 @@ public class UserDao {
                 .addValue("nationality", registration.getNationality())
                 .addValue("occupation", registration.getOccupation())
                 .addValue("organisation", registration.getOrganisation())
+                .addValue("establishment", registration.getEstablishment())
                 .addValue("sex", registration.getSex());
         jdbcTemplate.update(sqlProperties.getProperty("user.create"), params);
     }

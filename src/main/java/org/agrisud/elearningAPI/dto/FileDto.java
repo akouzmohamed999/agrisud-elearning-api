@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PictureDto {
-    private String url;
-    private String fullImagePath;
+public class FileDto {
+    private String fileUrl;
+    private String filePath;
 }

@@ -129,10 +129,16 @@ public class TrainingPathDao {
 
     public void deleteTrainingPath(Long trainingPathID) {
         SqlParameterSource namedParameters = new MapSqlParameterSource("training_path_id", trainingPathID);
+        int associationTableDeleted = namedParameterJdbcTemplate.update(sqlProperties.getProperty("training-path.user.delete"), namedParameters);
         int deleted = namedParameterJdbcTemplate.update(sqlProperties.getProperty("training-path.delete"), namedParameters);
-        if (deleted == 1) {
+        if (deleted == 1 && associationTableDeleted == 1) {
             log.info("Training Path deleted : " + trainingPathID);
         }
+    }
+
+    public void deprecateTrainingPath(Long trainingPathId){
+        SqlParameterSource namedParameters = new MapSqlParameterSource("trainingPathId", trainingPathId);
+        namedParameterJdbcTemplate.update(sqlProperties.getProperty("training-path.deprecate"), namedParameters);
     }
 
     private SqlParameterSource initParams(TrainingPath trainingPath) {
@@ -140,7 +146,6 @@ public class TrainingPathDao {
                 .addValue("training_path_id", trainingPath.getId())
                 .addValue("image_url", trainingPath.getImageUrl())
                 .addValue("full_image_path", trainingPath.getFullImagePath())
-                .addValue("training_path_time", trainingPath.getTrainingPathTime())
                 .addValue("training_path_status", trainingPath.getStatus())
                 .addValue("archived", trainingPath.getArchived());
     }

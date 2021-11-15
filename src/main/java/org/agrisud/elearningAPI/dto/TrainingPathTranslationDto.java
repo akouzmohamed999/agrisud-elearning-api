@@ -2,8 +2,11 @@ package org.agrisud.elearningAPI.dto;
 
 import lombok.*;
 import org.agrisud.elearningAPI.enums.Language;
+import org.agrisud.elearningAPI.model.Module;
+import org.agrisud.elearningAPI.model.TrainingPathTranslation;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -19,4 +22,15 @@ public class TrainingPathTranslationDto {
     private Language language;
     private Long trainingPathID;
     private List<ModuleDto> moduleList;
+    private String trainingPathDuration;
+
+    public TrainingPathTranslationDto(TrainingPathTranslation trainingPathTranslation, List<ModuleDto> modules) {
+        this.title = trainingPathTranslation.getTitle();
+        this.description = trainingPathTranslation.getDescription();
+        this.capacity = trainingPathTranslation.getCapacity();
+        this.preRequest = trainingPathTranslation.getPreRequest();
+        this.language = trainingPathTranslation.getLanguage();
+        this.trainingPathID = trainingPathTranslation.getTrainingPathID();
+        this.moduleList = modules;
+    }
 }
