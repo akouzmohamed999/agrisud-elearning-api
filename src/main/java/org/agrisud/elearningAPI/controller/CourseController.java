@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningAPI.cloudservice.FileCloudService;
 import org.agrisud.elearningAPI.dto.FileDto;
 import org.agrisud.elearningAPI.enums.CourseType;
+import org.agrisud.elearningAPI.enums.SupportMode;
 import org.agrisud.elearningAPI.model.Course;
 import org.agrisud.elearningAPI.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +91,7 @@ public class CourseController {
     @PostMapping(value = "/support", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FileDto uploadCourseSupport(@RequestParam MultipartFile support) {
         log.info("Starting .....");
-        return this.fileCloudService.uploadFile(support, false);
+        return this.fileCloudService.uploadFile(support, SupportMode.PDF);
     }
 
     @DeleteMapping("/support")

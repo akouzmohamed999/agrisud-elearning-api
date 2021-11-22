@@ -2,6 +2,7 @@ package org.agrisud.elearningAPI.cloudservice;
 
 import org.agrisud.elearningAPI.clouddao.FileCloudDao;
 import org.agrisud.elearningAPI.dto.FileDto;
+import org.agrisud.elearningAPI.enums.SupportMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,7 +41,7 @@ public class FileCloudServiceTest {
     @Test
     public void shouldUploadTrainingPathImage() {
         when(fileCloudDao.uploadFile(any(File.class), anyString(),anyBoolean())).thenReturn(fileDto);
-        fileCloudService.uploadFile(file,true);
+        fileCloudService.uploadFile(file, SupportMode.IMAGE);
         verify(fileCloudDao, times(1)).uploadFile(any(File.class), anyString(),anyBoolean());
     }
 }

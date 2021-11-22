@@ -111,6 +111,8 @@ public class TrainingPathTranslationDao {
                 .addValue("training_path_title", trainingPathTranslation.getTitle())
                 .addValue("capacity", trainingPathTranslation.getCapacity())
                 .addValue("training_path_description", trainingPathTranslation.getDescription())
+                .addValue("training_path_support_url", trainingPathTranslation.getSupportUrl())
+                .addValue("training_path_support_path", trainingPathTranslation.getSupportPath())
                 .addValue("pre_request", trainingPathTranslation.getPreRequest())
                 .addValue("language", trainingPathTranslation.getLanguage().toString())
                 .addValue("training_path_id", trainingPathTranslation.getTrainingPathID())

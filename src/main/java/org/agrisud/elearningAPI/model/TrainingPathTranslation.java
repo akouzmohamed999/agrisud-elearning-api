@@ -21,6 +21,8 @@ public class TrainingPathTranslation {
     private String capacity;
     private String preRequest;
     private Language language;
+    private String supportUrl;
+    private String supportPath;
     private Long trainingPathID;
     private String template;
     private String trainingPathDuration;
@@ -33,6 +35,8 @@ public class TrainingPathTranslation {
         trainingPathTranslation.setCapacity(resultSet.getString("capacity"));
         trainingPathTranslation.setPreRequest(resultSet.getString("pre_request"));
         trainingPathTranslation.setLanguage(Language.valueOf(resultSet.getString("language")));
+        trainingPathTranslation.setSupportUrl(resultSet.getString("tpt_support_url"));
+        trainingPathTranslation.setSupportPath(resultSet.getString("tpt_support_path"));
         trainingPathTranslation.setTrainingPathID(resultSet.getLong("training_path_id"));
         trainingPathTranslation.setTrainingPathDuration(resultSet.getString("training_path_duration"));
         return trainingPathTranslation;

@@ -17,6 +17,8 @@ public class TrainingPathTranslationDto {
     private Long id;
     private String title;
     private String description;
+    private String supportUrl;
+    private String supportPath;
     private String capacity;
     private String preRequest;
     private Language language;

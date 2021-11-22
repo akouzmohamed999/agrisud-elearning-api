@@ -36,6 +36,12 @@ cloud:
     download-url: ${CLOUD_DOWNLOAD_URL}
     username: ${CLOUD_USERNAME}
     password: ${CLOUD_PASSWORD}
+  trainingPath:
+    pictures: /Elearning/TrainingPath/Pictures/
+    course:
+      pdf: /Elearning/Course/PDF/
+    evaluation:
+      pdf: /Elearning/Evalutation/PDF/
 
 keycloak:
   resource: ${KEYCLOAK_CLIENT_ID}

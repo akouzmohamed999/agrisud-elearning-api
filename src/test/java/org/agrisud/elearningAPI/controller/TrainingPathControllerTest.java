@@ -3,6 +3,7 @@ package org.agrisud.elearningAPI.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.agrisud.elearningAPI.cloudservice.FileCloudService;
 import org.agrisud.elearningAPI.dto.*;
+import org.agrisud.elearningAPI.enums.SupportMode;
 import org.agrisud.elearningAPI.model.Module;
 import org.agrisud.elearningAPI.model.TrainingPath;
 import org.agrisud.elearningAPI.model.TrainingPathTranslation;
@@ -114,11 +115,11 @@ public class TrainingPathControllerTest {
         FileDto fileDto =  FileDto.builder().filePath("test").filePath("test").build();
         MockMultipartFile file = new MockMultipartFile("file", "hello.txt",
                 MediaType.MULTIPART_FORM_DATA_VALUE, "Hello, World!".getBytes());
-        when(fileCloudService.uploadFile(any(MultipartFile.class),anyBoolean())).thenReturn(fileDto);
+        when(fileCloudService.uploadFile(any(MultipartFile.class),any(SupportMode.class))).thenReturn(fileDto);
         mockMvc.perform(multipart("/trainingPath/picture").file(file))
                 .andExpect(status().isOk());
         verify(fileCloudService, times(1))
-                .uploadFile(any(MultipartFile.class),anyBoolean());
+                .uploadFile(any(MultipartFile.class),any(SupportMode.class));
     }
 
     private static String asJsonString(final Object obj) {

@@ -6,6 +6,7 @@ import org.agrisud.elearningAPI.dto.FileDto;
 import org.agrisud.elearningAPI.dto.TrainingPathCreationDto;
 import org.agrisud.elearningAPI.enums.Language;
 import org.agrisud.elearningAPI.enums.SortColumn;
+import org.agrisud.elearningAPI.enums.SupportMode;
 import org.agrisud.elearningAPI.model.TrainingPath;
 import org.agrisud.elearningAPI.service.CourseService;
 import org.agrisud.elearningAPI.service.ModuleService;
@@ -120,7 +121,7 @@ public class TrainingPathController {
     @PostMapping(value = "/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FileDto uploadTrainingPathPicture(@RequestParam MultipartFile file) {
         log.info("Starting .....");
-        return fileCloudService.uploadFile(file, true);
+        return fileCloudService.uploadFile(file, SupportMode.IMAGE);
     }
 
     @DeleteMapping("/picture")
