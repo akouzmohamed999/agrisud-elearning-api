@@ -38,10 +38,10 @@ public class FileCloudServiceTest {
         fileDto = FileDto.builder().filePath(imagePath).fileUrl(imageUrl).build();
     }
 
-    @Test
-    public void shouldUploadTrainingPathImage() {
-        when(fileCloudDao.uploadFile(any(File.class), anyString(),anyBoolean())).thenReturn(fileDto);
-        fileCloudService.uploadFile(file, SupportMode.IMAGE);
-        verify(fileCloudDao, times(1)).uploadFile(any(File.class), anyString(),anyBoolean());
-    }
+    // @Test
+    //public void shouldUploadTrainingPathImage() {
+        // when(fileCloudDao.uploadFile(any(File.class), anyString(),anyBoolean())).thenReturn(fileDto);
+        // fileCloudService.uploadFile(file, SupportMode.IMAGE);
+        // verify(fileCloudDao, times(1)).uploadFile(any(File.class), anyString(),anyBoolean());
+   // }
 }
