@@ -24,51 +24,51 @@ public class StatisticsDao {
     @Autowired
     Properties sqlProperties;
 
-    public Integer getNumberOfRegisteredUsers() {
-        return jdbcTemplate.queryForObject(sqlProperties.getProperty("registered_users"), Integer.class);
+    public Integer getNumberOfRegisteredUsers(int year) {
+        return namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty("registered_users"), new MapSqlParameterSource().addValue("year", year), Integer.class);
     }
 
-    public List<StatisticsData> getNbrUsersByNbrTrainingPaths() {
-        return jdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.nbr_training_paths"), StatisticsData::keyValueMapper);
+    public List<StatisticsData> getNbrUsersByNbrTrainingPaths(int year) {
+        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.nbr_training_paths"), new MapSqlParameterSource().addValue("year", year), StatisticsData::keyValueMapper);
     }
 
-    public List<StatisticsData> getNbrRegisteredUsersByMonth() {
-        return jdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.month"), StatisticsData::keyValueMapper);
+    public List<StatisticsData> getNbrRegisteredUsersByMonth(int year) {
+        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.month"), new MapSqlParameterSource().addValue("year", year), StatisticsData::keyValueMapper);
     }
 
-    public List<StatisticsData> getNbrRegisteredUsersByMonthByNationality() {
-        return jdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.month.by.nationality"), StatisticsData::fullMapper);
+    public List<StatisticsData> getNbrRegisteredUsersByMonthByNationality(int year) {
+        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.month.by.nationality"), new MapSqlParameterSource().addValue("year", year), StatisticsData::fullMapper);
     }
 
-    public List<StatisticsData> getNbrUsersByAge() {
-        return jdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.age"), StatisticsData::labelValueMapper);
+    public List<StatisticsData> getNbrUsersByAge(int year) {
+        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.age"), new MapSqlParameterSource().addValue("year", year), StatisticsData::labelValueMapper);
     }
 
-    public List<StatisticsData> getNbrUsersByCompletedTrainingPaths(String language) {
-        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.completed_training_paths"), new MapSqlParameterSource().addValue("language", language), StatisticsData::labelValueMapper);
+    public List<StatisticsData> getNbrUsersByCompletedTrainingPaths(String language, int year) {
+        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.completed_training_paths"), new MapSqlParameterSource().addValue("language", language).addValue("year", year), StatisticsData::labelValueMapper);
     }
 
-    public List<StatisticsData> getNbrUsersByNationality() {
-        return jdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.nationality"), StatisticsData::labelValueMapper);
+    public List<StatisticsData> getNbrUsersByNationality(int year) {
+        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.nationality"), new MapSqlParameterSource().addValue("year", year), StatisticsData::labelValueMapper);
     }
 
-    public List<StatisticsData> getNbrUsersByGenre() {
-        return jdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.genre"), StatisticsData::labelValueMapper);
+    public List<StatisticsData> getNbrUsersByGenre(int year) {
+        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.genre"), new MapSqlParameterSource().addValue("year", year), StatisticsData::labelValueMapper);
     }
 
-    public List<StatisticsData> getNbrUsersByOccupation() {
-        return jdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.occupation"), StatisticsData::labelValueMapper);
+    public List<StatisticsData> getNbrUsersByOccupation(int year) {
+        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.occupation"), new MapSqlParameterSource().addValue("year", year), StatisticsData::labelValueMapper);
     }
 
-    public List<StatisticsData> getNbrUsersByEstablishment() {
-        return jdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.establishment"), StatisticsData::labelValueMapper);
+    public List<StatisticsData> getNbrUsersByEstablishment(int year) {
+        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.establishment"), new MapSqlParameterSource().addValue("year", year), StatisticsData::labelValueMapper);
     }
 
-    public List<StatisticsData> getNbrUsersByTrainingPath(String language) {
-        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.training_path"), new MapSqlParameterSource().addValue("language", language), StatisticsData::labelValueMapper);
+    public List<StatisticsData> getNbrUsersByTrainingPath(String language, int year) {
+        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("nbr_users.by.training_path"), new MapSqlParameterSource().addValue("language", language).addValue("year", year), StatisticsData::labelValueMapper);
     }
 
-    public List<StatisticsData> getNbrRegisteredUsersByNationality() {
-        return jdbcTemplate.query(sqlProperties.getProperty("nbr_registered_users.by.nationality"), StatisticsData::labelValueMapper);
+    public List<StatisticsData> getNbrRegisteredUsersByNationality(int year) {
+        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("nbr_registered_users.by.nationality"), new MapSqlParameterSource().addValue("year", year), StatisticsData::labelValueMapper);
     }
 }

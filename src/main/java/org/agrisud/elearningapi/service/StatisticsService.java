@@ -15,39 +15,39 @@ public class StatisticsService {
     @Autowired
     private StatisticsDao statisticsDao;
 
-    public Integer getNumberOfRegisteredUsers() {
-        return statisticsDao.getNumberOfRegisteredUsers();
+    public Integer getNumberOfRegisteredUsers(int year) {
+        return statisticsDao.getNumberOfRegisteredUsers(year);
     }
 
-    public List<StatisticsData> getNbrUsersByNbrTrainingPaths() {
-        return statisticsDao.getNbrUsersByNbrTrainingPaths();
+    public List<StatisticsData> getNbrUsersByNbrTrainingPaths(int year) {
+        return statisticsDao.getNbrUsersByNbrTrainingPaths(year);
     }
 
-    public List<StatisticsData> getNbrUsersByCompletedTrainingPaths(String language) {
-        return statisticsDao.getNbrUsersByCompletedTrainingPaths(language);
+    public List<StatisticsData> getNbrUsersByCompletedTrainingPaths(String language, int year) {
+        return statisticsDao.getNbrUsersByCompletedTrainingPaths(language, year);
     }
 
-    public Map<String, List<StatisticsData>> getUsersIndicators() {
+    public Map<String, List<StatisticsData>> getUsersIndicators(int year) {
         return new HashMap<>() {{
-            put("signup_nationality", statisticsDao.getNbrUsersByNationality());
-            put("age", statisticsDao.getNbrUsersByAge());
-            put("signup_genre", statisticsDao.getNbrUsersByGenre());
-            put("signup_occupation", statisticsDao.getNbrUsersByOccupation());
-            put("establishment", statisticsDao.getNbrUsersByEstablishment());
+            put("signup_nationality", statisticsDao.getNbrUsersByNationality(year));
+            put("age", statisticsDao.getNbrUsersByAge(year));
+            put("signup_genre", statisticsDao.getNbrUsersByGenre(year));
+            put("signup_occupation", statisticsDao.getNbrUsersByOccupation(year));
+            put("establishment", statisticsDao.getNbrUsersByEstablishment(year));
         }};
     }
 
-    public Map<String, List<StatisticsData>> getTrainingPathsIndicators(String language) {
+    public Map<String, List<StatisticsData>> getTrainingPathsIndicators(String language, int year) {
         return new HashMap<>() {{
-            put("training_path", statisticsDao.getNbrUsersByTrainingPath(language));
-            put("registered_users_by_nationality", statisticsDao.getNbrRegisteredUsersByNationality());
+            put("training_path", statisticsDao.getNbrUsersByTrainingPath(language, year));
+            put("registered_users_by_nationality", statisticsDao.getNbrRegisteredUsersByNationality(year));
         }};
     }
 
-    public Map<String, List<StatisticsData>> getNbrRegisteredUsersByMonth() {
+    public Map<String, List<StatisticsData>> getNbrRegisteredUsersByMonth(int year) {
         return new HashMap<>() {{
-            put("all", statisticsDao.getNbrRegisteredUsersByMonth());
-            put("by_nationality", statisticsDao.getNbrRegisteredUsersByMonthByNationality());
+            put("all", statisticsDao.getNbrRegisteredUsersByMonth(year));
+            put("by_nationality", statisticsDao.getNbrRegisteredUsersByMonthByNationality(year));
         }};
     }
 }
