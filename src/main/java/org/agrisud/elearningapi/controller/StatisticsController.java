@@ -18,32 +18,32 @@ public class StatisticsController {
     private StatisticsService statisticsService;
 
     @GetMapping("/registeredUsers")
-    public Integer getNumberOfRegisteredUsers() {
-        return statisticsService.getNumberOfRegisteredUsers();
+    public Integer getNumberOfRegisteredUsers(@RequestParam int year) {
+        return statisticsService.getNumberOfRegisteredUsers(year);
     }
 
     @GetMapping("/nbrUsersByNbrTrainingPaths")
-    public List<StatisticsData> getNbrUsersByNbrTrainingPaths() {
-        return statisticsService.getNbrUsersByNbrTrainingPaths();
+    public List<StatisticsData> getNbrUsersByNbrTrainingPaths(@RequestParam int year) {
+        return statisticsService.getNbrUsersByNbrTrainingPaths(year);
     }
 
     @GetMapping("/nbrUsersByCompletedTrainingPaths")
-    public List<StatisticsData> getNbrUsersByCompletedTrainingPaths(@RequestParam String language) {
-        return statisticsService.getNbrUsersByCompletedTrainingPaths(language);
+    public List<StatisticsData> getNbrUsersByCompletedTrainingPaths(@RequestParam String language, @RequestParam int year) {
+        return statisticsService.getNbrUsersByCompletedTrainingPaths(language, year);
     }
 
     @GetMapping("/usersIndicators")
-    public Map<String, List<StatisticsData>> getUsersIndicators() {
-        return statisticsService.getUsersIndicators();
+    public Map<String, List<StatisticsData>> getUsersIndicators(@RequestParam int year) {
+        return statisticsService.getUsersIndicators(year);
     }
 
     @GetMapping("/trainingPathsIndicators")
-    public Map<String, List<StatisticsData>> getTrainingPathsIndicators(@RequestParam String language) {
-        return statisticsService.getTrainingPathsIndicators(language);
+    public Map<String, List<StatisticsData>> getTrainingPathsIndicators(@RequestParam String language, @RequestParam int year) {
+        return statisticsService.getTrainingPathsIndicators(language, year);
     }
 
     @GetMapping("/registeredUsersByMonth")
-    public Map<String, List<StatisticsData>> getNbrRegisteredUsersByMonth() {
-        return statisticsService.getNbrRegisteredUsersByMonth();
+    public Map<String, List<StatisticsData>> getNbrRegisteredUsersByMonth(@RequestParam int year) {
+        return statisticsService.getNbrRegisteredUsersByMonth(year);
     }
 }
