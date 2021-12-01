@@ -10,7 +10,6 @@
   margin-left: 29vw;
   height: 45.4vh;
   width: 10.5vw;
-  margin-top: 3vh;
 }
 
 .forgot-password-wrapper {
@@ -220,58 +219,3 @@ body {
   margin-top: 6em;
 }
 
-/* @media only screen and (max-width: 767px) {
-  .agrisud-nav-menus {
-    margin-right: unset !important;
-  }
-
-  .agrisud-nav-menus .agrisud-nav-menus-slugan {
-    margin-left: 4vw !important;
-  }
-
-  .agrisud-nav-menus .agrisud-nav-menus-slugan h6 {
-    margin-bottom: unset;
-  }
-
-  .nav-image {
-    height: 55px;
-  }
-} */
-
-
-
-@media(min-width: 1440px) {
-
-  #kc-page-title {
-    font-size: 14px;
-  }
-
-  #kc-form-buttons {
-    margin-top: 0;
-  }
-
-  #kc-form-reset-psw a {
-    font-size: 12px;
-  }
-
-  .card-pf {
-    max-width: 27vw;
-    max-height: 45.4vh;
-  }
-
-  .login-pf-page .login-pf-header {
-    margin-bottom: 0;
-  }
-
-  .login-pf-page .form-group {
-    margin-bottom: 2vh;
-  }
-
-  #kc-login {
-    margin-top: 5vh;
-  }
-
-  #kc-form-register a {
-    font-size: 12px;
-  }
-}

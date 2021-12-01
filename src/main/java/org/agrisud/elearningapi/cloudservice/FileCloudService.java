@@ -23,11 +23,11 @@ public class FileCloudService {
 
     Map<SupportMode, String> supportMap = new HashMap<>();
 
-    @Value("${cloud.trainingPath.pictures}")
+    @Value("${cloud.elearning.training-path.pictures}")
     String trainingPathPictureFolder;
-    @Value("${cloud.trainingPath.course.pdf}")
+    @Value("${cloud.elearning.training-path.course.pdf}")
     String trainingPathCoursePDFFolder;
-    @Value("${cloud.trainingPath.evaluation.pdf}")
+    @Value("${cloud.elearning.training-path.evaluation.pdf}")
     String trainingPathEvaluationPDFFolder;
 
     @PostConstruct

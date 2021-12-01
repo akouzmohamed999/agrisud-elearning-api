@@ -120,6 +120,8 @@ public class TrainingPathService {
                 .language(trainingPathTranslationDto.getLanguage())
                 .capacity(trainingPathTranslationDto.getCapacity())
                 .trainingPathDuration(DurationGenerator.getTrainingPathDuration(trainingPathTranslationDto))
+                .supportPath(trainingPathTranslationDto.getSupportPath())
+                .supportUrl(trainingPathTranslationDto.getSupportUrl())
                 .trainingPathID(trainingPathTranslationDto.getTrainingPathID()).template(TemplateGenerationHelper.generateTrainingPathTemplate(trainingPathDto, trainingPathTranslationDto)).build();
     }
 

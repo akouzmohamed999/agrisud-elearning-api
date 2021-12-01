@@ -38,12 +38,17 @@ cloud:
     download-url: http://localhost:3900
     password: cloudagrisudcrud
     username: cloudagrisudcrud
-  trainingPath:
-    pictures: /Elearning/TrainingPath/Pictures/
-    course:
-      pdf: /Elearning/Course/PDF/
-    evaluation:
-      pdf: /Elearning/Evalutation/PDF/
+  elearning:
+    base-folder: /Elearning
+    training-path:
+      base-folder: /Elearning/TrainingPath
+      pictures: /Elearning/TrainingPath/Pictures/
+      course:
+        base-folder: /Elearning/TrainingPath/Course
+        pdf: /Elearning/TrainingPath/Course/PDF/
+      evaluation:
+        base-folder: /Elearning/TrainingPath/Evalutation
+        pdf: /Elearning/TrainingPath/Evalutation/PDF/
 
 keycloak:
   resource: agrisud-elearning-api
