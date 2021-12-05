@@ -3,12 +3,14 @@ package org.agrisud.elearningapi.service;
 import org.agrisud.elearningapi.dao.CourseDao;
 import org.agrisud.elearningapi.dao.ModuleDao;
 import org.agrisud.elearningapi.dao.TrainingPathTranslationDao;
+import org.agrisud.elearningapi.dao.UserDao;
 import org.agrisud.elearningapi.dto.CourseDto;
 import org.agrisud.elearningapi.dto.ModuleDto;
 import org.agrisud.elearningapi.dto.TrainingPathTranslationDto;
 import org.agrisud.elearningapi.model.Course;
 import org.agrisud.elearningapi.model.Module;
 import org.agrisud.elearningapi.model.TrainingPathTranslation;
+import org.agrisud.elearningapi.security.User;
 import org.agrisud.elearningapi.util.DurationGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,8 @@ public class CourseService {
     private ModuleDao moduleDao;
     @Autowired
     private TrainingPathTranslationDao trainingPathTranslationDao;
+    @Autowired
+    private UserDao userDao;
 
     public Page<Course> getCoursesByModulePerPage(int page, int size, Long moduleID) {
         PageRequest pageRequest = PageRequest.of(page, size);
@@ -81,7 +85,37 @@ public class CourseService {
     }
 
     public void addCourseToUser(Long courseID) {
+        User loggedInUser = User.getLoggedInUser();
+        if (isThisLastCourse(courseID)) {
+            userDao.addEndTrainingPathDate(getTrainingPathID(courseID), loggedInUser.getUserId());
+        }
         this.courseDao.addCourseToUser(courseID);
+    }
+
+    private boolean isThisLastCourse(Long courseID) {
+        Optional<Course> course = courseDao.getCoursesByID(courseID);
+        String errorMessage = "Error while testing if this" + courseID + "is the last course";
+        return course.map(course1 -> {
+            Optional<Module> module = moduleDao.getModuleById(course1.getModuleId());
+            return module.map(module1 -> {
+                List<Module> modules = moduleDao.getModuleListByTrainingPathTranslationID(module1.getTrainingPathTranslationID());
+                List<Course> courseList = courseDao.getCoursesByModule(module1.getId());
+                return module1.getOrderOnPath() == modules.size() &&
+                        courseList.stream().allMatch(course2 -> course2.getId() <= courseID);
+            }).orElseThrow(() -> new RuntimeException(errorMessage));
+        }).orElseThrow(() -> new RuntimeException(errorMessage));
+    }
+
+    private long getTrainingPathID(Long courseID) {
+        Optional<Course> course = courseDao.getCoursesByID(courseID);
+        String errorMessage = "Error while getting training-path ID";
+        return course.map(course1 -> {
+            Optional<Module> module = moduleDao.getModuleById(course1.getModuleId());
+            return module.map(module1 -> {
+                Optional<TrainingPathTranslation> trainingPathTranslation = trainingPathTranslationDao.getTrainingPathTranslationById(module1.getTrainingPathTranslationID());
+                return trainingPathTranslation.map(TrainingPathTranslation::getTrainingPathID).orElseThrow(() -> new RuntimeException(errorMessage));
+            }).orElseThrow(() -> new RuntimeException(errorMessage));
+        }).orElseThrow(() -> new RuntimeException(errorMessage));
     }
 
     public Boolean isModuleFinished(Long moduleID) {

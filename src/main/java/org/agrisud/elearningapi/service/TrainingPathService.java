@@ -163,4 +163,14 @@ public class TrainingPathService {
         });
         trainingPathDao.deprecateTrainingPath(trainingPathId);
     }
+
+    public void startTrainingPath(Long trainingPathId) {
+        User loggedInUser = User.getLoggedInUser();
+        userDao.addStartTrainingPathDate(trainingPathId, loggedInUser.getUserId());
+    }
+
+    public Boolean isAlreadyStarted(Long trainingPathId){
+        User loggedInUser = User.getLoggedInUser();
+       return userDao.isAlreadyStarted(trainingPathId, loggedInUser.getUserId());
+    }
 }

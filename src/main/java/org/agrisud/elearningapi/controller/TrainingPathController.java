@@ -134,6 +134,17 @@ public class TrainingPathController {
         this.trainingPathService.addTrainingPathToUser(trainingPathId);
     }
 
+    @PostMapping("/startTrainingPath/{trainingPathId}")
+    public void startTrainingPath(@PathVariable Long trainingPathId) {
+        this.trainingPathService.startTrainingPath(trainingPathId);
+    }
+
+    @GetMapping("/isAlreadyStarted/{trainingPathId}")
+    public ResponseEntity<Boolean> isAlreadyStarted(@PathVariable Long trainingPathId) {
+        Boolean isAlreadyStarted = this.trainingPathService.isAlreadyStarted(trainingPathId);
+        return ResponseEntity.ok().body(isAlreadyStarted);
+    }
+
     @PostMapping("/editor/upload")
     public ResponseEntity<Map<String, String>> upload(@RequestParam("file") MultipartFile file) {
         HashMap<String, String> response = new HashMap<>();
