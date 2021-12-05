@@ -2,6 +2,7 @@ package org.agrisud.elearningapi.dao;
 
 import lombok.extern.slf4j.Slf4j;
 import org.agrisud.elearningapi.model.StatisticsData;
+import org.agrisud.elearningapi.model.TrainingPathTranslation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -70,5 +71,10 @@ public class StatisticsDao {
 
     public List<StatisticsData> getNbrRegisteredUsersByNationality(int year) {
         return namedParameterJdbcTemplate.query(sqlProperties.getProperty("nbr_registered_users.by.nationality"), new MapSqlParameterSource().addValue("year", year), StatisticsData::labelValueMapper);
+    }
+
+    public List<TrainingPathTranslation> getTrainingPathTranslationByYearAndLanguage(String language, int year) {
+        return namedParameterJdbcTemplate.query(sqlProperties.getProperty("training-path-translation.by.language.and.year"),
+                new MapSqlParameterSource().addValue("year", year).addValue("language", language), TrainingPathTranslation::baseMapper);
     }
 }

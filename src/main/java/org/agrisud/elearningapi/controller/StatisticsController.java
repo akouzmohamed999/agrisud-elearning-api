@@ -46,4 +46,9 @@ public class StatisticsController {
     public Map<String, List<StatisticsData>> getNbrRegisteredUsersByMonth(@RequestParam int year) {
         return statisticsService.getNbrRegisteredUsersByMonth(year);
     }
+
+    @GetMapping("/averageTimeSpentByUsersToCompleteATrainingPath")
+    public List<StatisticsData> getTheAverageTimeSpentByUsersToCompleteATrainingPath(@RequestParam String language, @RequestParam int year) {
+        return statisticsService.getTheAverageTimeSpentByUsersToCompleteATrainingPath(language, year);
+    }
 }
