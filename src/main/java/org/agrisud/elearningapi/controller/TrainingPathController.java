@@ -159,4 +159,9 @@ public class TrainingPathController {
     public String getTrainingPathTranslationTemplate(@PathVariable Long trainingPathId, @RequestParam Language currentLang) {
         return trainingPathTranslationService.getTrainingPathTranslationTemplate(trainingPathId, currentLang);
     }
+
+    @PostMapping("/finishTrainingPath/{trainingPathId}")
+    public void finishTrainingPath(@PathVariable Long trainingPathId) {
+        trainingPathService.finishTrainingPath(trainingPathId);
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,10 +58,14 @@ public class StatisticsService {
     }
 
     public List<StatisticsData> getTheAverageTimeSpentByUsersToCompleteATrainingPath(String language, int year) {
+        AtomicInteger i = new AtomicInteger(0);
         List<TrainingPathTranslation> trainingPathTranslationList = statisticsDao.getTrainingPathTranslationByYearAndLanguage(language, year);
-        return trainingPathTranslationList.stream().map(trainingPathTranslation -> new StatisticsData(
-                        trainingPathTranslation.getTitle(), 0,
-                        userDao.getTheAverageTimeSpentByUsersToCompleteATrainingPath(trainingPathTranslation.getTrainingPathID()))
+        return trainingPathTranslationList.stream().map(trainingPathTranslation -> {
+                    i.getAndIncrement();
+                    return new StatisticsData(
+                            trainingPathTranslation.getTitle(), i.get(),
+                            userDao.getTheAverageTimeSpentByUsersToCompleteATrainingPath(trainingPathTranslation.getTrainingPathID()));
+                }
         ).collect(Collectors.toList());
     }
 }

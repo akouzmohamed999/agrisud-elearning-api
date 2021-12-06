@@ -1,16 +1,12 @@
 package org.agrisud.elearningapi.dao;
 
 import org.agrisud.elearningapi.model.Registration;
-import org.agrisud.elearningapi.model.TrainingPathTranslation;
-import org.apache.james.mime4j.field.datetime.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -73,5 +69,11 @@ public class UserDao {
         Integer average = namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty("get.average.time.spent.by.users"),
                 new MapSqlParameterSource("trainingPathId", trainingPathId), Integer.class);
         return Objects.requireNonNullElse(average, 0);
+    }
+
+    public void finishTrainingPath(Long trainingPathId, String userId) {
+        MapSqlParameterSource params = new MapSqlParameterSource("userId", userId)
+                .addValue("trainingPathId", trainingPathId);
+        jdbcTemplate.update(sqlProperties.getProperty("user.finish.trainingPath"), params);
     }
 }

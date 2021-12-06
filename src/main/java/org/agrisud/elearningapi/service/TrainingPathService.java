@@ -169,8 +169,14 @@ public class TrainingPathService {
         userDao.addStartTrainingPathDate(trainingPathId, loggedInUser.getUserId());
     }
 
-    public Boolean isAlreadyStarted(Long trainingPathId){
+    public Boolean isAlreadyStarted(Long trainingPathId) {
         User loggedInUser = User.getLoggedInUser();
-       return userDao.isAlreadyStarted(trainingPathId, loggedInUser.getUserId());
+        return userDao.isAlreadyStarted(trainingPathId, loggedInUser.getUserId());
+    }
+
+    public void finishTrainingPath(Long trainingPathId) {
+        User loggedInUser = User.getLoggedInUser();
+        userDao.finishTrainingPath(trainingPathId, loggedInUser.getUserId());
+
     }
 }
