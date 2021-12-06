@@ -1,10 +1,7 @@
 package org.agrisud.elearningapi.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.agrisud.elearningapi.dao.CourseDao;
-import org.agrisud.elearningapi.dao.ModuleDao;
-import org.agrisud.elearningapi.dao.TrainingPathDao;
-import org.agrisud.elearningapi.dao.TrainingPathTranslationDao;
+import org.agrisud.elearningapi.dao.*;
 import org.agrisud.elearningapi.dto.*;
 import org.agrisud.elearningapi.enums.Language;
 import org.agrisud.elearningapi.model.Course;
