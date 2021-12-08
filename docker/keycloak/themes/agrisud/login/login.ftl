@@ -1,6 +1,7 @@
 <#import "template.ftl" as layout>
 <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <div class="kc-base-logo-wrapper">
 <div class="agrisud-navbar">
     <div class="agrisud-nav-menus-logo">
@@ -41,7 +42,7 @@
         </div>
         </div>
 <div class="form-container">
-    <img class="form-img" src="${url.resourcesPath}/${properties.sideformImg}" />
+    <img id="form-img" class="form-img" src="${url.resourcesPath}/${properties.sideformImg}" />
     <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
         <#if section = "header">
         ${msg("loginAccountTitle")}
@@ -60,6 +61,7 @@
 
                         <div class="${properties.kcFormGroupClass!}">
                             <input tabindex="2" id="password" class="${properties.kcInputClass!}" name="password" type="password" autocomplete="off" placeholder="${msg("password")}" />
+                            <span><i className="fa fa-eye-slash"></i></span>
                         </div>
 
                         <div class="${properties.kcFormGroupClass!} ${properties.kcFormSettingClass!}">

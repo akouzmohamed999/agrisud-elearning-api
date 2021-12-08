@@ -9,8 +9,7 @@
   position: absolute;
   margin-left: 29vw;
   height: 45.4vh;
-  width: 10.5vw;
-  margin-top: 3vh;
+  width: 12vw;
 }
 
 .forgot-password-wrapper {
@@ -219,59 +218,28 @@ body {
 .form-container{
   margin-top: 6em;
 }
-
-/* @media only screen and (max-width: 767px) {
-  .agrisud-nav-menus {
-    margin-right: unset !important;
-  }
-
-  .agrisud-nav-menus .agrisud-nav-menus-slugan {
-    margin-left: 4vw !important;
-  }
-
-  .agrisud-nav-menus .agrisud-nav-menus-slugan h6 {
-    margin-bottom: unset;
-  }
-
-  .nav-image {
-    height: 55px;
-  }
-} */
-
-
-
-@media(min-width: 1496px) and (max-width: 1496px) {
-
-  #kc-page-title {
-    font-size: 14px;
-  }
-
-  #kc-form-buttons {
-    margin-top: 0;
-  }
-
-  #kc-form-reset-psw a {
-    font-size: 12px;
-  }
-
-  .card-pf {
-    max-width: 27vw;
-    max-height: 45.4vh;
-  }
-
-  .login-pf-page .login-pf-header {
-    margin-bottom: 0;
-  }
-
-  .login-pf-page .form-group {
-    margin-bottom: 2vh;
-  }
-
-  #kc-login {
-    margin-top: 5vh;
-  }
-
-  #kc-form-register a {
-    font-size: 12px;
-  }
+.password-reveal {
+  color: #5500B3;
+  margin-left: -40px;
+  font-size: 20px;
+  cursor: pointer;
 }
+
+.eye-open {
+  content: url("../img/eye-open.png");
+  width: 1.2em;
+  top: 0.3em;
+  position: absolute;
+}
+
+.eye-closed {
+  content: url("../img/eye-closed.png");
+  width: 1.2em;
+  top: 0.3em;
+  position: absolute;
+}
+
+.form-group {
+  position: relative;
+}
+
