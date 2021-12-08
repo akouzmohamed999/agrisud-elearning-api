@@ -47,9 +47,8 @@ services:
       DB_DATABASE: agrisud_keycloak
       DB_PASSWORD: mysecretpassword
       DB_ADDR: mysql
-#    volumes:
-#      - ./docker/keycloak/themes/agrisud:/opt/jboss/keycloak/themes/agrisud
-#      - ./docker/keycloak/themes/agrisud/login/template.ftl:/opt/jboss/keycloak/themes/base/login/template.ftl
+    volumes:
+       - ./docker/keycloak/themes/agrisud:/opt/jboss/keycloak/themes/agrisud
     ports:
       - 3800:8080
     networks:

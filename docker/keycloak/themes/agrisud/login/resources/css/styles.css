@@ -9,7 +9,7 @@
   position: absolute;
   margin-left: 29vw;
   height: 45.4vh;
-  width: 10.5vw;
+  width: 12vw;
 }
 
 .forgot-password-wrapper {
@@ -217,5 +217,29 @@ body {
 
 .form-container{
   margin-top: 6em;
+}
+.password-reveal {
+  color: #5500B3;
+  margin-left: -40px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.eye-open {
+  content: url("../img/eye-open.png");
+  width: 1.2em;
+  top: 0.3em;
+  position: absolute;
+}
+
+.eye-closed {
+  content: url("../img/eye-closed.png");
+  width: 1.2em;
+  top: 0.3em;
+  position: absolute;
+}
+
+.form-group {
+  position: relative;
 }
 
