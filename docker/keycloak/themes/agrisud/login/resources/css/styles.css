@@ -7,9 +7,8 @@
 
 .form-img {
   position: absolute;
-  margin-left: 29vw;
+  margin-left: 29.8vw;
   height: 45.4vh;
-  width: 12vw;
 }
 
 .forgot-password-wrapper {
@@ -241,5 +240,16 @@ body {
 
 .form-group {
   position: relative;
+}
+
+#kc-form-register a{
+    left: 0;
+    position: absolute;
+}
+
+@media screen and (max-width: 1600px) {
+  .form-img {
+    margin-left: 27.5vw;
+  }
 }
 
