@@ -4,44 +4,52 @@
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <meta content="width=device-width, initial-scale=1" name="viewport" />
 <div class="kc-base-logo-wrapper">
-<div class="agrisud-navbar">
-    <div class="agrisud-nav-menus-logo">
-       <a target="_blank" rel="noreferrer">
+    <div class="agrisud-navbar">
+      <div class="agrisud-nav-menus-logo">
+        <a target="_blank" rel="noreferrer">
           <img class="nav-image" src="${url.resourcesPath}/${properties.logoImg}" alt="" />
         </a>
-    </div>
-    <div class="agrisud-navbar-links">
-          <div class="agrisud-navbar-links-items">
-            <div class="agrisud-navbar-links-item">
-              <h6>
-                <a href=${properties.elearningUrl} rel="noreferrer">
-                  E-Learning
-                </a>
-              </h6>
-            </div>
-            <div class="agrisud-navbar-links-item">
-              <h6>
-                <a href=${properties.mediathequeUrl}  rel="noreferrer">
-                  Médiathèque
-                </a>
-              </h6>
-            </div>
-            <div class="agrisud-navbar-links-item">
-              <h6>
-                <a href=${properties.sitewebUrl} rel="noreferrer">
-                  Agrisud.org
-                </a>
-              </h6>
-            </div>
-            <div>
-              <h6 class="agrisud-navbar-links-item">
-                <a>Aide<a/>
-              </h6>
-            </div>
+      </div>
+      <div class="agrisud-navbar-links">
+        <div class="agrisud-navbar-links-items">
+          <div class="agrisud-navbar-links-item">
+            <h6>
+              <a href=${properties.elearningUrl} rel="noreferrer"> E-Learning </a>
+            </h6>
+          </div>
+          <div class="agrisud-navbar-links-item">
+            <h6>
+              <a href=${properties.mediathequeUrl} rel="noreferrer"> Médiathèque </a>
+            </h6>
+          </div>
+          <div class="agrisud-navbar-links-item">
+            <h6>
+              <a href=${properties.sitewebUrl} rel="noreferrer"> Agrisud.org </a>
+            </h6>
+          </div>
+          <div class="agrisud-navbar-links-item">
+            <h6 >
+              <a>Aide </a>
+            </h6>
           </div>
         </div>
+      </div>
+      <div class="agrisud-mobile-navbar-links-items">
+        <div class="agrisud-navbar-links-item">
+            <a href=${properties.elearningUrl} rel="noreferrer"> E-Learning </a>
         </div>
+        <div class="agrisud-navbar-links-item">
+            <a href=${properties.mediathequeUrl} rel="noreferrer"> Médiathèque </a>
         </div>
+        <div class="agrisud-navbar-links-item">
+            <a href=${properties.sitewebUrl} rel="noreferrer"> Agrisud.org </a>
+        </div>
+        <div class="agrisud-navbar-links-item">
+            <a>Aide <a />
+        </div>
+      </div>
+    </div>
+  </div>
 <div class="form-container">
     <img id="form-img" class="form-img" src="${url.resourcesPath}/${properties.sideformImg}" />
     <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
