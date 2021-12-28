@@ -7,9 +7,8 @@
 
 .form-img {
   position: absolute;
-  margin-left: 29vw;
+  margin-left: 30.5vw;
   height: 45.4vh;
-  width: 12vw;
 }
 
 .forgot-password-wrapper {
@@ -39,7 +38,7 @@ body {
 /* Login Card */
 
 .card-pf {
-  border-color: var(--secondaryColor);
+  border: none;
   margin-left: 39.5vw;
 }
 
@@ -56,10 +55,6 @@ body {
 }
 
 /* Login Form */
-
-.login-pf-page .form-group {
-  margin-bottom: 30px;
-}
 
 .login-pf-page .form-control {
   border: none;
@@ -110,23 +105,21 @@ body {
 }
 
 .agrisud-navbar {
-  height: 15vh;
+  height: 16.5vh;
   width: 100%;
-  display: flex;
   justify-content: space-between;
   background-color: #ffffff;
-  padding: 0 2vw;
+  padding: 0 0 2vw 0;
 }
 
 .agrisud-navbar .agrisud-navbar-items {
   width: 100%;
-  display: flex;
   flex-direction: column;
   justify-content: space-between !important;
 }
 
 .agrisud-navbar-links {
-  display: flex;
+  display: inline-block;
   justify-content: space-between;
   margin-bottom: 12px;
 }
@@ -165,8 +158,8 @@ body {
 
 .agrisud-navbar-links-items {
   display: flex;
-  align-items: flex-end;
-  margin-left: 30em;
+  margin-left: 19vw;
+  padding: 3em;
 }
 
 .agrisud-navbar-links-items h6 {
@@ -188,6 +181,9 @@ body {
   border-right: 1px solid lightgray;
 }
 
+.agrisud-navbar-links-item:last-child {
+  border-right: none;
+}
 
 .agrisud-navbar-aide {
   cursor: pointer;
@@ -200,6 +196,8 @@ body {
 .agrisud-nav-menus-logo {
   padding: unset !important;
   max-width: 20vw;
+  display: inline-block;
+  margin-right: 13.5vw;
 }
 
 .agrisud-nav-menus .agrisud-navbar-login {
@@ -215,9 +213,10 @@ body {
   cursor: pointer;
 }
 
-.form-container{
+.form-container {
   margin-top: 6em;
 }
+
 .password-reveal {
   color: #5500B3;
   margin-left: -40px;
@@ -243,3 +242,175 @@ body {
   position: relative;
 }
 
+#kc-form-register a {
+  left: 0;
+  position: absolute;
+}
+
+.agrisud-mobile-navbar-links-items {
+  display: none;
+}
+
+@media screen and (max-width: 1700px) {
+  .form-img {
+    margin-left: 29.3%;
+  }
+
+  .agrisud-mobile-navbar-links-items {
+    display: none;
+  }
+
+  .agrisud-navbar-links-items {
+    margin-left: 10vw;
+  }
+}
+
+@media screen and (max-width: 1450px) {
+  .form-img {
+    margin-left: 27%;
+  }
+}
+
+@media screen and (max-width: 1290px) {
+
+  .agrisud-navbar {
+    height: auto;
+    width: 100%;
+    padding: 3vh 2vw 1vh 2vw;
+  }
+
+  .form-img {
+    margin-left: 26%;
+  }
+
+  .nav-image {
+    height: unset;
+  }
+
+  .agrisud-navbar-links-items {
+    margin-left: 7em;
+    padding: 0.5em;
+  }
+
+  .agrisud-mobile-navbar-links-items {
+    display: none;
+  }
+
+  .agrisud-nav-menus-logo {
+    margin: 0;
+  }
+
+}
+
+@media screen and (max-width: 1080px) {
+  .form-img {
+    margin-left: 23.5%;
+  }
+
+  .agrisud-navbar-links-items {
+    margin-left: 5vw;
+  }
+}
+
+@media (max-width: 920px) {
+
+  .form-img {
+    display: none;
+  }
+
+  .form-container {
+    margin: auto;
+    margin-top: 20vh;
+  }
+
+  .login-pf-page .card-pf {
+    padding: 20px 40px 30px 40px;
+    margin: 0 auto;
+  }
+
+  .agrisud-navbar-links-items {
+    margin-left: 3.5em;
+    padding: 0.5em;
+  }
+
+  .agrisud-navbar-links-item h6 {
+    margin: 2em;
+  }
+
+  .nav-image {
+    height: unset;
+  }
+
+  .agrisud-navbar {
+    height: auto;
+    padding: 3vh 2vw 1vh 2vw;
+    text-align: center;
+  }
+
+  .agrisud-mobile-navbar-links-items {
+    display: none;
+  }
+
+  .agrisud-nav-menus-logo {
+    margin: 0;
+  }
+
+}
+
+@media (max-width: 650px) {
+
+  .form-img {
+    display: none;
+  }
+
+  .form-container {
+    margin: auto;
+    margin-top: 10vh;
+  }
+
+  .login-pf-page .card-pf {
+    padding: 20px 40px 30px 40px;
+    margin: 0 auto;
+  }
+
+  .agrisud-navbar-links-items {
+    margin-left: 0;
+    display: none;
+  }
+
+  .nav-image {
+    height: unset;
+    width: 100%;
+  }
+
+  .agrisud-navbar {
+    height: auto;
+    padding: 0 2vw 1vh 2vw;
+  }
+
+  .agrisud-navbar-links {
+    display: none;
+  }
+
+  .agrisud-navbar-links-item {
+    border-right: unset;
+    display: inline-block;
+    font-size: 0.8em;
+    margin: 0.5em;
+  }
+
+  .agrisud-nav-menus-logo {
+    padding: unset !important;
+    max-width: 100%;
+    display: block;
+    margin: 0;
+  }
+
+  .agrisud-mobile-navbar-links-items {
+    display: block;
+  }
+
+  #kc-locale {
+    top: 46vh;
+  }
+}

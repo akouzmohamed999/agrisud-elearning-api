@@ -36,20 +36,25 @@ public class TemplateGenerationHelper {
         templateContent = templateContent.replace("[tpt_title]", trainingPathTranslationDto.getTitle());
         templateContent = templateContent.replace("[tpt_description]", trainingPathTranslationDto.getDescription());
         templateContent = templateContent.replace("[tpt_prerequest]", trainingPathTranslationDto.getPreRequest());
+        templateContent = templateContent.replace("[tpt_duration]", DurationGenerator.getTrainingPathDuration(trainingPathTranslationDto));
         return fillTemplateModuleLangPlaceholder(trainingPathTranslationDto, templateContent);
     }
 
     private static String fillTemplateModuleLangPlaceholder(TrainingPathTranslationDto trainingPathTranslationDto, String templateContent) {
+        String title;
         String moduleTitle = "";
         if (trainingPathTranslationDto.getLanguage() == Language.EN) {
-            moduleTitle = "This module is divided to " + trainingPathTranslationDto.getModuleList().size() + " modules:";
+            title = "TRAINING";
+            moduleTitle = "This training is divided into " + trainingPathTranslationDto.getModuleList().size() + " modules :";
         } else {
-            moduleTitle = "Ce Parcours est divisé en " + trainingPathTranslationDto.getModuleList().size() + " modules:";
+            title = "PARCOURS";
+            moduleTitle = "Ce Parcours est divisé en " + trainingPathTranslationDto.getModuleList().size() + " modules :";
         }
         AtomicInteger index = new AtomicInteger();
         index.set(0);
         String spans = trainingPathTranslationDto.getModuleList().stream().map(moduleDto -> "<p style=\"margin-left:auto;margin-bottom:0;font-size: 1.5em;\"><span class=\"text-big\">" + index.incrementAndGet() + "- " + moduleDto.getTitle() + "</span></p>")
                 .reduce(String::concat).orElseThrow(() -> new RuntimeException("Error while generating modules spans for template"));
+        templateContent = templateContent.replace("[title]", title);
         templateContent = templateContent.replace("[tpt_module_title]", moduleTitle);
         templateContent = templateContent.replace("[tpt_module_content]", spans);
         return templateContent;
