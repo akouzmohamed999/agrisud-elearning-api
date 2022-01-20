@@ -11,7 +11,9 @@ public class DurationGenerator {
                 .filter(moduleDto -> moduleDto.getCourseDtoList() != null)
                 .map(moduleDto ->
                         moduleDto.getCourseDtoList().stream().map(CourseDto::getCourseHours).reduce(0, Integer::sum)).reduce(0, Integer::sum);
-        int minutes = trainingPathTranslationDto.getModuleList().stream().map(moduleDto ->
+        int minutes = trainingPathTranslationDto.getModuleList().stream()
+                .filter(moduleDto -> moduleDto.getCourseDtoList() != null)
+                .map(moduleDto ->
                 moduleDto.getCourseDtoList().stream().map(CourseDto::getCourseMinutes).reduce(0, Integer::sum)).reduce(0, Integer::sum);
 
         hours += minutes / 60;
